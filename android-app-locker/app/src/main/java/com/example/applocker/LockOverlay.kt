@@ -63,9 +63,16 @@ class LockOverlay(context: Context) {
             }
         }
 
-        windowManager.addView(root, buildParams())
-        root.requestFocus()
-        view = root
+        // addView throws if the "display over other apps" permission is missing
+        // or was revoked; fail gracefully instead of crashing the service.
+        val added = runCatching { windowManager.addView(root, buildParams()) }.isSuccess
+        if (added) {
+            root.requestFocus()
+            view = root
+        } else {
+            currentPackage = null
+            SessionState.lockPromptShowing = false
+        }
     }
 
     fun remove() {

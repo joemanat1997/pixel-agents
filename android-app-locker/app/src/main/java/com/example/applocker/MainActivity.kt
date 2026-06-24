@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         adapter = AppListAdapter(mutableListOf()) { app, locked ->
             prefs.setLocked(app.packageName, locked)
+            updateStatusBanner()
         }
         binding.appList.layoutManager = LinearLayoutManager(this)
         binding.appList.adapter = adapter
@@ -145,6 +146,27 @@ class MainActivity : AppCompatActivity() {
         binding.selfLockSwitch.setOnCheckedChangeListener { _, isChecked ->
             onSelfLockToggled(isChecked)
         }
+
+        updateStatusBanner()
+    }
+
+    /** Shows exactly what (if anything) is preventing the lock from working. */
+    private fun updateStatusBanner() {
+        val (text, ok) = when {
+            !prefs.isPinSet -> getString(R.string.status_no_pin) to false
+            !hasUsageAccess() -> getString(R.string.status_need_usage) to false
+            !hasOverlayPermission() -> getString(R.string.status_need_overlay) to false
+            !prefs.serviceEnabled -> getString(R.string.status_off) to false
+            prefs.lockedPackages.isEmpty() -> getString(R.string.status_ready) to true
+            else -> getString(R.string.status_active, prefs.lockedPackages.size) to true
+        }
+        binding.statusBanner.text = text
+        binding.statusBanner.setBackgroundColor(
+            getColor(if (ok) R.color.success else R.color.warning)
+        )
+        binding.statusBanner.setTextColor(
+            getColor(if (ok) R.color.text_primary else R.color.on_primary)
+        )
     }
 
     private fun onProtectionToggled(enabled: Boolean) {

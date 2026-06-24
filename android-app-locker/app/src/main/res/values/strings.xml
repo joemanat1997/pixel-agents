@@ -5,6 +5,12 @@
     <!-- Main screen -->
     <string name="protection_enabled">เปิดการป้องกัน</string>
     <string name="lock_this_app">ล็อกการเข้าแอปนี้ด้วย PIN</string>
+    <string name="status_no_pin">⚠️ ยังไม่ได้ตั้งรหัส PIN</string>
+    <string name="status_need_usage">⚠️ ต้องกด \"อนุญาตสิทธิ์การเข้าถึงการใช้งาน\"</string>
+    <string name="status_need_overlay">⚠️ ต้องกด \"อนุญาตให้แสดงทับแอปอื่น\"</string>
+    <string name="status_off">⚠️ ยังไม่ได้เปิดสวิตช์ \"เปิดการป้องกัน\"</string>
+    <string name="status_ready">✅ พร้อมแล้ว — เลือกแอปที่จะล็อกด้านล่าง</string>
+    <string name="status_active">✅ กำลังป้องกัน %1$d แอป</string>
     <string name="choose_apps">เลือกแอปที่ต้องการล็อก</string>
     <string name="set_pin">ตั้งรหัส PIN</string>
     <string name="change_pin">เปลี่ยนรหัส PIN</string>

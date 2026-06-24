@@ -11,6 +11,8 @@
     <color name="primary">#FF7A1A</color>
     <color name="primary_dark">#E85D00</color>
     <color name="on_primary">#1A0E00</color>
+    <color name="warning">#FF7A1A</color>
+    <color name="success">#2E7D32</color>
 
     <!-- Keypad -->
     <color name="key_fill">#26FF7A1A</color>
