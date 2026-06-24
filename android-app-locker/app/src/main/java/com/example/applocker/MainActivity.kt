@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity() {
     private var isAuthenticating = false
     private var leavingForInternalNav = false
 
+    private val previewOverlay by lazy { LockOverlay(this) }
+
     private val authLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         isAuthenticating = false
         if (result.resultCode == RESULT_OK) {
@@ -71,6 +73,26 @@ class MainActivity : AppCompatActivity() {
             navigateInternally(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         }
         binding.overlayButton.setOnClickListener { requestOverlayPermission() }
+        binding.testLockButton.setOnClickListener { testLockNow() }
+    }
+
+    /**
+     * One-tap diagnostic: if the overlay permission is missing it says so and
+     * opens the right settings page; otherwise it shows the lock screen
+     * immediately, proving the lock UI works without relying on the service.
+     */
+    private fun testLockNow() {
+        if (!prefs.isPinSet) {
+            Toast.makeText(this, R.string.test_need_pin, Toast.LENGTH_LONG).show()
+            navigateInternally(Intent(this, PinSetupActivity::class.java))
+            return
+        }
+        if (!hasOverlayPermission()) {
+            Toast.makeText(this, R.string.test_need_overlay, Toast.LENGTH_LONG).show()
+            requestOverlayPermission()
+            return
+        }
+        previewOverlay.showPreview()
     }
 
     override fun onStart() {

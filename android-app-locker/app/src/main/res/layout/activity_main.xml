@@ -86,6 +86,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/grant_overlay" />
+
+        <Button
+            android:id="@+id/testLockButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/test_lock_button" />
     </LinearLayout>
 
     <TextView

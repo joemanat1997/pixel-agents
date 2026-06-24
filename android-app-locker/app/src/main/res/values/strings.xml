@@ -11,6 +11,11 @@
     <string name="status_off">⚠️ ยังไม่ได้เปิดสวิตช์ \"เปิดการป้องกัน\"</string>
     <string name="status_ready">✅ พร้อมแล้ว — เลือกแอปที่จะล็อกด้านล่าง</string>
     <string name="status_active">✅ กำลังป้องกัน %1$d แอป</string>
+    <string name="test_lock_button">🔓 ทดสอบล็อกเดี๋ยวนี้</string>
+    <string name="test_lock_title">ทดสอบการล็อก</string>
+    <string name="test_lock_subtitle">ใส่รหัส PIN เพื่อปิดหน้านี้</string>
+    <string name="test_need_overlay">App Locker ยังไม่ได้สิทธิ์ \"แสดงทับแอปอื่น\" — กำลังพาไปเปิด</string>
+    <string name="test_need_pin">ตั้งรหัส PIN ก่อนนะครับ</string>
     <string name="choose_apps">เลือกแอปที่ต้องการล็อก</string>
     <string name="set_pin">ตั้งรหัส PIN</string>
     <string name="change_pin">เปลี่ยนรหัส PIN</string>
