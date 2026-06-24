@@ -25,6 +25,7 @@ class AppLockService : Service() {
 
     private lateinit var prefs: SecurePrefs
     private lateinit var usageStats: UsageStatsManager
+    private lateinit var lockOverlay: LockOverlay
     private val handler = Handler(Looper.getMainLooper())
 
     private var lastForegroundPackage: String = ""
@@ -34,6 +35,7 @@ class AppLockService : Service() {
             // Re-lock everything when the screen turns off.
             if (intent?.action == Intent.ACTION_SCREEN_OFF) {
                 SessionState.relockAll()
+                lockOverlay.remove()
             }
         }
     }
@@ -49,6 +51,7 @@ class AppLockService : Service() {
         super.onCreate()
         prefs = SecurePrefs.get(this)
         usageStats = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        lockOverlay = LockOverlay(this)
         registerReceiver(screenReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF))
     }
 
@@ -65,7 +68,9 @@ class AppLockService : Service() {
         val current = queryForegroundPackage() ?: return
         if (current.isEmpty()) return
 
-        // Our own lock screen and main UI must never lock themselves.
+        // Our own app must never lock itself. The overlay window does not change
+        // the foreground package, so ignore our package whether or not the lock
+        // overlay is currently up.
         if (current == packageName) {
             lastForegroundPackage = current
             return
@@ -81,8 +86,8 @@ class AppLockService : Service() {
         }
 
         val locked = prefs.lockedPackages.contains(current)
-        if (locked && !SessionState.isUnlocked(current) && !SessionState.lockPromptShowing) {
-            launchLockScreen(current)
+        if (locked && !SessionState.isUnlocked(current) && !lockOverlay.isShowing()) {
+            lockOverlay.show(current)
         }
     }
 
@@ -102,15 +107,6 @@ class AppLockService : Service() {
             }
         }
         return pkg
-    }
-
-    private fun launchLockScreen(pkg: String) {
-        SessionState.lockPromptShowing = true
-        val intent = Intent(this, LockScreenActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            putExtra(LockScreenActivity.EXTRA_PACKAGE, pkg)
-        }
-        startActivity(intent)
     }
 
     private fun buildNotification(): android.app.Notification {
@@ -144,6 +140,7 @@ class AppLockService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         handler.removeCallbacks(pollRunnable)
+        lockOverlay.remove()
         runCatching { unregisterReceiver(screenReceiver) }
     }
 
