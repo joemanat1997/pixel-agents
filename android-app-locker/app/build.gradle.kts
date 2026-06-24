@@ -47,3 +47,26 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 }
+
+// Pin AndroidX to versions that compile against compileSdk 34. Without this,
+// transitive resolution can drag in 2026-era releases (e.g. core 1.19.0,
+// lifecycle-runtime-compose 2.11.0) that demand compileSdk 37.
+configurations.all {
+    resolutionStrategy {
+        force(
+            "androidx.core:core:1.13.1",
+            "androidx.core:core-ktx:1.13.1",
+            "androidx.appcompat:appcompat:1.7.0",
+            "com.google.android.material:material:1.12.0",
+            "androidx.activity:activity:1.8.2",
+            "androidx.activity:activity-ktx:1.8.2",
+            "androidx.lifecycle:lifecycle-runtime:2.7.0",
+            "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0",
+            "androidx.lifecycle:lifecycle-common:2.7.0"
+        )
+    }
+    // This project uses Views, not Compose; drop any Compose lifecycle artifacts
+    // that would otherwise force a newer compileSdk.
+    exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-compose")
+    exclude(group = "androidx.lifecycle", module = "lifecycle-runtime-compose-android")
+}
