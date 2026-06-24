@@ -9,9 +9,10 @@ import android.widget.LinearLayout
 import androidx.core.view.isVisible
 
 /**
- * iOS-style passcode keypad: a row of progress dots plus a circular 0-9 keypad
- * with backspace and confirm keys. Reports the entered PIN through [onSubmit]
- * once the user presses the confirm key (and the minimum length is met).
+ * iOS-style passcode keypad: a fixed row of progress dots plus a circular 0-9
+ * keypad with a backspace key. The PIN has a fixed length ([pinLength]); once
+ * the final digit is entered it is reported through [onSubmit] automatically,
+ * so no separate confirm key is needed.
  */
 class PinKeypadView @JvmOverloads constructor(
     context: Context,
@@ -21,7 +22,13 @@ class PinKeypadView @JvmOverloads constructor(
 
     private val entered = StringBuilder()
 
-    var minLength: Int = 4
+    /** Fixed number of digits in the PIN. */
+    var pinLength: Int = DEFAULT_PIN_LENGTH
+        set(value) {
+            field = value
+            reset()
+        }
+
     var onSubmit: ((String) -> Unit)? = null
 
     private val titleView by lazy { findViewById<android.widget.TextView>(R.id.keypadTitle) }
@@ -37,6 +44,8 @@ class PinKeypadView @JvmOverloads constructor(
         gravity = android.view.Gravity.CENTER_HORIZONTAL
         LayoutInflater.from(context).inflate(R.layout.view_pin_keypad, this, true)
         wireKeys()
+        // Fixed-length PIN auto-submits, so the confirm key is unnecessary.
+        findViewById<View>(R.id.keyEnter).visibility = View.INVISIBLE
         refreshDots()
     }
 
@@ -74,14 +83,16 @@ class PinKeypadView @JvmOverloads constructor(
             findViewById<View>(id).setOnClickListener { append(digit) }
         }
         findViewById<View>(R.id.keyBackspace).setOnClickListener { backspace() }
-        findViewById<View>(R.id.keyEnter).setOnClickListener { submit() }
     }
 
     private fun append(digit: Char) {
-        if (entered.length >= MAX_LENGTH) return
+        if (entered.length >= pinLength) return
         clearError()
         entered.append(digit)
         refreshDots()
+        if (entered.length == pinLength) {
+            onSubmit?.invoke(entered.toString())
+        }
     }
 
     private fun backspace() {
@@ -91,19 +102,10 @@ class PinKeypadView @JvmOverloads constructor(
         refreshDots()
     }
 
-    private fun submit() {
-        if (entered.length < minLength) {
-            showError(context.getString(R.string.error_pin_too_short, minLength))
-            return
-        }
-        onSubmit?.invoke(entered.toString())
-    }
-
-    /** Shows one filled dot per entered digit, padded with empty dots up to [minLength]. */
+    /** Shows exactly [pinLength] dots, filled up to the number of entered digits. */
     private fun refreshDots() {
         dotsContainer.removeAllViews()
-        val count = maxOf(minLength, entered.length)
-        for (i in 0 until count) {
+        for (i in 0 until pinLength) {
             val dot = ImageView(context)
             val lp = LayoutParams(dotSize, dotSize)
             lp.marginStart = if (i == 0) 0 else dotGap
@@ -117,6 +119,6 @@ class PinKeypadView @JvmOverloads constructor(
         (value * resources.displayMetrics.density).toInt()
 
     companion object {
-        private const val MAX_LENGTH = 12
+        private const val DEFAULT_PIN_LENGTH = 6
     }
 }

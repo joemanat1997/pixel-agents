@@ -28,7 +28,7 @@ class PinSetupActivity : AppCompatActivity() {
         prefs = SecurePrefs.get(this)
         changing = prefs.isPinSet
 
-        binding.keypad.minLength = MIN_PIN_LENGTH
+        binding.keypad.pinLength = PIN_LENGTH
         binding.keypad.onSubmit = { pin -> handleStep(pin) }
 
         goToStep(if (changing) STEP_CURRENT else STEP_NEW)
@@ -84,7 +84,7 @@ class PinSetupActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val MIN_PIN_LENGTH = 4
+        private const val PIN_LENGTH = 6
         private const val STEP_CURRENT = 0
         private const val STEP_NEW = 1
         private const val STEP_CONFIRM = 2

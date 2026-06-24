@@ -21,7 +21,7 @@
     <string name="title_change_pin">เปลี่ยนรหัส PIN</string>
     <string name="title_confirm_pin">ยืนยันรหัส PIN</string>
     <string name="prompt_current_pin">ใส่รหัส PIN ปัจจุบัน</string>
-    <string name="prompt_new_pin">ตั้งให้ต่างจากรหัสปลดล็อกเครื่องได้ (อย่างน้อย 4 หลัก)</string>
+    <string name="prompt_new_pin">ตั้งรหัส 6 หลัก (ต่างจากรหัสปลดล็อกเครื่องได้)</string>
     <string name="prompt_confirm_pin">ใส่รหัส PIN ใหม่อีกครั้ง</string>
     <string name="pin_saved">บันทึกรหัส PIN แล้ว</string>
 
