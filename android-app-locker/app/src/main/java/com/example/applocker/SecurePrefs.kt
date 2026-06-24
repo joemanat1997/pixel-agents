@@ -30,6 +30,11 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         get() = prefs.getBoolean(KEY_ENABLED, false)
         set(value) = prefs.edit().putBoolean(KEY_ENABLED, value).apply()
 
+    /** Whether opening the App Locker app itself requires the PIN. On by default. */
+    var appSelfLock: Boolean
+        get() = prefs.getBoolean(KEY_SELF_LOCK, true)
+        set(value) = prefs.edit().putBoolean(KEY_SELF_LOCK, value).apply()
+
     /** Stores a brand-new PIN (used for first setup and for changing the PIN). */
     fun setPin(pin: String) {
         val salt = PinHasher.newSalt()
@@ -55,6 +60,7 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         private const val KEY_PIN_SALT = "pin_salt"
         private const val KEY_LOCKED = "locked_packages"
         private const val KEY_ENABLED = "service_enabled"
+        private const val KEY_SELF_LOCK = "app_self_lock"
 
         @Volatile
         private var instance: SecurePrefs? = null

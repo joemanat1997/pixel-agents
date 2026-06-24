@@ -4,6 +4,7 @@
 
     <!-- Main screen -->
     <string name="protection_enabled">เปิดการป้องกัน</string>
+    <string name="lock_this_app">ล็อกการเข้าแอปนี้ด้วย PIN</string>
     <string name="choose_apps">เลือกแอปที่ต้องการล็อก</string>
     <string name="set_pin">ตั้งรหัส PIN</string>
     <string name="change_pin">เปลี่ยนรหัส PIN</string>
@@ -26,6 +27,7 @@
 
     <!-- Lock screen -->
     <string name="enter_pin_to_open">ใส่รหัส PIN เพื่อเปิดแอป</string>
+    <string name="enter_pin_to_enter_app">ใส่รหัส PIN เพื่อเข้าแอป</string>
 
     <!-- Errors / messages -->
     <string name="error_wrong_pin">รหัส PIN ไม่ถูกต้อง</string>

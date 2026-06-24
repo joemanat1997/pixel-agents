@@ -16,6 +16,10 @@ object SessionState {
     @Volatile
     var lockPromptShowing: Boolean = false
 
+    /** True once the user has unlocked the App Locker app itself this session. */
+    @Volatile
+    var appUnlocked: Boolean = false
+
     fun isUnlocked(pkg: String): Boolean = unlocked.contains(pkg)
 
     fun markUnlocked(pkg: String) {

@@ -13,6 +13,7 @@ import android.os.Looper
 import android.os.Process
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.applocker.databinding.ActivityMainBinding
@@ -26,6 +27,20 @@ class MainActivity : AppCompatActivity() {
 
     private val ioExecutor = Executors.newSingleThreadExecutor()
     private val mainHandler = Handler(Looper.getMainLooper())
+
+    // App self-lock gating.
+    private var isAuthenticating = false
+    private var leavingForInternalNav = false
+
+    private val authLauncher = registerForActivityResult(StartActivityForResult()) { result ->
+        isAuthenticating = false
+        if (result.resultCode == RESULT_OK) {
+            SessionState.appUnlocked = true
+        } else {
+            // User backed out of the passcode prompt — leave the app.
+            finishAffinity()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,19 +59,61 @@ class MainActivity : AppCompatActivity() {
             onProtectionToggled(isChecked)
         }
 
+        binding.selfLockSwitch.setOnCheckedChangeListener { _, isChecked ->
+            onSelfLockToggled(isChecked)
+        }
+
         binding.setPinButton.setOnClickListener {
-            startActivity(Intent(this, PinSetupActivity::class.java))
+            navigateInternally(Intent(this, PinSetupActivity::class.java))
         }
         binding.usageAccessButton.setOnClickListener {
-            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+            navigateInternally(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         }
         binding.overlayButton.setOnClickListener { requestOverlayPermission() }
     }
 
+    override fun onStart() {
+        super.onStart()
+        maybeRequireAuth()
+    }
+
     override fun onResume() {
         super.onResume()
+        leavingForInternalNav = false
         refreshState()
         loadInstalledApps()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Re-lock the app when it goes to the background, but not when we are
+        // showing the passcode prompt or stepping into one of our own screens.
+        if (!isAuthenticating && !leavingForInternalNav) {
+            SessionState.appUnlocked = false
+        }
+    }
+
+    /** Launches the passcode gate if app self-lock is on and not yet unlocked. */
+    private fun maybeRequireAuth() {
+        if (isAuthenticating || SessionState.appUnlocked) return
+        if (!prefs.isPinSet || !prefs.appSelfLock) return
+        isAuthenticating = true
+        authLauncher.launch(Intent(this, AppAuthActivity::class.java))
+    }
+
+    private fun navigateInternally(intent: Intent) {
+        leavingForInternalNav = true
+        startActivity(intent)
+    }
+
+    private fun onSelfLockToggled(enabled: Boolean) {
+        if (enabled && !prefs.isPinSet) {
+            Toast.makeText(this, R.string.error_set_pin_first, Toast.LENGTH_LONG).show()
+            binding.selfLockSwitch.isChecked = false
+            navigateInternally(Intent(this, PinSetupActivity::class.java))
+            return
+        }
+        prefs.appSelfLock = enabled
     }
 
     private fun refreshState() {
@@ -82,6 +139,12 @@ class MainActivity : AppCompatActivity() {
         binding.protectionSwitch.setOnCheckedChangeListener { _, isChecked ->
             onProtectionToggled(isChecked)
         }
+
+        binding.selfLockSwitch.setOnCheckedChangeListener(null)
+        binding.selfLockSwitch.isChecked = pinSet && prefs.appSelfLock
+        binding.selfLockSwitch.setOnCheckedChangeListener { _, isChecked ->
+            onSelfLockToggled(isChecked)
+        }
     }
 
     private fun onProtectionToggled(enabled: Boolean) {
@@ -95,13 +158,13 @@ class MainActivity : AppCompatActivity() {
         if (!prefs.isPinSet) {
             Toast.makeText(this, R.string.error_set_pin_first, Toast.LENGTH_LONG).show()
             binding.protectionSwitch.isChecked = false
-            startActivity(Intent(this, PinSetupActivity::class.java))
+            navigateInternally(Intent(this, PinSetupActivity::class.java))
             return
         }
         if (!hasUsageAccess()) {
             Toast.makeText(this, R.string.error_need_usage, Toast.LENGTH_LONG).show()
             binding.protectionSwitch.isChecked = false
-            startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+            navigateInternally(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
             return
         }
         if (!hasOverlayPermission()) {
@@ -169,7 +232,7 @@ class MainActivity : AppCompatActivity() {
             Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
             Uri.parse("package:$packageName")
         )
-        startActivity(intent)
+        navigateInternally(intent)
     }
 
     override fun onDestroy() {
