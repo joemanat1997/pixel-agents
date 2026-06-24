@@ -2,14 +2,19 @@
 <resources>
     <style name="Theme.AppLocker" parent="Theme.Material3.DayNight">
         <item name="colorPrimary">@color/primary</item>
+        <item name="colorOnPrimary">@color/on_primary</item>
+        <item name="colorSecondary">@color/primary</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="android:statusBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/background</item>
     </style>
 
     <!-- Lock screen: full-screen, no action bar -->
     <style name="Theme.AppLocker.Lock" parent="Theme.AppLocker">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
-        <item name="android:windowBackground">@color/lock_background</item>
+        <item name="android:windowBackground">@drawable/bg_lock_gradient</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 </resources>

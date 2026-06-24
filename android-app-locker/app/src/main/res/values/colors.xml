@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#11131A</color>
-    <color name="surface">#1B1E29</color>
-    <color name="lock_background">#0C0E14</color>
-    <color name="text_primary">#F5F6FA</color>
-    <color name="text_secondary">#9AA0B4</color>
-    <color name="error">#FF6B6B</color>
-    <color name="primary">#5B8CFF</color>
-    <color name="ic_launcher_background">#5B8CFF</color>
+    <!-- Orange / black theme -->
+    <color name="background">#0E0D0B</color>
+    <color name="surface">#1A1714</color>
+    <color name="lock_background">#070605</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#B9AFA4</color>
+    <color name="error">#FF5C5C</color>
+
+    <color name="primary">#FF7A1A</color>
+    <color name="primary_dark">#E85D00</color>
+    <color name="on_primary">#1A0E00</color>
+
+    <!-- Keypad -->
+    <color name="key_fill">#26FF7A1A</color>
+    <color name="key_ripple">#66FF7A1A</color>
+    <color name="dot_empty">#4DFF7A1A</color>
+    <color name="dot_filled">#FF7A1A</color>
+
+    <!-- Lock-screen gradient stops -->
+    <color name="glow_top">#3A1C00</color>
+    <color name="glow_bottom">#070605</color>
+
+    <color name="ic_launcher_background">#FF7A1A</color>
 </resources>

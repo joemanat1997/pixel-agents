@@ -1,21 +1,24 @@
 package com.example.applocker
 
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.applocker.databinding.ActivityPinSetupBinding
 
 /**
- * Sets the app PIN for the first time, or changes an existing one. This PIN is
- * stored (hashed) by the app itself and is independent of the phone's unlock
- * code, so the user can choose something different on purpose.
+ * Sets the app PIN for the first time, or changes an existing one, using a
+ * multi-step keypad flow. This PIN is stored (hashed) by the app itself and is
+ * independent of the phone's unlock code, so the user can choose something
+ * different on purpose.
  */
 class PinSetupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPinSetupBinding
     private lateinit var prefs: SecurePrefs
+
     private var changing = false
+    private var step = STEP_NEW
+    private var pendingNewPin = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,46 +28,65 @@ class PinSetupActivity : AppCompatActivity() {
         prefs = SecurePrefs.get(this)
         changing = prefs.isPinSet
 
-        binding.currentPinLayout.visibility = if (changing) View.VISIBLE else View.GONE
-        binding.title.text = getString(
-            if (changing) R.string.title_change_pin else R.string.title_set_pin
-        )
+        binding.keypad.minLength = MIN_PIN_LENGTH
+        binding.keypad.onSubmit = { pin -> handleStep(pin) }
 
-        binding.saveButton.setOnClickListener { save() }
+        goToStep(if (changing) STEP_CURRENT else STEP_NEW)
     }
 
-    private fun save() {
-        val newPin = binding.newPin.text?.toString().orEmpty()
-        val confirmPin = binding.confirmPin.text?.toString().orEmpty()
-
-        if (changing) {
-            val currentPin = binding.currentPin.text?.toString().orEmpty()
-            if (!prefs.verifyPin(currentPin)) {
-                showError(getString(R.string.error_current_pin_wrong))
-                return
+    private fun handleStep(pin: String) {
+        when (step) {
+            STEP_CURRENT -> {
+                if (prefs.verifyPin(pin)) {
+                    goToStep(STEP_NEW)
+                } else {
+                    binding.keypad.showError(getString(R.string.error_current_pin_wrong))
+                }
+            }
+            STEP_NEW -> {
+                pendingNewPin = pin
+                goToStep(STEP_CONFIRM)
+            }
+            STEP_CONFIRM -> {
+                if (pin == pendingNewPin) {
+                    prefs.setPin(pin)
+                    Toast.makeText(this, R.string.pin_saved, Toast.LENGTH_SHORT).show()
+                    finish()
+                } else {
+                    pendingNewPin = ""
+                    goToStep(STEP_NEW)
+                    binding.keypad.showError(getString(R.string.error_pin_mismatch))
+                }
             }
         }
-
-        if (newPin.length < MIN_PIN_LENGTH) {
-            showError(getString(R.string.error_pin_too_short, MIN_PIN_LENGTH))
-            return
-        }
-        if (newPin != confirmPin) {
-            showError(getString(R.string.error_pin_mismatch))
-            return
-        }
-
-        prefs.setPin(newPin)
-        Toast.makeText(this, R.string.pin_saved, Toast.LENGTH_SHORT).show()
-        finish()
     }
 
-    private fun showError(message: String) {
-        binding.errorText.text = message
-        binding.errorText.visibility = View.VISIBLE
+    private fun goToStep(next: Int) {
+        step = next
+        binding.keypad.reset()
+        binding.keypad.clearError()
+        when (next) {
+            STEP_CURRENT -> {
+                binding.keypad.setTitle(getString(R.string.title_change_pin))
+                binding.keypad.setSubtitle(getString(R.string.prompt_current_pin))
+            }
+            STEP_NEW -> {
+                binding.keypad.setTitle(
+                    getString(if (changing) R.string.title_new_pin else R.string.title_set_pin)
+                )
+                binding.keypad.setSubtitle(getString(R.string.prompt_new_pin))
+            }
+            STEP_CONFIRM -> {
+                binding.keypad.setTitle(getString(R.string.title_confirm_pin))
+                binding.keypad.setSubtitle(getString(R.string.prompt_confirm_pin))
+            }
+        }
     }
 
     companion object {
         private const val MIN_PIN_LENGTH = 4
+        private const val STEP_CURRENT = 0
+        private const val STEP_NEW = 1
+        private const val STEP_CONFIRM = 2
     }
 }

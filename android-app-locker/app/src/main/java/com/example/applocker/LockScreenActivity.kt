@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.applocker.databinding.ActivityLockScreenBinding
 
 /**
- * Full-screen PIN prompt shown over a locked app. The user must enter the
- * correct app PIN to continue; pressing back simply sends them to the home
- * screen rather than into the protected app.
+ * Full-screen passcode prompt shown over a locked app. The user must enter the
+ * correct app PIN on the keypad to continue; pressing back simply sends them to
+ * the home screen rather than into the protected app.
  */
 class LockScreenActivity : AppCompatActivity() {
 
@@ -37,33 +37,27 @@ class LockScreenActivity : AppCompatActivity() {
         prefs = SecurePrefs.get(this)
         targetPackage = intent.getStringExtra(EXTRA_PACKAGE).orEmpty()
 
-        binding.appLabel.text = appLabelFor(targetPackage)
-
-        binding.unlockButton.setOnClickListener { attemptUnlock() }
-        binding.pinInput.setOnEditorActionListener { _, _, _ ->
-            attemptUnlock(); true
+        binding.keypad.apply {
+            setTitle(appLabelFor(targetPackage))
+            setSubtitle(getString(R.string.enter_pin_to_open))
+            onSubmit = { pin -> attemptUnlock(pin) }
         }
 
         // Back press goes home instead of revealing the locked app.
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleBackPressed() {
+            override fun handleOnBackPressed() {
                 goHome()
             }
         })
     }
 
-    private fun attemptUnlock() {
-        val pin = binding.pinInput.text?.toString().orEmpty()
-        if (pin.isEmpty()) return
-
+    private fun attemptUnlock(pin: String) {
         if (prefs.verifyPin(pin)) {
             SessionState.markUnlocked(targetPackage)
             SessionState.lockPromptShowing = false
             finish()
         } else {
-            binding.pinInput.text?.clear()
-            binding.errorText.text = getString(R.string.error_wrong_pin)
-            binding.errorText.visibility = android.view.View.VISIBLE
+            binding.keypad.showError(getString(R.string.error_wrong_pin))
         }
     }
 
