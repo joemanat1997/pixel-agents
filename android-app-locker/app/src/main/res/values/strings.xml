@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">App Locker</string>
+
+    <!-- Main screen -->
+    <string name="protection_enabled">เปิดการป้องกัน</string>
+    <string name="choose_apps">เลือกแอปที่ต้องการล็อก</string>
+    <string name="set_pin">ตั้งรหัส PIN</string>
+    <string name="change_pin">เปลี่ยนรหัส PIN</string>
+    <string name="grant_usage_access">อนุญาตสิทธิ์การเข้าถึงการใช้งาน</string>
+    <string name="usage_granted">สิทธิ์การใช้งาน: อนุญาตแล้ว</string>
+    <string name="grant_overlay">อนุญาตให้แสดงทับแอปอื่น</string>
+    <string name="overlay_granted">แสดงทับแอปอื่น: อนุญาตแล้ว</string>
+    <string name="app_icon_desc">ไอคอนแอป</string>
+
+    <!-- PIN setup -->
+    <string name="title_pin_setup">ตั้งรหัส PIN</string>
+    <string name="title_set_pin">ตั้งรหัส PIN</string>
+    <string name="title_change_pin">เปลี่ยนรหัส PIN</string>
+    <string name="pin_setup_hint">รหัสนี้เป็นของแอปนี้โดยเฉพาะ สามารถตั้งให้ต่างจากรหัสปลดล็อกเครื่องได้</string>
+    <string name="hint_current_pin">รหัส PIN ปัจจุบัน</string>
+    <string name="hint_new_pin">รหัส PIN ใหม่ (อย่างน้อย 4 หลัก)</string>
+    <string name="hint_confirm_pin">ยืนยันรหัส PIN ใหม่</string>
+    <string name="save_pin">บันทึก</string>
+    <string name="pin_saved">บันทึกรหัส PIN แล้ว</string>
+
+    <!-- Lock screen -->
+    <string name="enter_pin_to_open">ใส่รหัส PIN เพื่อเปิดแอป</string>
+    <string name="hint_pin">รหัส PIN</string>
+    <string name="unlock">ปลดล็อก</string>
+
+    <!-- Errors / messages -->
+    <string name="error_wrong_pin">รหัส PIN ไม่ถูกต้อง</string>
+    <string name="error_current_pin_wrong">รหัส PIN ปัจจุบันไม่ถูกต้อง</string>
+    <string name="error_pin_too_short">รหัส PIN ต้องมีอย่างน้อย %1$d หลัก</string>
+    <string name="error_pin_mismatch">รหัส PIN ใหม่ทั้งสองช่องไม่ตรงกัน</string>
+    <string name="error_set_pin_first">กรุณาตั้งรหัส PIN ก่อนเปิดการป้องกัน</string>
+    <string name="error_need_usage">ต้องอนุญาตสิทธิ์การเข้าถึงการใช้งานก่อน</string>
+    <string name="error_need_overlay">ต้องอนุญาตให้แสดงทับแอปอื่นก่อน</string>
+
+    <!-- Notification -->
+    <string name="notif_channel_name">บริการป้องกันแอป</string>
+    <string name="notif_channel_desc">แจ้งเตือนว่าการป้องกันแอปกำลังทำงาน</string>
+    <string name="notif_title">App Locker กำลังทำงาน</string>
+    <string name="notif_text">กำลังป้องกันแอปที่คุณเลือกไว้</string>
+</resources>
