@@ -63,4 +63,8 @@
     <string name="notif_channel_desc">Muestra que la protección está activa</string>
     <string name="notif_title">App Locker está activo</string>
     <string name="notif_text">Protegiendo tus apps seleccionadas</string>
+    <string name="perm_usage">Acceso de uso</string>
+    <string name="perm_overlay">Mostrar sobre otras apps</string>
+    <string name="state_granted">Concedido</string>
+    <string name="state_grant">Conceder</string>
 </resources>

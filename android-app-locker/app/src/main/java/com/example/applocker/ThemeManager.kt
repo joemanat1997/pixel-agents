@@ -18,7 +18,13 @@ object ThemeManager {
         Theme("blue", R.style.Theme_AppLocker_Blue, 0xFF4F8CFF.toInt()),
         Theme("violet", R.style.Theme_AppLocker_Violet, 0xFFA78BFA.toInt()),
         Theme("rose", R.style.Theme_AppLocker_Rose, 0xFFFB7185.toInt()),
-        Theme("green", R.style.Theme_AppLocker_Green, 0xFF34C759.toInt())
+        Theme("green", R.style.Theme_AppLocker_Green, 0xFF34C759.toInt()),
+        Theme("red", R.style.Theme_AppLocker_Red, 0xFFF25555.toInt()),
+        Theme("amber", R.style.Theme_AppLocker_Amber, 0xFFF5A623.toInt()),
+        Theme("cyan", R.style.Theme_AppLocker_Cyan, 0xFF22C8E0.toInt()),
+        Theme("indigo", R.style.Theme_AppLocker_Indigo, 0xFF6C72F0.toInt()),
+        Theme("pink", R.style.Theme_AppLocker_Pink, 0xFFEC4899.toInt()),
+        Theme("lime", R.style.Theme_AppLocker_Lime, 0xFF9CCC65.toInt())
     )
 
     @StyleRes

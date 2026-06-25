@@ -63,4 +63,8 @@
     <string name="notif_channel_desc">显示应用保护正在运行</string>
     <string name="notif_title">App Locker 正在运行</string>
     <string name="notif_text">正在保护你所选的应用</string>
+    <string name="perm_usage">使用情况访问权限</string>
+    <string name="perm_overlay">显示在其他应用上层</string>
+    <string name="state_granted">已授予</string>
+    <string name="state_grant">授予</string>
 </resources>

@@ -68,4 +68,8 @@
     <string name="notif_channel_desc">แจ้งเตือนว่าการป้องกันแอปกำลังทำงาน</string>
     <string name="notif_title">App Locker กำลังทำงาน</string>
     <string name="notif_text">กำลังป้องกันแอปที่คุณเลือกไว้</string>
+    <string name="perm_usage">สิทธิ์การใช้งาน</string>
+    <string name="perm_overlay">แสดงทับแอปอื่น</string>
+    <string name="state_granted">อนุญาตแล้ว</string>
+    <string name="state_grant">อนุญาต</string>
 </resources>

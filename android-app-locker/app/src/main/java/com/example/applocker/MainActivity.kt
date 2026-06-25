@@ -17,8 +17,10 @@ import android.provider.Settings
 import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.RadioButton
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
@@ -92,10 +94,10 @@ class MainActivity : AppCompatActivity() {
         binding.setPinButton.setOnClickListener {
             navigateInternally(Intent(this, PinSetupActivity::class.java))
         }
-        binding.usageAccessButton.setOnClickListener {
+        binding.usageRow.setOnClickListener {
             navigateInternally(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         }
-        binding.overlayButton.setOnClickListener { requestOverlayPermission() }
+        binding.overlayRow.setOnClickListener { requestOverlayPermission() }
         binding.testLockButton.setOnClickListener { testLockNow() }
 
         setupBottomNav(savedInstanceState?.getInt(KEY_TAB) ?: R.id.nav_dashboard)
@@ -124,12 +126,15 @@ class MainActivity : AppCompatActivity() {
     private fun setupThemePicker() {
         val row = binding.themeSwatchRow
         row.removeAllViews()
-        val size = dp(36)
-        val gap = dp(8)
+        val size = dp(40)
+        val margin = dp(6)
         ThemeManager.themes.forEach { theme ->
             val swatch = View(this)
-            val lp = LinearLayout.LayoutParams(size, size).apply { marginEnd = gap }
-            swatch.layoutParams = lp
+            swatch.layoutParams = GridLayout.LayoutParams().apply {
+                width = size
+                height = size
+                setMargins(margin, margin, margin, margin)
+            }
             swatch.background = makeSwatch(theme.swatch, theme.key == prefs.themeName)
             swatch.setOnClickListener {
                 if (prefs.themeName != theme.key) {
@@ -139,6 +144,11 @@ class MainActivity : AppCompatActivity() {
             }
             row.addView(swatch)
         }
+    }
+
+    private fun bindPermissionState(label: TextView, granted: Boolean) {
+        label.text = getString(if (granted) R.string.state_granted else R.string.state_grant)
+        label.setTextColor(getColor(if (granted) R.color.success else R.color.text_secondary))
     }
 
     private fun makeSwatch(color: Int, selected: Boolean): GradientDrawable =
@@ -254,14 +264,8 @@ class MainActivity : AppCompatActivity() {
         val usageGranted = hasUsageAccess()
         val overlayGranted = hasOverlayPermission()
 
-        binding.usageAccessButton.isEnabled = !usageGranted
-        binding.usageAccessButton.text = getString(
-            if (usageGranted) R.string.usage_granted else R.string.grant_usage_access
-        )
-        binding.overlayButton.isEnabled = !overlayGranted
-        binding.overlayButton.text = getString(
-            if (overlayGranted) R.string.overlay_granted else R.string.grant_overlay
-        )
+        bindPermissionState(binding.usageStateLabel, usageGranted)
+        bindPermissionState(binding.overlayStateLabel, overlayGranted)
 
         binding.protectionSwitch.setOnCheckedChangeListener(null)
         binding.protectionSwitch.isChecked = prefs.serviceEnabled
@@ -308,7 +312,7 @@ class MainActivity : AppCompatActivity() {
             else -> getString(R.string.status_active, prefs.lockedPackages.size) to true
         }
         binding.statusBanner.text = text
-        binding.statusBanner.setBackgroundColor(
+        binding.statusBanner.backgroundTintList = android.content.res.ColorStateList.valueOf(
             getColor(if (ok) R.color.success else R.color.warning)
         )
         binding.statusBanner.setTextColor(

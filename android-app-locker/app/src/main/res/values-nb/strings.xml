@@ -63,4 +63,8 @@
     <string name="notif_channel_desc">Viser at appbeskyttelse kjører</string>
     <string name="notif_title">App Locker kjører</string>
     <string name="notif_text">Beskytter de valgte appene dine</string>
+    <string name="perm_usage">Tilgang til bruksdata</string>
+    <string name="perm_overlay">Vis over andre apper</string>
+    <string name="state_granted">Gitt</string>
+    <string name="state_grant">Gi tilgang</string>
 </resources>

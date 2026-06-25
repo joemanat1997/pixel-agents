@@ -42,6 +42,42 @@
         <item name="colorSecondary">#34C759</item>
     </style>
 
+    <style name="Theme.AppLocker.Red" parent="Theme.AppLocker">
+        <item name="colorPrimary">#F25555</item>
+        <item name="colorOnPrimary">#3A0A0A</item>
+        <item name="colorSecondary">#F25555</item>
+    </style>
+
+    <style name="Theme.AppLocker.Amber" parent="Theme.AppLocker">
+        <item name="colorPrimary">#F5A623</item>
+        <item name="colorOnPrimary">#2A1A00</item>
+        <item name="colorSecondary">#F5A623</item>
+    </style>
+
+    <style name="Theme.AppLocker.Cyan" parent="Theme.AppLocker">
+        <item name="colorPrimary">#22C8E0</item>
+        <item name="colorOnPrimary">#062A30</item>
+        <item name="colorSecondary">#22C8E0</item>
+    </style>
+
+    <style name="Theme.AppLocker.Indigo" parent="Theme.AppLocker">
+        <item name="colorPrimary">#6C72F0</item>
+        <item name="colorOnPrimary">#0E1040</item>
+        <item name="colorSecondary">#6C72F0</item>
+    </style>
+
+    <style name="Theme.AppLocker.Pink" parent="Theme.AppLocker">
+        <item name="colorPrimary">#EC4899</item>
+        <item name="colorOnPrimary">#3A0A22</item>
+        <item name="colorSecondary">#EC4899</item>
+    </style>
+
+    <style name="Theme.AppLocker.Lime" parent="Theme.AppLocker">
+        <item name="colorPrimary">#9CCC65</item>
+        <item name="colorOnPrimary">#18260A</item>
+        <item name="colorSecondary">#9CCC65</item>
+    </style>
+
     <!-- Lock screen: full-screen, gradient window background -->
     <style name="Theme.AppLocker.Lock" parent="Theme.AppLocker">
         <item name="android:windowBackground">@drawable/bg_lock_gradient</item>

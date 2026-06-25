@@ -78,4 +78,8 @@
     <string name="notif_channel_desc">Shows that app protection is running</string>
     <string name="notif_title">App Locker is running</string>
     <string name="notif_text">Protecting your selected apps</string>
+    <string name="perm_usage">Usage access</string>
+    <string name="perm_overlay">Display over other apps</string>
+    <string name="state_granted">Granted</string>
+    <string name="state_grant">Grant</string>
 </resources>

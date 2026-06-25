@@ -125,12 +125,70 @@
                     android:textSize="26sp"
                     android:textStyle="bold" />
 
+                <!-- Appearance card -->
+                <TextView style="@style/SectionHeader" android:text="@string/theme_title" />
+
+                <LinearLayout style="@style/Card">
+
+                    <GridLayout
+                        android:id="@+id/themeSwatchRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:columnCount="6"
+                        android:padding="14dp" />
+
+                    <View style="@style/CardDivider" />
+
+                    <LinearLayout
+                        android:id="@+id/languageHeader"
+                        style="@style/CardRow">
+
+                        <TextView
+                            style="@style/RowTitle"
+                            android:text="@string/language_title" />
+
+                        <TextView
+                            android:id="@+id/currentLanguageLabel"
+                            style="@style/RowValue"
+                            android:layout_marginEnd="6dp"
+                            tools:text="English" />
+
+                        <ImageView
+                            android:id="@+id/langChevron"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:contentDescription="@string/language_title"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:id="@+id/languageGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="4dp"
+                        android:visibility="gone">
+
+                        <RadioButton android:id="@+id/lang_en" style="@style/LanguageRadio" android:text="@string/lang_english" />
+                        <RadioButton android:id="@+id/lang_th" style="@style/LanguageRadio" android:text="@string/lang_thai" />
+                        <RadioButton android:id="@+id/lang_zh" style="@style/LanguageRadio" android:text="@string/lang_chinese" />
+                        <RadioButton android:id="@+id/lang_ja" style="@style/LanguageRadio" android:text="@string/lang_japanese" />
+                        <RadioButton android:id="@+id/lang_es" style="@style/LanguageRadio" android:text="@string/lang_spanish" />
+                        <RadioButton android:id="@+id/lang_nb" style="@style/LanguageRadio" android:text="@string/lang_norwegian" />
+                    </RadioGroup>
+                </LinearLayout>
+
+                <!-- Security & permissions -->
                 <TextView style="@style/SectionHeader" android:text="@string/sec_test_perms" />
 
                 <TextView
                     android:id="@+id/statusBanner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:background="@drawable/bg_card"
                     android:gravity="center"
                     android:padding="12dp"
                     android:textColor="@color/on_primary"
@@ -138,75 +196,47 @@
                     android:textStyle="bold"
                     tools:text="✅ Protecting 2 apps" />
 
-                <Button
-                    android:id="@+id/testLockButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/test_lock_button" />
+                <LinearLayout style="@style/Card">
 
-                <Button
-                    android:id="@+id/usageAccessButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/grant_usage_access" />
+                    <LinearLayout
+                        android:id="@+id/testLockButton"
+                        style="@style/CardRow">
 
-                <Button
-                    android:id="@+id/overlayButton"
-                    style="@style/Widget.Material3.Button.OutlinedButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/grant_overlay" />
+                        <TextView
+                            style="@style/RowTitle"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold"
+                            android:text="@string/test_lock_button" />
+                    </LinearLayout>
 
-                <TextView style="@style/SectionHeader" android:text="@string/theme_title" />
+                    <View style="@style/CardDivider" />
 
-                <LinearLayout
-                    android:id="@+id/themeSwatchRow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="8dp" />
+                    <LinearLayout
+                        android:id="@+id/usageRow"
+                        style="@style/CardRow">
 
-                <TextView style="@style/SectionHeader" android:text="@string/language_title" />
+                        <TextView style="@style/RowTitle" android:text="@string/perm_usage" />
 
-                <LinearLayout
-                    android:id="@+id/languageHeader"
-                    style="@style/SettingRow"
-                    android:background="?attr/selectableItemBackground"
-                    android:clickable="true"
-                    android:focusable="true">
+                        <TextView
+                            android:id="@+id/usageStateLabel"
+                            style="@style/RowValue"
+                            tools:text="Granted" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/currentLanguageLabel"
-                        style="@style/SettingLabel"
-                        tools:text="English" />
+                    <View style="@style/CardDivider" />
 
-                    <ImageView
-                        android:id="@+id/langChevron"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:contentDescription="@string/language_title"
-                        android:src="@drawable/ic_chevron"
-                        app:tint="@color/text_secondary" />
+                    <LinearLayout
+                        android:id="@+id/overlayRow"
+                        style="@style/CardRow">
+
+                        <TextView style="@style/RowTitle" android:text="@string/perm_overlay" />
+
+                        <TextView
+                            android:id="@+id/overlayStateLabel"
+                            style="@style/RowValue"
+                            tools:text="Grant" />
+                    </LinearLayout>
                 </LinearLayout>
-
-                <RadioGroup
-                    android:id="@+id/languageGroup"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <RadioButton android:id="@+id/lang_en" style="@style/LanguageRadio" android:text="@string/lang_english" />
-                    <RadioButton android:id="@+id/lang_th" style="@style/LanguageRadio" android:text="@string/lang_thai" />
-                    <RadioButton android:id="@+id/lang_zh" style="@style/LanguageRadio" android:text="@string/lang_chinese" />
-                    <RadioButton android:id="@+id/lang_ja" style="@style/LanguageRadio" android:text="@string/lang_japanese" />
-                    <RadioButton android:id="@+id/lang_es" style="@style/LanguageRadio" android:text="@string/lang_spanish" />
-                    <RadioButton android:id="@+id/lang_nb" style="@style/LanguageRadio" android:text="@string/lang_norwegian" />
-                </RadioGroup>
             </LinearLayout>
         </ScrollView>
     </FrameLayout>
