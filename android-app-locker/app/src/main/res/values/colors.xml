@@ -28,4 +28,7 @@
     <color name="success">#34C759</color>
 
     <color name="ic_launcher_background">#FFFFFF</color>
+    <color name="ic_bg_dark">#15171A</color>
+    <color name="ic_bg_teal">#2FB8AC</color>
+    <color name="ic_bg_black">#000000</color>
 </resources>

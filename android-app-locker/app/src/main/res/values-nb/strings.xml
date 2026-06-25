@@ -14,7 +14,7 @@
     <string name="status_off">⚠️ Slå på \"Slå på beskyttelse\"</string>
     <string name="status_ready">✅ Klar — velg apper å låse nedenfor</string>
     <string name="status_active">✅ Beskytter %1$d app(er)</string>
-    <string name="test_lock_button">🔓 Test låsing nå</string>
+    <string name="test_lock_button">Test låsing nå</string>
     <string name="test_lock_title">Test låsing</string>
     <string name="test_lock_subtitle">Skriv inn PIN for å lukke dette skjermbildet</string>
     <string name="test_need_overlay">App Locker har ikke \"Vis over andre apper\" ennå — åpner innstillinger</string>
@@ -68,4 +68,5 @@
     <string name="state_granted">Gitt</string>
     <string name="state_grant">Gi tilgang</string>
     <string name="sec_appearance">Utseende</string>
+    <string name="icon_changed">Appikon endret</string>
 </resources>

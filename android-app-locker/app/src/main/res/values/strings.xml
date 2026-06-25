@@ -17,7 +17,7 @@
     <string name="status_off">⚠️ Turn on the \"Enable protection\" switch</string>
     <string name="status_ready">✅ Ready — choose apps to lock below</string>
     <string name="status_active">✅ Protecting %1$d app(s)</string>
-    <string name="test_lock_button">🔓 Test lock now</string>
+    <string name="test_lock_button">Test lock now</string>
     <string name="test_lock_title">Test lock</string>
     <string name="test_lock_subtitle">Enter PIN to close this screen</string>
     <string name="test_need_overlay">App Locker doesn\'t have \"Display over other apps\" yet — opening settings</string>
@@ -83,4 +83,5 @@
     <string name="state_granted">Granted</string>
     <string name="state_grant">Grant</string>
     <string name="sec_appearance">Appearance</string>
+    <string name="icon_changed">App icon changed</string>
 </resources>

@@ -14,7 +14,7 @@
     <string name="status_off">⚠️ Activa el interruptor \"Activar protección\"</string>
     <string name="status_ready">✅ Listo — elige las apps a bloquear abajo</string>
     <string name="status_active">✅ Protegiendo %1$d app(s)</string>
-    <string name="test_lock_button">🔓 Probar bloqueo ahora</string>
+    <string name="test_lock_button">Probar bloqueo ahora</string>
     <string name="test_lock_title">Probar bloqueo</string>
     <string name="test_lock_subtitle">Ingresa el PIN para cerrar esta pantalla</string>
     <string name="test_need_overlay">App Locker aún no tiene \"Mostrar sobre otras apps\" — abriendo ajustes</string>
@@ -68,4 +68,5 @@
     <string name="state_granted">Concedido</string>
     <string name="state_grant">Conceder</string>
     <string name="sec_appearance">Apariencia</string>
+    <string name="icon_changed">Icono cambiado</string>
 </resources>

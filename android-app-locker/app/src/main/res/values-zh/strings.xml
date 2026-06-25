@@ -14,7 +14,7 @@
     <string name="status_off">⚠️ 请打开\"开启保护\"开关</string>
     <string name="status_ready">✅ 已就绪 — 在下方选择要锁定的应用</string>
     <string name="status_active">✅ 正在保护 %1$d 个应用</string>
-    <string name="test_lock_button">🔓 立即测试锁定</string>
+    <string name="test_lock_button">立即测试锁定</string>
     <string name="test_lock_title">测试锁定</string>
     <string name="test_lock_subtitle">输入 PIN 关闭此界面</string>
     <string name="test_need_overlay">App Locker 尚无\"显示在其他应用上层\"权限 — 正在打开设置</string>
@@ -68,4 +68,5 @@
     <string name="state_granted">已授予</string>
     <string name="state_grant">授予</string>
     <string name="sec_appearance">外观</string>
+    <string name="icon_changed">已更换应用图标</string>
 </resources>

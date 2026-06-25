@@ -263,6 +263,47 @@
                         android:columnCount="6"
                         android:padding="10dp"
                         android:visibility="gone" />
+
+                    <View style="@style/CardDivider" />
+
+                    <LinearLayout
+                        android:id="@+id/iconHeader"
+                        style="@style/CardRow">
+
+                        <TextView
+                            style="@style/RowTitle"
+                            android:text="@string/app_icon_desc" />
+
+                        <ImageView
+                            android:id="@+id/currentIconPreview"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_marginEnd="10dp"
+                            android:contentDescription="@string/app_icon_desc"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <ImageView
+                            android:id="@+id/iconChevron"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:contentDescription="@string/app_icon_desc"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/iconRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="14dp"
+                        android:visibility="gone">
+
+                        <ImageView android:id="@+id/icon_default" style="@style/IconOption" android:contentDescription="@string/app_icon_desc" android:src="@mipmap/ic_launcher" />
+                        <ImageView android:id="@+id/icon_dark" style="@style/IconOption" android:contentDescription="@string/app_icon_desc" android:src="@mipmap/ic_launcher_dark" />
+                        <ImageView android:id="@+id/icon_teal" style="@style/IconOption" android:contentDescription="@string/app_icon_desc" android:src="@mipmap/ic_launcher_teal" />
+                        <ImageView android:id="@+id/icon_black" style="@style/IconOption" android:contentDescription="@string/app_icon_desc" android:src="@mipmap/ic_launcher_black" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

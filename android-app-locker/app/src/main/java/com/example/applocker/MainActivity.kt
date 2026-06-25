@@ -18,6 +18,7 @@ import android.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
@@ -103,6 +104,38 @@ class MainActivity : AppCompatActivity() {
         setupBottomNav(savedInstanceState?.getInt(KEY_TAB) ?: R.id.nav_dashboard)
         setupThemePicker()
         setupLanguagePicker()
+        setupIconPicker()
+    }
+
+    private fun setupIconPicker() {
+        binding.currentIconPreview.setImageResource(AppIconManager.previewFor(prefs.iconKey))
+
+        val options = mapOf(
+            binding.iconDefault to "default",
+            binding.iconDark to "dark",
+            binding.iconTeal to "teal",
+            binding.iconBlack to "black"
+        )
+        options.forEach { (view, key) ->
+            view.setOnClickListener {
+                AppIconManager.apply(this, key)
+                binding.currentIconPreview.setImageResource(AppIconManager.previewFor(key))
+                markSelectedIcon(options, key)
+                Toast.makeText(this, R.string.icon_changed, Toast.LENGTH_SHORT).show()
+            }
+        }
+        markSelectedIcon(options, prefs.iconKey)
+
+        binding.iconHeader.setOnClickListener {
+            val show = binding.iconRow.visibility != View.VISIBLE
+            TransitionManager.beginDelayedTransition(binding.iconRow.parent as ViewGroup)
+            binding.iconRow.visibility = if (show) View.VISIBLE else View.GONE
+            binding.iconChevron.animate().rotation(if (show) 180f else 0f).setDuration(150).start()
+        }
+    }
+
+    private fun markSelectedIcon(options: Map<ImageView, String>, selected: String) {
+        options.forEach { (view, key) -> view.alpha = if (key == selected) 1f else 0.4f }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
