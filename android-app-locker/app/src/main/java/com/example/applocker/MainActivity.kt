@@ -144,6 +144,13 @@ class MainActivity : AppCompatActivity() {
             }
             row.addView(swatch)
         }
+
+        binding.themeHeader.setOnClickListener {
+            val show = binding.themeSwatchRow.visibility != View.VISIBLE
+            TransitionManager.beginDelayedTransition(binding.themeSwatchRow.parent as ViewGroup)
+            binding.themeSwatchRow.visibility = if (show) View.VISIBLE else View.GONE
+            binding.themeChevron.animate().rotation(if (show) 180f else 0f).setDuration(150).start()
+        }
     }
 
     private fun bindPermissionState(label: TextView, granted: Boolean) {

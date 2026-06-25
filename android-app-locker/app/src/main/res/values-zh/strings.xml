@@ -67,4 +67,5 @@
     <string name="perm_overlay">显示在其他应用上层</string>
     <string name="state_granted">已授予</string>
     <string name="state_grant">授予</string>
+    <string name="sec_appearance">外观</string>
 </resources>

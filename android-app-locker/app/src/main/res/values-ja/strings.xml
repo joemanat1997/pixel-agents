@@ -67,4 +67,5 @@
     <string name="perm_overlay">他のアプリの上に表示</string>
     <string name="state_granted">許可済み</string>
     <string name="state_grant">許可</string>
+    <string name="sec_appearance">外観</string>
 </resources>

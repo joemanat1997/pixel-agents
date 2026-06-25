@@ -67,4 +67,5 @@
     <string name="perm_overlay">Vis over andre apper</string>
     <string name="state_granted">Gitt</string>
     <string name="state_grant">Gi tilgang</string>
+    <string name="sec_appearance">Utseende</string>
 </resources>

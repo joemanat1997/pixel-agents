@@ -72,4 +72,5 @@
     <string name="perm_overlay">แสดงทับแอปอื่น</string>
     <string name="state_granted">อนุญาตแล้ว</string>
     <string name="state_grant">อนุญาต</string>
+    <string name="sec_appearance">การแสดงผล</string>
 </resources>
