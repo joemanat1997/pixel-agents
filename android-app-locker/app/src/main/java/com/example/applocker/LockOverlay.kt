@@ -24,6 +24,7 @@ class LockOverlay(context: Context) {
         appContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private val prefs = SecurePrefs.get(appContext)
 
+    @Volatile
     private var view: View? = null
     private var currentKey: String? = null
 

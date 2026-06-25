@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private var leavingForInternalNav = false
 
     private val previewOverlay by lazy { LockOverlay(this) }
+    private var appsLoaded = false
 
     private val authLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         isAuthenticating = false
@@ -104,7 +105,11 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         leavingForInternalNav = false
         refreshState()
-        loadInstalledApps()
+        // Loading every installed app's icon is heavy; do it once per launch.
+        if (!appsLoaded) {
+            appsLoaded = true
+            loadInstalledApps()
+        }
     }
 
     override fun onStop() {

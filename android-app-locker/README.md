@@ -65,8 +65,10 @@ echo "sdk.dir=/path/to/Android/Sdk" > local.properties
 
 ## ข้อจำกัด / หมายเหตุ
 
-- วิธี UsageStats จะ poll ทุก ~500ms อาจมีดีเลย์เสี้ยววินาทีก่อนหน้า PIN เด้ง
-  (ถ้าต้องการเร็ว/เนียนกว่านี้ใช้ AccessibilityService ได้ แต่ขอสิทธิ์ยากกว่า)
+- วิธี UsageStats จะ poll ทุก ~700ms (บน background thread) อาจมีดีเลย์
+  เสี้ยววินาทีก่อนหน้า PIN เด้ง — การ poll จะ**หยุดเองเมื่อจอดับ**และเมื่อ
+  ไม่มีแอปถูกล็อก เพื่อประหยัดแบต (ถ้าต้องการเร็ว/เนียนกว่านี้ใช้
+  AccessibilityService ได้ แต่ขอสิทธิ์ยากกว่า)
 - บน Android 13+ ระบบขอสิทธิ์แจ้งเตือน (POST_NOTIFICATIONS) — ถ้าไม่ให้
   ตัวบริการยังทำงานได้ แค่ไม่โชว์ notification
 - iOS ทำฟีเจอร์แบบนี้ไม่ได้สำหรับนักพัฒนาทั่วไป (ต้องใช้ Screen Time API

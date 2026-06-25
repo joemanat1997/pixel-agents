@@ -12,38 +12,55 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Handler
+import android.os.HandlerThread
 import android.os.IBinder
 import android.os.Looper
 import androidx.core.app.NotificationCompat
 
 /**
- * Foreground service that polls the current foreground app. When a locked app
- * comes to the front and has not been unlocked this session, it launches the
- * PIN lock screen on top of it.
+ * Foreground service that watches the current foreground app and, when a locked
+ * app comes to the front, shows the PIN overlay on top of it.
+ *
+ * To stay light on resources the foreground polling runs on a dedicated
+ * background thread (never the UI thread), pauses entirely while the screen is
+ * off, and short-circuits when nothing is locked.
  */
 class AppLockService : Service() {
 
     private lateinit var prefs: SecurePrefs
     private lateinit var usageStats: UsageStatsManager
     private lateinit var lockOverlay: LockOverlay
-    private val handler = Handler(Looper.getMainLooper())
 
+    private lateinit var pollThread: HandlerThread
+    private lateinit var pollHandler: Handler
+    private val mainHandler = Handler(Looper.getMainLooper())
+
+    @Volatile
+    private var polling = false
     private var lastForegroundPackage: String = ""
+
+    // Reused on the poll thread only, to avoid per-tick allocations.
+    private val reusableEvent = UsageEvents.Event()
 
     private val screenReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            // Re-lock everything when the screen turns off.
-            if (intent?.action == Intent.ACTION_SCREEN_OFF) {
-                SessionState.relockAll()
-                lockOverlay.remove()
+            when (intent?.action) {
+                Intent.ACTION_SCREEN_OFF -> {
+                    // Stop scanning and re-lock everything while the screen is off.
+                    stopPolling()
+                    SessionState.relockAll()
+                    mainHandler.post { lockOverlay.remove() }
+                }
+                Intent.ACTION_SCREEN_ON, Intent.ACTION_USER_PRESENT -> startPolling()
             }
         }
     }
 
     private val pollRunnable = object : Runnable {
         override fun run() {
+            if (!polling) return
             checkForeground()
-            handler.postDelayed(this, POLL_INTERVAL_MS)
+            if (polling) pollHandler.postDelayed(this, POLL_INTERVAL_MS)
         }
     }
 
@@ -52,27 +69,47 @@ class AppLockService : Service() {
         prefs = SecurePrefs.get(this)
         usageStats = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         lockOverlay = LockOverlay(this)
-        registerReceiver(screenReceiver, IntentFilter(Intent.ACTION_SCREEN_OFF))
+
+        pollThread = HandlerThread("AppLockPoll").apply { start() }
+        pollHandler = Handler(pollThread.looper)
+
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_SCREEN_OFF)
+            addAction(Intent.ACTION_SCREEN_ON)
+            addAction(Intent.ACTION_USER_PRESENT)
+        }
+        registerReceiver(screenReceiver, filter)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startForeground(NOTIFICATION_ID, buildNotification())
-        handler.removeCallbacks(pollRunnable)
-        handler.post(pollRunnable)
+        startPolling()
         return START_STICKY
     }
 
+    private fun startPolling() {
+        if (polling) return
+        polling = true
+        pollHandler.removeCallbacks(pollRunnable)
+        pollHandler.post(pollRunnable)
+    }
+
+    private fun stopPolling() {
+        polling = false
+        pollHandler.removeCallbacks(pollRunnable)
+    }
+
+    /** Runs on the poll thread. */
     private fun checkForeground() {
         if (!prefs.serviceEnabled || !prefs.isPinSet) return
 
-        val current = queryForegroundPackage() ?: return
-        if (current.isEmpty()) return
+        // Nothing to guard — skip the (relatively expensive) usage query entirely.
+        val lockedPackages = prefs.lockedPackages
+        if (lockedPackages.isEmpty()) return
 
-        // Our own app must never lock itself. The overlay window does not change
-        // the foreground package, so ignore our package whether or not the lock
-        // overlay is currently up.
-        if (current == packageName) {
-            lastForegroundPackage = current
+        val current = queryForegroundPackage() ?: return
+        if (current.isEmpty() || current == packageName) {
+            if (current == packageName) lastForegroundPackage = current
             return
         }
 
@@ -85,25 +122,29 @@ class AppLockService : Service() {
             lastForegroundPackage = current
         }
 
-        val locked = prefs.lockedPackages.contains(current)
-        if (locked && !SessionState.isUnlocked(current) && !lockOverlay.isShowing()) {
-            lockOverlay.show(current)
+        if (current in lockedPackages &&
+            !SessionState.isUnlocked(current) &&
+            !SessionState.lockPromptShowing
+        ) {
+            // Guard immediately so the next poll tick won't post a second show
+            // before the main thread has put the overlay up.
+            SessionState.lockPromptShowing = true
+            mainHandler.post { lockOverlay.show(current) }
         }
     }
 
-    /** Returns the package most recently moved to the foreground. */
+    /** Returns the package most recently moved to the foreground (poll thread). */
     private fun queryForegroundPackage(): String? {
         val end = System.currentTimeMillis()
         val begin = end - QUERY_WINDOW_MS
         val events = usageStats.queryEvents(begin, end)
         var pkg: String? = null
-        val event = UsageEvents.Event()
         while (events.hasNextEvent()) {
-            events.getNextEvent(event)
-            if (event.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND ||
-                event.eventType == UsageEvents.Event.ACTIVITY_RESUMED
+            events.getNextEvent(reusableEvent)
+            if (reusableEvent.eventType == UsageEvents.Event.MOVE_TO_FOREGROUND ||
+                reusableEvent.eventType == UsageEvents.Event.ACTIVITY_RESUMED
             ) {
-                pkg = event.packageName
+                pkg = reusableEvent.packageName
             }
         }
         return pkg
@@ -139,7 +180,8 @@ class AppLockService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(pollRunnable)
+        stopPolling()
+        pollThread.quitSafely()
         lockOverlay.remove()
         runCatching { unregisterReceiver(screenReceiver) }
     }
@@ -147,7 +189,7 @@ class AppLockService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     companion object {
-        private const val POLL_INTERVAL_MS = 500L
+        private const val POLL_INTERVAL_MS = 700L
         private const val QUERY_WINDOW_MS = 2_000L
         private const val CHANNEL_ID = "app_lock_service"
         private const val NOTIFICATION_ID = 1001
