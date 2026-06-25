@@ -4,12 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.PixelFormat
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
-import android.view.ContextThemeWrapper
 import android.widget.ImageView
 import androidx.core.view.isVisible
 
@@ -101,7 +102,7 @@ class LockOverlay(context: Context) {
         val biometricOk = prefs.biometricEnabled && BiometricAuth.isAvailable(appContext)
         val fingerprintButton = root.findViewById<ImageView>(R.id.fingerprintButton)
         fingerprintButton.isVisible = biometricOk
-        fingerprintButton.setOnClickListener { promptBiometric(title.toString(), onCorrect) }
+        fingerprintButton.setOnClickListener { promptBiometric(key, title.toString()) }
 
         root.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
@@ -118,25 +119,22 @@ class LockOverlay(context: Context) {
         if (added) {
             root.requestFocus()
             view = root
-            if (biometricOk) promptBiometric(title.toString(), onCorrect)
+            active = this
+            if (biometricOk) promptBiometric(key, title.toString())
         } else {
             currentKey = null
             SessionState.lockPromptShowing = false
         }
     }
 
-    private fun promptBiometric(title: String, onCorrect: () -> Unit) {
-        BiometricAuth.authenticate(
-            context = appContext,
-            title = title,
-            subtitle = appContext.getString(R.string.biometric_subtitle),
-            negativeText = appContext.getString(R.string.use_pin_instead),
-            onSuccess = {
-                prefs.resetFailedAttempts()
-                onCorrect()
-            },
-            onCancel = { /* fall back to the PIN keypad */ }
-        )
+    /** Launches the transparent activity that hosts the system fingerprint prompt. */
+    private fun promptBiometric(pkg: String, title: String) {
+        val intent = Intent(appContext, BiometricActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra(BiometricActivity.EXTRA_PACKAGE, pkg)
+            putExtra(BiometricActivity.EXTRA_TITLE, title)
+        }
+        runCatching { appContext.startActivity(intent) }
     }
 
     private fun lockoutMessage(): String {
@@ -148,6 +146,7 @@ class LockOverlay(context: Context) {
         view?.let { runCatching { windowManager.removeView(it) } }
         view = null
         currentKey = null
+        if (active === this) active = null
         SessionState.lockPromptShowing = false
     }
 
@@ -187,5 +186,14 @@ class LockOverlay(context: Context) {
 
     companion object {
         private const val PREVIEW_KEY = "__preview__"
+
+        @Volatile
+        private var active: LockOverlay? = null
+
+        /** Dismisses the currently-shown lock overlay (called after a fingerprint unlock). */
+        fun dismissActive() {
+            val overlay = active ?: return
+            Handler(Looper.getMainLooper()).post { overlay.remove() }
+        }
     }
 }
