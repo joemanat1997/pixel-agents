@@ -27,5 +27,16 @@
             android:id="@+id/keypad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/fingerprintButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="18dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/biometric_title"
+            android:src="@drawable/ic_fingerprint"
+            android:visibility="gone"
+            app:tint="@color/primary" />
     </LinearLayout>
 </FrameLayout>

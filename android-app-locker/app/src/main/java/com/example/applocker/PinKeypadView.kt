@@ -2,17 +2,21 @@ package com.example.applocker
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.isVisible
 
 /**
  * iOS-style passcode keypad: a fixed row of progress dots plus a circular 0-9
  * keypad with a backspace key. The PIN has a fixed length ([pinLength]); once
- * the final digit is entered it is reported through [onSubmit] automatically,
- * so no separate confirm key is needed.
+ * the final digit is entered it is reported through [onSubmit] automatically.
+ *
+ * When [shuffleEnabled] is on, the digit positions are randomised every time the
+ * keypad is (re)shown, to defeat shoulder-surfing and screen smudges.
  */
 class PinKeypadView @JvmOverloads constructor(
     context: Context,
@@ -22,30 +26,48 @@ class PinKeypadView @JvmOverloads constructor(
 
     private val entered = StringBuilder()
 
-    /** Fixed number of digits in the PIN. */
     var pinLength: Int = DEFAULT_PIN_LENGTH
         set(value) {
             field = value
             reset()
         }
 
+    var shuffleEnabled: Boolean = false
+        set(value) {
+            field = value
+            applyKeypad()
+        }
+
     var onSubmit: ((String) -> Unit)? = null
 
-    private val titleView by lazy { findViewById<android.widget.TextView>(R.id.keypadTitle) }
-    private val subtitleView by lazy { findViewById<android.widget.TextView>(R.id.keypadSubtitle) }
+    private val titleView by lazy { findViewById<TextView>(R.id.keypadTitle) }
+    private val subtitleView by lazy { findViewById<TextView>(R.id.keypadSubtitle) }
     private val dotsContainer by lazy { findViewById<LinearLayout>(R.id.dotsContainer) }
-    private val errorView by lazy { findViewById<android.widget.TextView>(R.id.keypadError) }
+    private val errorView by lazy { findViewById<TextView>(R.id.keypadError) }
 
     private val dotSize = dp(16)
     private val dotGap = dp(11)
 
+    // Visual top-to-bottom order of the ten number keys.
+    private val keyPositions = intArrayOf(
+        R.id.key1, R.id.key2, R.id.key3,
+        R.id.key4, R.id.key5, R.id.key6,
+        R.id.key7, R.id.key8, R.id.key9,
+        R.id.key0
+    )
+    private val defaultLetters = mapOf(
+        2 to "ABC", 3 to "DEF", 4 to "GHI", 5 to "JKL",
+        6 to "MNO", 7 to "PQRS", 8 to "TUV", 9 to "WXYZ"
+    )
+
     init {
         orientation = VERTICAL
-        gravity = android.view.Gravity.CENTER_HORIZONTAL
+        gravity = Gravity.CENTER_HORIZONTAL
         LayoutInflater.from(context).inflate(R.layout.view_pin_keypad, this, true)
-        wireKeys()
+        findViewById<View>(R.id.keyBackspace).setOnClickListener { backspace() }
         // Fixed-length PIN auto-submits, so the confirm key is unnecessary.
         findViewById<View>(R.id.keyEnter).visibility = View.INVISIBLE
+        applyKeypad()
         refreshDots()
     }
 
@@ -67,22 +89,33 @@ class PinKeypadView @JvmOverloads constructor(
         errorView.text = ""
     }
 
-    /** Clears the entered digits without touching the title/subtitle. */
+    /** Clears the entered digits (and re-shuffles the keypad when shuffling is on). */
     fun reset() {
         entered.setLength(0)
+        if (shuffleEnabled) applyKeypad()
         refreshDots()
     }
 
-    private fun wireKeys() {
-        val digits = mapOf(
-            R.id.key0 to '0', R.id.key1 to '1', R.id.key2 to '2', R.id.key3 to '3',
-            R.id.key4 to '4', R.id.key5 to '5', R.id.key6 to '6', R.id.key7 to '7',
-            R.id.key8 to '8', R.id.key9 to '9'
-        )
-        for ((id, digit) in digits) {
-            findViewById<View>(id).setOnClickListener { append(digit) }
+    /** Binds each physical key to a digit, shuffling the assignment when enabled. */
+    private fun applyKeypad() {
+        val digits = if (shuffleEnabled) (0..9).shuffled() else listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 0)
+        keyPositions.forEachIndexed { index, keyId ->
+            bindKey(keyId, digits[index])
         }
-        findViewById<View>(R.id.keyBackspace).setOnClickListener { backspace() }
+    }
+
+    private fun bindKey(keyId: Int, digit: Int) {
+        val key = findViewById<LinearLayout>(keyId)
+        val numberView = key.getChildAt(0) as TextView
+        val lettersView = key.getChildAt(1) as TextView
+        numberView.text = digit.toString()
+        if (shuffleEnabled) {
+            lettersView.visibility = View.GONE
+        } else {
+            lettersView.visibility = View.VISIBLE
+            lettersView.text = defaultLetters[digit] ?: " "
+        }
+        key.setOnClickListener { append('0' + digit) }
     }
 
     private fun append(digit: Char) {

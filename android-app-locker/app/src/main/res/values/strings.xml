@@ -5,6 +5,12 @@
     <!-- Main screen -->
     <string name="protection_enabled">เปิดการป้องกัน</string>
     <string name="lock_this_app">ล็อกการเข้าแอปนี้ด้วย PIN</string>
+    <string name="pref_biometric">ปลดล็อกด้วยลายนิ้วมือ</string>
+    <string name="pref_shuffle">สุ่มตำแหน่งแป้นตัวเลข</string>
+    <string name="biometric_unavailable">เครื่องนี้ไม่รองรับ/ยังไม่ได้ตั้งลายนิ้วมือ</string>
+    <string name="biometric_title">ปลดล็อกด้วยลายนิ้วมือ</string>
+    <string name="biometric_subtitle">แตะเซ็นเซอร์ลายนิ้วมือ</string>
+    <string name="use_pin_instead">ใช้ PIN แทน</string>
     <string name="status_no_pin">⚠️ ยังไม่ได้ตั้งรหัส PIN</string>
     <string name="status_need_usage">⚠️ ต้องกด \"อนุญาตสิทธิ์การเข้าถึงการใช้งาน\"</string>
     <string name="status_need_overlay">⚠️ ต้องกด \"อนุญาตให้แสดงทับแอปอื่น\"</string>

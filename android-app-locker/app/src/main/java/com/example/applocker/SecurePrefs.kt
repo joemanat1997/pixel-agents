@@ -35,6 +35,16 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         get() = prefs.getBoolean(KEY_SELF_LOCK, true)
         set(value) = prefs.edit().putBoolean(KEY_SELF_LOCK, value).apply()
 
+    /** Allow unlocking with a fingerprint in addition to the PIN. On by default. */
+    var biometricEnabled: Boolean
+        get() = prefs.getBoolean(KEY_BIOMETRIC, true)
+        set(value) = prefs.edit().putBoolean(KEY_BIOMETRIC, value).apply()
+
+    /** Shuffle the number positions on the keypad each time it is shown. */
+    var shuffleKeypad: Boolean
+        get() = prefs.getBoolean(KEY_SHUFFLE, false)
+        set(value) = prefs.edit().putBoolean(KEY_SHUFFLE, value).apply()
+
     /** Stores a brand-new PIN (used for first setup and for changing the PIN). */
     fun setPin(pin: String) {
         val salt = PinHasher.newSalt()
@@ -61,6 +71,8 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         private const val KEY_LOCKED = "locked_packages"
         private const val KEY_ENABLED = "service_enabled"
         private const val KEY_SELF_LOCK = "app_self_lock"
+        private const val KEY_BIOMETRIC = "biometric_enabled"
+        private const val KEY_SHUFFLE = "shuffle_keypad"
 
         @Volatile
         private var instance: SecurePrefs? = null

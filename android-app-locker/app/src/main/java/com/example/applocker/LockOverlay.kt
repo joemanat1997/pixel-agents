@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.view.ContextThemeWrapper
+import android.widget.ImageView
+import androidx.core.view.isVisible
 
 /**
  * Draws the PIN lock screen directly as a system overlay window (using the
@@ -76,6 +78,7 @@ class LockOverlay(context: Context) {
         val root = LayoutInflater.from(themed).inflate(R.layout.view_lock_overlay, null)
         val keypad = root.findViewById<PinKeypadView>(R.id.keypad)
 
+        keypad.shuffleEnabled = prefs.shuffleKeypad
         keypad.setTitle(title)
         keypad.setSubtitle(subtitle)
         keypad.onSubmit = { pin ->
@@ -85,6 +88,11 @@ class LockOverlay(context: Context) {
                 keypad.showError(appContext.getString(R.string.error_wrong_pin))
             }
         }
+
+        val biometricOk = prefs.biometricEnabled && BiometricAuth.isAvailable(appContext)
+        val fingerprintButton = root.findViewById<ImageView>(R.id.fingerprintButton)
+        fingerprintButton.isVisible = biometricOk
+        fingerprintButton.setOnClickListener { promptBiometric(title.toString(), onCorrect) }
 
         root.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
@@ -101,10 +109,22 @@ class LockOverlay(context: Context) {
         if (added) {
             root.requestFocus()
             view = root
+            if (biometricOk) promptBiometric(title.toString(), onCorrect)
         } else {
             currentKey = null
             SessionState.lockPromptShowing = false
         }
+    }
+
+    private fun promptBiometric(title: String, onCorrect: () -> Unit) {
+        BiometricAuth.authenticate(
+            context = appContext,
+            title = title,
+            subtitle = appContext.getString(R.string.biometric_subtitle),
+            negativeText = appContext.getString(R.string.use_pin_instead),
+            onSuccess = { onCorrect() },
+            onCancel = { /* fall back to the PIN keypad */ }
+        )
     }
 
     fun remove() {

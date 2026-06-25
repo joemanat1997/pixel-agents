@@ -67,6 +67,19 @@ class MainActivity : AppCompatActivity() {
             onSelfLockToggled(isChecked)
         }
 
+        binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked && !BiometricAuth.isAvailable(this)) {
+                Toast.makeText(this, R.string.biometric_unavailable, Toast.LENGTH_LONG).show()
+                binding.biometricSwitch.isChecked = false
+                return@setOnCheckedChangeListener
+            }
+            prefs.biometricEnabled = isChecked
+        }
+
+        binding.shuffleSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefs.shuffleKeypad = isChecked
+        }
+
         binding.setPinButton.setOnClickListener {
             navigateInternally(Intent(this, PinSetupActivity::class.java))
         }
@@ -172,6 +185,25 @@ class MainActivity : AppCompatActivity() {
         binding.selfLockSwitch.isChecked = pinSet && prefs.appSelfLock
         binding.selfLockSwitch.setOnCheckedChangeListener { _, isChecked ->
             onSelfLockToggled(isChecked)
+        }
+
+        val biometricAvailable = BiometricAuth.isAvailable(this)
+        binding.biometricSwitch.setOnCheckedChangeListener(null)
+        binding.biometricSwitch.isEnabled = biometricAvailable
+        binding.biometricSwitch.isChecked = biometricAvailable && prefs.biometricEnabled
+        binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked && !BiometricAuth.isAvailable(this)) {
+                Toast.makeText(this, R.string.biometric_unavailable, Toast.LENGTH_LONG).show()
+                binding.biometricSwitch.isChecked = false
+                return@setOnCheckedChangeListener
+            }
+            prefs.biometricEnabled = isChecked
+        }
+
+        binding.shuffleSwitch.setOnCheckedChangeListener(null)
+        binding.shuffleSwitch.isChecked = prefs.shuffleKeypad
+        binding.shuffleSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefs.shuffleKeypad = isChecked
         }
 
         updateStatusBanner()

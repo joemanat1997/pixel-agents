@@ -13,6 +13,9 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <!-- Restart the service after reboot -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Fingerprint / biometric unlock -->
+    <uses-permission android:name="android.permission.USE_BIOMETRIC" />
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
     <!-- List installed apps (Android 11+) -->
     <uses-permission
         android:name="android.permission.QUERY_ALL_PACKAGES"
