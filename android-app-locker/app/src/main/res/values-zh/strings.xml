@@ -29,6 +29,7 @@
     <string name="app_icon_desc">应用图标</string>
     <string name="settings_title">设置</string>
     <string name="settings_button_desc">设置</string>
+    <string name="theme_title">主题</string>
     <string name="language_title">语言</string>
     <string name="nav_dashboard">仪表板</string>
     <string name="nav_app_list">应用列表</string>
@@ -49,6 +50,7 @@
     <string name="enter_pin_to_open">输入 PIN 以打开</string>
     <string name="enter_pin_to_enter_app">输入 PIN 进入应用</string>
 
+        <string name="error_locked_out">尝试次数过多，请等待 %1$d 秒</string>
     <string name="error_wrong_pin">PIN 错误</string>
     <string name="error_current_pin_wrong">当前 PIN 不正确</string>
     <string name="error_pin_too_short">PIN 至少需 %1$d 位</string>

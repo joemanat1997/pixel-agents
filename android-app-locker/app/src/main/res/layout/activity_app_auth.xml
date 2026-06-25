@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_lock_gradient"
     android:gravity="center"
     android:orientation="vertical"
     android:padding="24dp">
@@ -13,7 +14,7 @@
         android:layout_marginBottom="20dp"
         android:contentDescription="@string/app_icon_desc"
         android:src="@drawable/ic_lock"
-        app:tint="@color/primary" />
+        app:tint="?attr/colorPrimary" />
 
     <com.example.applocker.PinKeypadView
         android:id="@+id/keypad"
@@ -29,5 +30,5 @@
         android:contentDescription="@string/biometric_title"
         android:src="@drawable/ic_fingerprint"
         android:visibility="gone"
-        app:tint="@color/primary" />
+        app:tint="?attr/colorPrimary" />
 </LinearLayout>

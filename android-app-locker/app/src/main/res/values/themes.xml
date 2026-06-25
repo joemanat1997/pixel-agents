@@ -1,18 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.AppLocker" parent="Theme.Material3.DayNight">
+    <style name="Theme.AppLocker" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/on_primary</item>
         <item name="colorSecondary">@color/primary</item>
         <item name="android:colorBackground">@color/background</item>
         <item name="android:statusBarColor">@color/background</item>
-        <item name="android:navigationBarColor">@color/background</item>
+        <item name="android:navigationBarColor">@color/surface</item>
     </style>
 
-    <!-- Lock screen: full-screen, no action bar -->
+    <!-- Accent themes -->
+    <style name="Theme.AppLocker.Teal" parent="Theme.AppLocker" />
+
+    <style name="Theme.AppLocker.Orange" parent="Theme.AppLocker">
+        <item name="colorPrimary">#FF7A1A</item>
+        <item name="colorOnPrimary">#1A0E00</item>
+        <item name="colorSecondary">#FF7A1A</item>
+    </style>
+
+    <style name="Theme.AppLocker.Blue" parent="Theme.AppLocker">
+        <item name="colorPrimary">#4F8CFF</item>
+        <item name="colorOnPrimary">#06183A</item>
+        <item name="colorSecondary">#4F8CFF</item>
+    </style>
+
+    <style name="Theme.AppLocker.Violet" parent="Theme.AppLocker">
+        <item name="colorPrimary">#A78BFA</item>
+        <item name="colorOnPrimary">#1E1633</item>
+        <item name="colorSecondary">#A78BFA</item>
+    </style>
+
+    <style name="Theme.AppLocker.Rose" parent="Theme.AppLocker">
+        <item name="colorPrimary">#FB7185</item>
+        <item name="colorOnPrimary">#3A0A14</item>
+        <item name="colorSecondary">#FB7185</item>
+    </style>
+
+    <style name="Theme.AppLocker.Green" parent="Theme.AppLocker">
+        <item name="colorPrimary">#34C759</item>
+        <item name="colorOnPrimary">#06310F</item>
+        <item name="colorSecondary">#34C759</item>
+    </style>
+
+    <!-- Lock screen: full-screen, gradient window background -->
     <style name="Theme.AppLocker.Lock" parent="Theme.AppLocker">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowActionBar">false</item>
         <item name="android:windowBackground">@drawable/bg_lock_gradient</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>

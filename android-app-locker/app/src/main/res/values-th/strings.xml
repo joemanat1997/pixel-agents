@@ -30,6 +30,7 @@
     <string name="app_icon_desc">ไอคอนแอป</string>
     <string name="settings_title">ตั้งค่า</string>
     <string name="settings_button_desc">ตั้งค่า</string>
+    <string name="theme_title">ธีม</string>
     <string name="language_title">ภาษา</string>
     <string name="nav_dashboard">แดชบอร์ด</string>
     <string name="nav_app_list">รายชื่อแอป</string>
@@ -53,6 +54,7 @@
     <string name="enter_pin_to_enter_app">ใส่รหัส PIN เพื่อเข้าแอป</string>
 
     <!-- Errors / messages -->
+        <string name="error_locked_out">ใส่ผิดหลายครั้ง รอ %1$d วินาที</string>
     <string name="error_wrong_pin">รหัส PIN ไม่ถูกต้อง</string>
     <string name="error_current_pin_wrong">รหัส PIN ปัจจุบันไม่ถูกต้อง</string>
     <string name="error_pin_too_short">รหัส PIN ต้องมีอย่างน้อย %1$d หลัก</string>

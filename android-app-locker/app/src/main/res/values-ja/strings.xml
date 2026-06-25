@@ -29,6 +29,7 @@
     <string name="app_icon_desc">アプリアイコン</string>
     <string name="settings_title">設定</string>
     <string name="settings_button_desc">設定</string>
+    <string name="theme_title">テーマ</string>
     <string name="language_title">言語</string>
     <string name="nav_dashboard">ダッシュボード</string>
     <string name="nav_app_list">アプリ一覧</string>
@@ -49,6 +50,7 @@
     <string name="enter_pin_to_open">PINを入力して開く</string>
     <string name="enter_pin_to_enter_app">PINを入力してアプリを開く</string>
 
+        <string name="error_locked_out">試行回数が多すぎます。%1$d秒待ってください</string>
     <string name="error_wrong_pin">PINが違います</string>
     <string name="error_current_pin_wrong">現在のPINが正しくありません</string>
     <string name="error_pin_too_short">PINは最低%1$d桁必要です</string>

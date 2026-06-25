@@ -29,6 +29,7 @@
     <string name="app_icon_desc">Appikon</string>
     <string name="settings_title">Innstillinger</string>
     <string name="settings_button_desc">Innstillinger</string>
+    <string name="theme_title">Tema</string>
     <string name="language_title">Språk</string>
     <string name="nav_dashboard">Oversikt</string>
     <string name="nav_app_list">Appliste</string>
@@ -49,6 +50,7 @@
     <string name="enter_pin_to_open">Skriv inn PIN for å åpne</string>
     <string name="enter_pin_to_enter_app">Skriv inn PIN for å åpne appen</string>
 
+        <string name="error_locked_out">For mange forsøk. Vent %1$ds</string>
     <string name="error_wrong_pin">Feil PIN</string>
     <string name="error_current_pin_wrong">Nåværende PIN er feil</string>
     <string name="error_pin_too_short">PIN må ha minst %1$d sifre</string>

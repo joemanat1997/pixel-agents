@@ -74,7 +74,7 @@ class LockOverlay(context: Context) {
         currentKey = key
         SessionState.lockPromptShowing = true
 
-        val themed = ContextThemeWrapper(appContext, R.style.Theme_AppLocker_Lock)
+        val themed = ThemeManager.themedContext(appContext, prefs.themeName)
         val root = LayoutInflater.from(themed).inflate(R.layout.view_lock_overlay, null)
         val keypad = root.findViewById<PinKeypadView>(R.id.keypad)
 
@@ -82,10 +82,19 @@ class LockOverlay(context: Context) {
         keypad.setTitle(title)
         keypad.setSubtitle(subtitle)
         keypad.onSubmit = { pin ->
-            if (prefs.verifyPin(pin)) {
-                onCorrect()
-            } else {
-                keypad.showError(appContext.getString(R.string.error_wrong_pin))
+            when {
+                prefs.isLockedOut() -> keypad.showError(lockoutMessage())
+                prefs.verifyPin(pin) -> {
+                    prefs.resetFailedAttempts()
+                    onCorrect()
+                }
+                else -> {
+                    prefs.recordFailedAttempt()
+                    keypad.showError(
+                        if (prefs.isLockedOut()) lockoutMessage()
+                        else appContext.getString(R.string.error_wrong_pin)
+                    )
+                }
             }
         }
 
@@ -122,9 +131,17 @@ class LockOverlay(context: Context) {
             title = title,
             subtitle = appContext.getString(R.string.biometric_subtitle),
             negativeText = appContext.getString(R.string.use_pin_instead),
-            onSuccess = { onCorrect() },
+            onSuccess = {
+                prefs.resetFailedAttempts()
+                onCorrect()
+            },
             onCancel = { /* fall back to the PIN keypad */ }
         )
+    }
+
+    private fun lockoutMessage(): String {
+        val seconds = ((prefs.lockoutRemainingMs() + 999) / 1000).toInt()
+        return appContext.getString(R.string.error_locked_out, seconds)
     }
 
     fun remove() {
@@ -147,7 +164,8 @@ class LockOverlay(context: Context) {
             type,
             WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
+                WindowManager.LayoutParams.FLAG_SECURE,
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START

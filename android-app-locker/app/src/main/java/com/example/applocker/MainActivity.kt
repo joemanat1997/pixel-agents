@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,6 +14,11 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Process
 import android.provider.Settings
+import android.transition.TransitionManager
+import android.view.View
+import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
@@ -49,10 +56,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefs = SecurePrefs.get(this)
+        setTheme(ThemeManager.styleFor(prefs.themeName))
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        prefs = SecurePrefs.get(this)
 
         adapter = AppListAdapter(mutableListOf()) { app, locked ->
             prefs.setLocked(app.packageName, locked)
@@ -91,36 +98,85 @@ class MainActivity : AppCompatActivity() {
         binding.overlayButton.setOnClickListener { requestOverlayPermission() }
         binding.testLockButton.setOnClickListener { testLockNow() }
 
-        setupBottomNav()
+        setupBottomNav(savedInstanceState?.getInt(KEY_TAB) ?: R.id.nav_dashboard)
+        setupThemePicker()
         setupLanguagePicker()
     }
 
-    private fun setupBottomNav() {
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_TAB, binding.bottomNav.selectedItemId)
+    }
+
+    private fun setupBottomNav(initialTab: Int) {
         binding.bottomNav.setOnItemSelectedListener { item ->
             binding.dashboardPage.visibility =
-                if (item.itemId == R.id.nav_dashboard) android.view.View.VISIBLE else android.view.View.GONE
+                if (item.itemId == R.id.nav_dashboard) View.VISIBLE else View.GONE
             binding.appListPage.visibility =
-                if (item.itemId == R.id.nav_apps) android.view.View.VISIBLE else android.view.View.GONE
+                if (item.itemId == R.id.nav_apps) View.VISIBLE else View.GONE
             binding.settingsPage.visibility =
-                if (item.itemId == R.id.nav_settings) android.view.View.VISIBLE else android.view.View.GONE
+                if (item.itemId == R.id.nav_settings) View.VISIBLE else View.GONE
             true
         }
-        binding.bottomNav.selectedItemId = R.id.nav_dashboard
+        binding.bottomNav.selectedItemId = initialTab
     }
+
+    private fun setupThemePicker() {
+        val row = binding.themeSwatchRow
+        row.removeAllViews()
+        val size = dp(36)
+        val gap = dp(8)
+        ThemeManager.themes.forEach { theme ->
+            val swatch = View(this)
+            val lp = LinearLayout.LayoutParams(size, size).apply { marginEnd = gap }
+            swatch.layoutParams = lp
+            swatch.background = makeSwatch(theme.swatch, theme.key == prefs.themeName)
+            swatch.setOnClickListener {
+                if (prefs.themeName != theme.key) {
+                    prefs.themeName = theme.key
+                    recreate()
+                }
+            }
+            row.addView(swatch)
+        }
+    }
+
+    private fun makeSwatch(color: Int, selected: Boolean): GradientDrawable =
+        GradientDrawable().apply {
+            shape = GradientDrawable.OVAL
+            setColor(color)
+            if (selected) setStroke(dp(3), Color.WHITE)
+        }
 
     private fun setupLanguagePicker() {
         val current = AppCompatDelegate.getApplicationLocales().toLanguageTags()
         val checkedId = LANG_ID_BY_TAG.entries.firstOrNull { current.startsWith(it.key) }?.value
             ?: R.id.lang_en
         binding.languageGroup.check(checkedId)
+        updateCurrentLanguageLabel(checkedId)
+
+        binding.languageHeader.setOnClickListener {
+            val show = binding.languageGroup.visibility != View.VISIBLE
+            TransitionManager.beginDelayedTransition(binding.languageGroup.parent as ViewGroup)
+            binding.languageGroup.visibility = if (show) View.VISIBLE else View.GONE
+            binding.langChevron.animate().rotation(if (show) 180f else 0f).setDuration(150).start()
+        }
 
         binding.languageGroup.setOnCheckedChangeListener { _, id ->
+            updateCurrentLanguageLabel(id)
             val tag = LANG_TAG_BY_ID[id] ?: return@setOnCheckedChangeListener
             val now = AppCompatDelegate.getApplicationLocales().toLanguageTags()
             if (now.startsWith(tag)) return@setOnCheckedChangeListener
             AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
         }
     }
+
+    private fun updateCurrentLanguageLabel(checkedId: Int) {
+        binding.currentLanguageLabel.text =
+            findViewById<RadioButton>(checkedId)?.text ?: getString(R.string.lang_english)
+    }
+
+    private fun dp(value: Int): Int = (value * resources.displayMetrics.density).toInt()
 
     /**
      * One-tap diagnostic: if the overlay permission is missing it says so and
@@ -354,6 +410,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
+        private const val KEY_TAB = "selected_tab"
         private val LANG_ID_BY_TAG = linkedMapOf(
             "th" to R.id.lang_th,
             "zh" to R.id.lang_zh,

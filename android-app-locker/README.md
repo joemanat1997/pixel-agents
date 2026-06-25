@@ -20,8 +20,13 @@
   เมื่อหน้าล็อกขึ้น, กดปุ่มลายนิ้วมือเพื่อถามซ้ำได้, ใช้ PIN เป็น fallback)
 - **สุ่มตำแหน่งแป้นตัวเลข** — สลับตำแหน่งเลข 0-9 ทุกครั้งที่หน้า PIN ขึ้น
   กันคนแอบดู/กันรอยนิ้วบนจอ (เปิด/ปิดได้)
-- **เปลี่ยนภาษาได้ 6 ภาษา** (ปุ่มเฟือง ⚙️ มุมขวาบน → ภาษา): อังกฤษ, ไทย, จีน,
-  ญี่ปุ่น, สเปน, นอร์เวย์ — ใช้ AppCompat per-app locales (จำค่าให้อัตโนมัติ)
+- **เปลี่ยนภาษาได้ 6 ภาษา** (แท็บ Settings → Language แบบสไลด์ลง/ย่อได้):
+  อังกฤษ, ไทย, จีน, ญี่ปุ่น, สเปน, นอร์เวย์ — ใช้ AppCompat per-app locales
+- **เปลี่ยนธีมสีได้** (แท็บ Settings → Theme): teal, ส้ม, น้ำเงิน, ม่วง, ชมพู, เขียว
+- **UI มินิมอล + bottom navigation 3 แท็บ** (Dashboard / App List / Settings)
+- **ความปลอดภัยสูง**: หน้าใส่ PIN ทุกหน้าตั้ง `FLAG_SECURE` (กันแคปจอ/อัดจอ/
+  ภาพใน recents), ใส่ PIN ผิดเกิน 5 ครั้งจะล็อกชั่วคราว 30 วินาที (กัน brute-force),
+  รหัสเก็บแบบแฮช PBKDF2 ใน EncryptedSharedPreferences
 - รหัส PIN ถูกเก็บแบบ **แฮช (PBKDF2-HMAC-SHA256 + salt)** ใน
   EncryptedSharedPreferences — ไม่เก็บรหัสจริง
 - บริการทำงานเบื้องหลัง (foreground service) และ **เริ่มทำงานเองหลังรีบูต**
@@ -68,6 +73,14 @@ echo "sdk.dir=/path/to/Android/Sdk" > local.properties
 
 - `compileSdk` / `targetSdk`: 34
 - `minSdk`: 26 (Android 8.0)
+
+### APK ขนาดเล็ก (release)
+debug APK จะใหญ่ ถ้าต้องการไฟล์เล็กที่สุดให้ build แบบ **release** (เปิด R8
+minify + shrinkResources + จำกัดภาษา ทำให้เล็กลงมาก และเซ็นด้วย debug key
+ให้แล้ว ติดตั้งได้เลย):
+
+1. Android Studio → เมนู **Build ▸ Select Build Variant…** → เลือก **release**
+2. **Build ▸ Build APK(s)** → ได้ `app/build/outputs/apk/release/app-release.apk`
 
 ## ข้อจำกัด / หมายเหตุ
 

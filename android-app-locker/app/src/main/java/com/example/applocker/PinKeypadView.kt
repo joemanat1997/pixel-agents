@@ -1,6 +1,7 @@
 package com.example.applocker
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -47,6 +48,7 @@ class PinKeypadView @JvmOverloads constructor(
 
     private val dotSize = dp(16)
     private val dotGap = dp(11)
+    private val accentTint by lazy { ColorStateList.valueOf(ThemeManager.accentColor(context)) }
 
     // Visual top-to-bottom order of the ten number keys.
     private val keyPositions = intArrayOf(
@@ -143,7 +145,12 @@ class PinKeypadView @JvmOverloads constructor(
             val lp = LayoutParams(dotSize, dotSize)
             lp.marginStart = if (i == 0) 0 else dotGap
             dot.layoutParams = lp
-            dot.setImageResource(if (i < entered.length) R.drawable.dot_filled else R.drawable.dot_empty)
+            if (i < entered.length) {
+                dot.setImageResource(R.drawable.dot_filled)
+                dot.imageTintList = accentTint
+            } else {
+                dot.setImageResource(R.drawable.dot_empty)
+            }
             dotsContainer.addView(dot)
         }
     }

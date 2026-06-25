@@ -2,6 +2,7 @@ package com.example.applocker
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
@@ -19,10 +20,15 @@ class AppAuthActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefs = SecurePrefs.get(this)
+        setTheme(ThemeManager.styleFor(prefs.themeName))
+        // Block screenshots / screen recording / recents preview of the lock screen.
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_SECURE,
+            WindowManager.LayoutParams.FLAG_SECURE
+        )
         binding = ActivityAppAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        prefs = SecurePrefs.get(this)
 
         binding.keypad.apply {
             shuffleEnabled = prefs.shuffleKeypad
@@ -51,6 +57,7 @@ class AppAuthActivity : AppCompatActivity() {
             subtitle = getString(R.string.biometric_subtitle),
             negativeText = getString(R.string.use_pin_instead),
             onSuccess = {
+                prefs.resetFailedAttempts()
                 SessionState.appUnlocked = true
                 setResult(RESULT_OK)
                 finish()
@@ -60,12 +67,26 @@ class AppAuthActivity : AppCompatActivity() {
     }
 
     private fun attempt(pin: String) {
-        if (prefs.verifyPin(pin)) {
-            SessionState.appUnlocked = true
-            setResult(RESULT_OK)
-            finish()
-        } else {
-            binding.keypad.showError(getString(R.string.error_wrong_pin))
+        when {
+            prefs.isLockedOut() -> binding.keypad.showError(lockoutMessage())
+            prefs.verifyPin(pin) -> {
+                prefs.resetFailedAttempts()
+                SessionState.appUnlocked = true
+                setResult(RESULT_OK)
+                finish()
+            }
+            else -> {
+                prefs.recordFailedAttempt()
+                binding.keypad.showError(
+                    if (prefs.isLockedOut()) lockoutMessage()
+                    else getString(R.string.error_wrong_pin)
+                )
+            }
         }
+    }
+
+    private fun lockoutMessage(): String {
+        val seconds = ((prefs.lockoutRemainingMs() + 999) / 1000).toInt()
+        return getString(R.string.error_locked_out, seconds)
     }
 }

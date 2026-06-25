@@ -22,10 +22,15 @@ class PinSetupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        prefs = SecurePrefs.get(this)
+        setTheme(ThemeManager.styleFor(prefs.themeName))
+        window.setFlags(
+            android.view.WindowManager.LayoutParams.FLAG_SECURE,
+            android.view.WindowManager.LayoutParams.FLAG_SECURE
+        )
         binding = ActivityPinSetupBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        prefs = SecurePrefs.get(this)
         changing = prefs.isPinSet
 
         binding.keypad.pinLength = PIN_LENGTH

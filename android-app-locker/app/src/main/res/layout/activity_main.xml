@@ -161,13 +161,44 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/grant_overlay" />
 
+                <TextView style="@style/SectionHeader" android:text="@string/theme_title" />
+
+                <LinearLayout
+                    android:id="@+id/themeSwatchRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingVertical="8dp" />
+
                 <TextView style="@style/SectionHeader" android:text="@string/language_title" />
+
+                <LinearLayout
+                    android:id="@+id/languageHeader"
+                    style="@style/SettingRow"
+                    android:background="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:id="@+id/currentLanguageLabel"
+                        style="@style/SettingLabel"
+                        tools:text="English" />
+
+                    <ImageView
+                        android:id="@+id/langChevron"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:contentDescription="@string/language_title"
+                        android:src="@drawable/ic_chevron"
+                        app:tint="@color/text_secondary" />
+                </LinearLayout>
 
                 <RadioGroup
                     android:id="@+id/languageGroup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <RadioButton android:id="@+id/lang_en" style="@style/LanguageRadio" android:text="@string/lang_english" />
                     <RadioButton android:id="@+id/lang_th" style="@style/LanguageRadio" android:text="@string/lang_thai" />

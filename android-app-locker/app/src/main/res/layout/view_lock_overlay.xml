@@ -21,7 +21,7 @@
             android:layout_marginBottom="20dp"
             android:contentDescription="@string/app_icon_desc"
             android:src="@drawable/ic_lock"
-            app:tint="@color/primary" />
+            app:tint="?attr/colorPrimary" />
 
         <com.example.applocker.PinKeypadView
             android:id="@+id/keypad"
@@ -37,6 +37,6 @@
             android:contentDescription="@string/biometric_title"
             android:src="@drawable/ic_fingerprint"
             android:visibility="gone"
-            app:tint="@color/primary" />
+            app:tint="?attr/colorPrimary" />
     </LinearLayout>
 </FrameLayout>

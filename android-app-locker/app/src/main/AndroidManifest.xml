@@ -45,11 +45,6 @@
             android:exported="false"
             android:label="@string/title_pin_setup" />
 
-        <activity
-            android:name=".SettingsActivity"
-            android:exported="false"
-            android:label="@string/settings_title" />
-
         <!-- Persists the per-app language selection on Android 12 and below -->
         <service
             android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"

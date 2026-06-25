@@ -45,6 +45,11 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         get() = prefs.getBoolean(KEY_SHUFFLE, false)
         set(value) = prefs.edit().putBoolean(KEY_SHUFFLE, value).apply()
 
+    /** Selected accent theme key (see ThemeManager). */
+    var themeName: String
+        get() = prefs.getString(KEY_THEME, ThemeManager.DEFAULT) ?: ThemeManager.DEFAULT
+        set(value) = prefs.edit().putString(KEY_THEME, value).apply()
+
     /** Stores a brand-new PIN (used for first setup and for changing the PIN). */
     fun setPin(pin: String) {
         val salt = PinHasher.newSalt()
@@ -56,6 +61,33 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         val hash = pinHash ?: return false
         val salt = pinSalt ?: return false
         return PinHasher.verify(pin, salt, hash)
+    }
+
+    // --- Brute-force lockout ---
+
+    /** Milliseconds remaining in the current lockout, or 0 if not locked out. */
+    fun lockoutRemainingMs(): Long {
+        val until = prefs.getLong(KEY_LOCKOUT_UNTIL, 0L)
+        return (until - System.currentTimeMillis()).coerceAtLeast(0L)
+    }
+
+    fun isLockedOut(): Boolean = lockoutRemainingMs() > 0L
+
+    /** Records a wrong PIN; triggers a timed lockout once the threshold is hit. */
+    fun recordFailedAttempt() {
+        val attempts = prefs.getInt(KEY_FAILED, 0) + 1
+        if (attempts >= MAX_ATTEMPTS) {
+            prefs.edit()
+                .putInt(KEY_FAILED, 0)
+                .putLong(KEY_LOCKOUT_UNTIL, System.currentTimeMillis() + LOCKOUT_MS)
+                .apply()
+        } else {
+            prefs.edit().putInt(KEY_FAILED, attempts).apply()
+        }
+    }
+
+    fun resetFailedAttempts() {
+        prefs.edit().putInt(KEY_FAILED, 0).putLong(KEY_LOCKOUT_UNTIL, 0L).apply()
     }
 
     fun setLocked(pkg: String, locked: Boolean) {
@@ -73,6 +105,11 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         private const val KEY_SELF_LOCK = "app_self_lock"
         private const val KEY_BIOMETRIC = "biometric_enabled"
         private const val KEY_SHUFFLE = "shuffle_keypad"
+        private const val KEY_THEME = "accent_theme"
+        private const val KEY_FAILED = "failed_attempts"
+        private const val KEY_LOCKOUT_UNTIL = "lockout_until"
+        private const val MAX_ATTEMPTS = 5
+        private const val LOCKOUT_MS = 30_000L
 
         @Volatile
         private var instance: SecurePrefs? = null

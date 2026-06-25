@@ -32,6 +32,7 @@
     <string name="app_icon_desc">App icon</string>
     <string name="settings_title">Settings</string>
     <string name="settings_button_desc">Settings</string>
+    <string name="theme_title">Theme</string>
     <string name="language_title">Language</string>
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_app_list">App List</string>
@@ -63,6 +64,7 @@
     <string name="enter_pin_to_enter_app">Enter PIN to open the app</string>
 
     <!-- Errors / messages -->
+        <string name="error_locked_out">Too many attempts. Wait %1$ds</string>
     <string name="error_wrong_pin">Wrong PIN</string>
     <string name="error_current_pin_wrong">Current PIN is incorrect</string>
     <string name="error_pin_too_short">PIN must be at least %1$d digits</string>
