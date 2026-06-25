@@ -105,6 +105,39 @@ class MainActivity : AppCompatActivity() {
         setupThemePicker()
         setupLanguagePicker()
         setupIconPicker()
+        setupNightMode()
+    }
+
+    private fun setupNightMode() {
+        val idByMode = mapOf(
+            AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM to R.id.night_system,
+            AppCompatDelegate.MODE_NIGHT_NO to R.id.night_light,
+            AppCompatDelegate.MODE_NIGHT_YES to R.id.night_dark
+        )
+        val modeById = idByMode.entries.associate { (mode, id) -> id to mode }
+        val checkedId = idByMode[prefs.nightMode] ?: R.id.night_system
+        binding.nightGroup.check(checkedId)
+        updateNightLabel(checkedId)
+
+        binding.nightHeader.setOnClickListener {
+            val show = binding.nightGroup.visibility != View.VISIBLE
+            TransitionManager.beginDelayedTransition(binding.nightGroup.parent as ViewGroup)
+            binding.nightGroup.visibility = if (show) View.VISIBLE else View.GONE
+            binding.nightChevron.animate().rotation(if (show) 180f else 0f).setDuration(150).start()
+        }
+
+        binding.nightGroup.setOnCheckedChangeListener { _, id ->
+            updateNightLabel(id)
+            val mode = modeById[id] ?: return@setOnCheckedChangeListener
+            if (mode != prefs.nightMode) {
+                prefs.nightMode = mode
+                AppCompatDelegate.setDefaultNightMode(mode)
+            }
+        }
+    }
+
+    private fun updateNightLabel(id: Int) {
+        binding.currentNightLabel.text = findViewById<RadioButton>(id)?.text
     }
 
     private fun setupIconPicker() {

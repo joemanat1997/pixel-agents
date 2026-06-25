@@ -69,4 +69,8 @@
     <string name="state_grant">授予</string>
     <string name="sec_appearance">外观</string>
     <string name="icon_changed">已更换应用图标</string>
+    <string name="night_mode_title">夜间模式</string>
+    <string name="mode_system">跟随系统</string>
+    <string name="mode_light">浅色</string>
+    <string name="mode_dark">深色</string>
 </resources>

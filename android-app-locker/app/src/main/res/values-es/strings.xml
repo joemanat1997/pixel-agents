@@ -69,4 +69,8 @@
     <string name="state_grant">Conceder</string>
     <string name="sec_appearance">Apariencia</string>
     <string name="icon_changed">Icono cambiado</string>
+    <string name="night_mode_title">Modo noche</string>
+    <string name="mode_system">Según el sistema</string>
+    <string name="mode_light">Claro</string>
+    <string name="mode_dark">Oscuro</string>
 </resources>

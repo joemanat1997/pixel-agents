@@ -69,4 +69,8 @@
     <string name="state_grant">Gi tilgang</string>
     <string name="sec_appearance">Utseende</string>
     <string name="icon_changed">Appikon endret</string>
+    <string name="night_mode_title">Nattmodus</string>
+    <string name="mode_system">Følg systemet</string>
+    <string name="mode_light">Lys</string>
+    <string name="mode_dark">Mørk</string>
 </resources>

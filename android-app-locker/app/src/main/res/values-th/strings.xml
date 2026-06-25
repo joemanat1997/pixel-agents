@@ -74,4 +74,8 @@
     <string name="state_grant">อนุญาต</string>
     <string name="sec_appearance">การแสดงผล</string>
     <string name="icon_changed">เปลี่ยนไอคอนแล้ว</string>
+    <string name="night_mode_title">โหมดกลางคืน</string>
+    <string name="mode_system">ตามระบบ</string>
+    <string name="mode_light">สว่าง</string>
+    <string name="mode_dark">มืด</string>
 </resources>

@@ -69,4 +69,8 @@
     <string name="state_grant">許可</string>
     <string name="sec_appearance">外観</string>
     <string name="icon_changed">アプリアイコンを変更しました</string>
+    <string name="night_mode_title">ダークモード</string>
+    <string name="mode_system">システムに従う</string>
+    <string name="mode_light">ライト</string>
+    <string name="mode_dark">ダーク</string>
 </resources>

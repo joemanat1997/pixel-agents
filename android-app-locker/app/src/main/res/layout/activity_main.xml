@@ -189,6 +189,45 @@
                 <LinearLayout style="@style/Card">
 
                     <LinearLayout
+                        android:id="@+id/nightHeader"
+                        style="@style/CardRow">
+
+                        <TextView
+                            style="@style/RowTitle"
+                            android:text="@string/night_mode_title" />
+
+                        <TextView
+                            android:id="@+id/currentNightLabel"
+                            style="@style/RowValue"
+                            android:layout_marginEnd="6dp"
+                            tools:text="System default" />
+
+                        <ImageView
+                            android:id="@+id/nightChevron"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:contentDescription="@string/night_mode_title"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:id="@+id/nightGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="4dp"
+                        android:visibility="gone">
+
+                        <RadioButton android:id="@+id/night_system" style="@style/LanguageRadio" android:text="@string/mode_system" />
+                        <RadioButton android:id="@+id/night_light" style="@style/LanguageRadio" android:text="@string/mode_light" />
+                        <RadioButton android:id="@+id/night_dark" style="@style/LanguageRadio" android:text="@string/mode_dark" />
+                    </RadioGroup>
+
+                    <View style="@style/CardDivider" />
+
+                    <LinearLayout
                         android:id="@+id/languageHeader"
                         style="@style/CardRow">
 

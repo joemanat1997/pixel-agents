@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dark theme overrides -->
+    <color name="background">#111214</color>
+    <color name="surface">#1B1C1F</color>
+    <color name="lock_background">#111214</color>
+    <color name="divider">#2A2C30</color>
+    <color name="text_primary">#FFFFFF</color>
+    <color name="text_secondary">#8B8D93</color>
+    <color name="error">#FF6B6B</color>
+
+    <color name="key_fill">#14FFFFFF</color>
+    <color name="key_ripple">#33FFFFFF</color>
+    <color name="dot_empty">#40FFFFFF</color>
+
+    <color name="glow_top">#1B1C1F</color>
+    <color name="glow_bottom">#0B0C0D</color>
+
+    <color name="warning">#FFB020</color>
+    <color name="success">#34C759</color>
+</resources>

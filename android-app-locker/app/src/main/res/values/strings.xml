@@ -84,4 +84,8 @@
     <string name="state_grant">Grant</string>
     <string name="sec_appearance">Appearance</string>
     <string name="icon_changed">App icon changed</string>
+    <string name="night_mode_title">Night mode</string>
+    <string name="mode_system">System default</string>
+    <string name="mode_light">Light</string>
+    <string name="mode_dark">Dark</string>
 </resources>

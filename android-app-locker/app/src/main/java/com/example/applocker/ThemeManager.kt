@@ -1,8 +1,10 @@
 package com.example.applocker
 
 import android.content.Context
+import android.content.res.Configuration
 import android.view.ContextThemeWrapper
 import androidx.annotation.StyleRes
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.color.MaterialColors
 
 /** Accent themes the user can choose from in Settings. */
@@ -34,9 +36,21 @@ object ThemeManager {
     fun swatchFor(key: String): Int =
         (themes.firstOrNull { it.key == key } ?: themes.first()).swatch
 
-    /** A context carrying the user's selected accent theme (for the overlay window). */
-    fun themedContext(context: Context, key: String): Context =
-        ContextThemeWrapper(context, styleFor(key))
+    /**
+     * A context carrying the user's selected accent theme AND night mode, so a
+     * non-activity surface (the overlay window) matches the rest of the app.
+     */
+    fun themedContext(context: Context, key: String, nightMode: Int): Context {
+        val config = Configuration(context.resources.configuration)
+        val nightFlag = when (nightMode) {
+            AppCompatDelegate.MODE_NIGHT_YES -> Configuration.UI_MODE_NIGHT_YES
+            AppCompatDelegate.MODE_NIGHT_NO -> Configuration.UI_MODE_NIGHT_NO
+            else -> config.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        }
+        config.uiMode = (config.uiMode and Configuration.UI_MODE_NIGHT_MASK.inv()) or nightFlag
+        val configContext = context.createConfigurationContext(config)
+        return ContextThemeWrapper(configContext, styleFor(key))
+    }
 
     /** Resolves the current accent color from a (themed) context. */
     fun accentColor(context: Context): Int =

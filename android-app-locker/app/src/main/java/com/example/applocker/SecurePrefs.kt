@@ -55,6 +55,11 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         get() = prefs.getString(KEY_ICON, AppIconManager.DEFAULT) ?: AppIconManager.DEFAULT
         set(value) = prefs.edit().putString(KEY_ICON, value).apply()
 
+    /** Night mode: one of AppCompatDelegate.MODE_NIGHT_* (default: follow system). */
+    var nightMode: Int
+        get() = prefs.getInt(KEY_NIGHT, androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        set(value) = prefs.edit().putInt(KEY_NIGHT, value).apply()
+
     /** Stores a brand-new PIN (used for first setup and for changing the PIN). */
     fun setPin(pin: String) {
         val salt = PinHasher.newSalt()
@@ -112,6 +117,7 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         private const val KEY_SHUFFLE = "shuffle_keypad"
         private const val KEY_THEME = "accent_theme"
         private const val KEY_ICON = "launcher_icon"
+        private const val KEY_NIGHT = "night_mode"
         private const val KEY_FAILED = "failed_attempts"
         private const val KEY_LOCKOUT_UNTIL = "lockout_until"
         private const val MAX_ATTEMPTS = 5

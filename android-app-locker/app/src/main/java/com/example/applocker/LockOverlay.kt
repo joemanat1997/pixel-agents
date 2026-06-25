@@ -75,7 +75,7 @@ class LockOverlay(context: Context) {
         currentKey = key
         SessionState.lockPromptShowing = true
 
-        val themed = ThemeManager.themedContext(appContext, prefs.themeName)
+        val themed = ThemeManager.themedContext(appContext, prefs.themeName, prefs.nightMode)
         val root = LayoutInflater.from(themed).inflate(R.layout.view_lock_overlay, null)
         val keypad = root.findViewById<PinKeypadView>(R.id.keypad)
 
