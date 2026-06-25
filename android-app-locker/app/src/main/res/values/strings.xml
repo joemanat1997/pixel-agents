@@ -33,6 +33,11 @@
     <string name="settings_title">Settings</string>
     <string name="settings_button_desc">Settings</string>
     <string name="language_title">Language</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_app_list">App List</string>
+    <string name="sec_security">Security settings</string>
+    <string name="sec_test_perms">Test &amp; permissions</string>
+    <string name="check_permissions">Check permissions</string>
 
     <!-- Language names (shown in their own language in every locale) -->
     <string name="lang_english">English</string>

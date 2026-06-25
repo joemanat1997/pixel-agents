@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Orange / black theme -->
-    <color name="background">#0E0D0B</color>
-    <color name="surface">#1A1714</color>
-    <color name="lock_background">#070605</color>
+    <!-- Minimal dark theme with a teal accent (matches the app icon) -->
+    <color name="background">#111214</color>
+    <color name="surface">#1B1C1F</color>
+    <color name="lock_background">#111214</color>
+    <color name="divider">#2A2C30</color>
     <color name="text_primary">#FFFFFF</color>
-    <color name="text_secondary">#B9AFA4</color>
-    <color name="error">#FF5C5C</color>
+    <color name="text_secondary">#8B8D93</color>
+    <color name="error">#FF6B6B</color>
 
-    <color name="primary">#FF7A1A</color>
-    <color name="primary_dark">#E85D00</color>
-    <color name="on_primary">#1A0E00</color>
-    <color name="warning">#FF7A1A</color>
-    <color name="success">#2E7D32</color>
+    <color name="primary">#2FB8AC</color>
+    <color name="primary_dark">#248B82</color>
+    <color name="on_primary">#06302C</color>
 
-    <!-- Keypad -->
-    <color name="key_fill">#26FF7A1A</color>
-    <color name="key_ripple">#66FF7A1A</color>
-    <color name="dot_empty">#4DFF7A1A</color>
-    <color name="dot_filled">#FF7A1A</color>
+    <!-- Keypad (subtle monochrome keys) -->
+    <color name="key_fill">#14FFFFFF</color>
+    <color name="key_ripple">#33FFFFFF</color>
+    <color name="dot_empty">#40FFFFFF</color>
+    <color name="dot_filled">#2FB8AC</color>
 
-    <!-- Lock-screen gradient stops -->
-    <color name="glow_top">#3A1C00</color>
-    <color name="glow_bottom">#070605</color>
+    <!-- Lock-screen gradient stops (neutral, subtle) -->
+    <color name="glow_top">#1B1C1F</color>
+    <color name="glow_bottom">#0B0C0D</color>
+
+    <!-- Status banner -->
+    <color name="warning">#FFB020</color>
+    <color name="success">#34C759</color>
 
     <color name="ic_launcher_background">#FFFFFF</color>
 </resources>

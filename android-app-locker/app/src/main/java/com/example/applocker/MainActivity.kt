@@ -15,6 +15,8 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.LocaleListCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.applocker.databinding.ActivityMainBinding
 import java.util.concurrent.Executors
@@ -88,8 +90,35 @@ class MainActivity : AppCompatActivity() {
         }
         binding.overlayButton.setOnClickListener { requestOverlayPermission() }
         binding.testLockButton.setOnClickListener { testLockNow() }
-        binding.settingsButton.setOnClickListener {
-            navigateInternally(Intent(this, SettingsActivity::class.java))
+
+        setupBottomNav()
+        setupLanguagePicker()
+    }
+
+    private fun setupBottomNav() {
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            binding.dashboardPage.visibility =
+                if (item.itemId == R.id.nav_dashboard) android.view.View.VISIBLE else android.view.View.GONE
+            binding.appListPage.visibility =
+                if (item.itemId == R.id.nav_apps) android.view.View.VISIBLE else android.view.View.GONE
+            binding.settingsPage.visibility =
+                if (item.itemId == R.id.nav_settings) android.view.View.VISIBLE else android.view.View.GONE
+            true
+        }
+        binding.bottomNav.selectedItemId = R.id.nav_dashboard
+    }
+
+    private fun setupLanguagePicker() {
+        val current = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+        val checkedId = LANG_ID_BY_TAG.entries.firstOrNull { current.startsWith(it.key) }?.value
+            ?: R.id.lang_en
+        binding.languageGroup.check(checkedId)
+
+        binding.languageGroup.setOnCheckedChangeListener { _, id ->
+            val tag = LANG_TAG_BY_ID[id] ?: return@setOnCheckedChangeListener
+            val now = AppCompatDelegate.getApplicationLocales().toLanguageTags()
+            if (now.startsWith(tag)) return@setOnCheckedChangeListener
+            AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(tag))
         }
     }
 
@@ -322,5 +351,17 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         ioExecutor.shutdown()
+    }
+
+    companion object {
+        private val LANG_ID_BY_TAG = linkedMapOf(
+            "th" to R.id.lang_th,
+            "zh" to R.id.lang_zh,
+            "ja" to R.id.lang_ja,
+            "es" to R.id.lang_es,
+            "nb" to R.id.lang_nb,
+            "en" to R.id.lang_en
+        )
+        private val LANG_TAG_BY_ID = LANG_ID_BY_TAG.entries.associate { (tag, id) -> id to tag }
     }
 }

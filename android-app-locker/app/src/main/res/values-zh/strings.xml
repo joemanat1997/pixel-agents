@@ -30,6 +30,11 @@
     <string name="settings_title">设置</string>
     <string name="settings_button_desc">设置</string>
     <string name="language_title">语言</string>
+    <string name="nav_dashboard">仪表板</string>
+    <string name="nav_app_list">应用列表</string>
+    <string name="sec_security">安全设置</string>
+    <string name="sec_test_perms">测试与权限</string>
+    <string name="check_permissions">检查权限</string>
 
     <string name="title_pin_setup">设置 PIN</string>
     <string name="title_set_pin">设置 PIN</string>

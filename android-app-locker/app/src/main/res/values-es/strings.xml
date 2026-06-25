@@ -30,6 +30,11 @@
     <string name="settings_title">Ajustes</string>
     <string name="settings_button_desc">Ajustes</string>
     <string name="language_title">Idioma</string>
+    <string name="nav_dashboard">Panel</string>
+    <string name="nav_app_list">Lista de apps</string>
+    <string name="sec_security">Ajustes de seguridad</string>
+    <string name="sec_test_perms">Prueba y permisos</string>
+    <string name="check_permissions">Comprobar permisos</string>
 
     <string name="title_pin_setup">Configurar PIN</string>
     <string name="title_set_pin">Configurar PIN</string>

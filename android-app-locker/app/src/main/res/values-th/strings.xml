@@ -31,6 +31,11 @@
     <string name="settings_title">ตั้งค่า</string>
     <string name="settings_button_desc">ตั้งค่า</string>
     <string name="language_title">ภาษา</string>
+    <string name="nav_dashboard">แดชบอร์ด</string>
+    <string name="nav_app_list">รายชื่อแอป</string>
+    <string name="sec_security">การตั้งค่าความปลอดภัย</string>
+    <string name="sec_test_perms">ทดสอบและสิทธิ์</string>
+    <string name="check_permissions">ตรวจสอบสิทธิ์</string>
 
     <!-- PIN setup -->
     <string name="title_pin_setup">ตั้งรหัส PIN</string>

@@ -30,6 +30,11 @@
     <string name="settings_title">Innstillinger</string>
     <string name="settings_button_desc">Innstillinger</string>
     <string name="language_title">Språk</string>
+    <string name="nav_dashboard">Oversikt</string>
+    <string name="nav_app_list">Appliste</string>
+    <string name="sec_security">Sikkerhetsinnstillinger</string>
+    <string name="sec_test_perms">Test og tillatelser</string>
+    <string name="check_permissions">Sjekk tillatelser</string>
 
     <string name="title_pin_setup">Angi PIN</string>
     <string name="title_set_pin">Angi PIN</string>

@@ -30,6 +30,11 @@
     <string name="settings_title">設定</string>
     <string name="settings_button_desc">設定</string>
     <string name="language_title">言語</string>
+    <string name="nav_dashboard">ダッシュボード</string>
+    <string name="nav_app_list">アプリ一覧</string>
+    <string name="sec_security">セキュリティ設定</string>
+    <string name="sec_test_perms">テストと権限</string>
+    <string name="check_permissions">権限を確認</string>
 
     <string name="title_pin_setup">PINを設定</string>
     <string name="title_set_pin">PINを設定</string>
