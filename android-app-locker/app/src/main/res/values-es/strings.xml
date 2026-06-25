@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="protection_enabled">Activar protección</string>
+    <string name="lock_this_app">Bloquear esta app con un PIN</string>
+    <string name="pref_biometric">Desbloquear con huella</string>
+    <string name="pref_shuffle">Mezclar números del teclado</string>
+    <string name="biometric_unavailable">Este dispositivo no tiene huella configurada</string>
+    <string name="biometric_title">Desbloquear con huella</string>
+    <string name="biometric_subtitle">Toca el sensor de huella</string>
+    <string name="use_pin_instead">Usar PIN</string>
+    <string name="status_no_pin">⚠️ Aún no hay PIN configurado</string>
+    <string name="status_need_usage">⚠️ Concede \"Acceso de uso\"</string>
+    <string name="status_need_overlay">⚠️ Concede \"Mostrar sobre otras apps\"</string>
+    <string name="status_off">⚠️ Activa el interruptor \"Activar protección\"</string>
+    <string name="status_ready">✅ Listo — elige las apps a bloquear abajo</string>
+    <string name="status_active">✅ Protegiendo %1$d app(s)</string>
+    <string name="test_lock_button">🔓 Probar bloqueo ahora</string>
+    <string name="test_lock_title">Probar bloqueo</string>
+    <string name="test_lock_subtitle">Ingresa el PIN para cerrar esta pantalla</string>
+    <string name="test_need_overlay">App Locker aún no tiene \"Mostrar sobre otras apps\" — abriendo ajustes</string>
+    <string name="test_need_pin">Configura un PIN primero</string>
+    <string name="choose_apps">Elige las apps a bloquear</string>
+    <string name="set_pin">Configurar PIN</string>
+    <string name="change_pin">Cambiar PIN</string>
+    <string name="grant_usage_access">Conceder acceso de uso</string>
+    <string name="usage_granted">Acceso de uso: concedido</string>
+    <string name="grant_overlay">Permitir mostrar sobre otras apps</string>
+    <string name="overlay_granted">Mostrar sobre otras apps: concedido</string>
+    <string name="app_icon_desc">Icono de la app</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_button_desc">Ajustes</string>
+    <string name="language_title">Idioma</string>
+
+    <string name="title_pin_setup">Configurar PIN</string>
+    <string name="title_set_pin">Configurar PIN</string>
+    <string name="title_new_pin">Configurar un nuevo PIN</string>
+    <string name="title_change_pin">Cambiar PIN</string>
+    <string name="title_confirm_pin">Confirmar PIN</string>
+    <string name="prompt_current_pin">Ingresa el PIN actual</string>
+    <string name="prompt_new_pin">Configura un PIN de 6 dígitos (puede diferir del desbloqueo del dispositivo)</string>
+    <string name="prompt_confirm_pin">Ingresa el nuevo PIN otra vez</string>
+    <string name="pin_saved">PIN guardado</string>
+
+    <string name="enter_pin_to_open">Ingresa el PIN para abrir</string>
+    <string name="enter_pin_to_enter_app">Ingresa el PIN para abrir la app</string>
+
+    <string name="error_wrong_pin">PIN incorrecto</string>
+    <string name="error_current_pin_wrong">El PIN actual es incorrecto</string>
+    <string name="error_pin_too_short">El PIN debe tener al menos %1$d dígitos</string>
+    <string name="error_pin_mismatch">Los nuevos PIN no coinciden</string>
+    <string name="error_set_pin_first">Configura un PIN antes de activar la protección</string>
+    <string name="error_need_usage">Primero se requiere el acceso de uso</string>
+    <string name="error_need_overlay">Primero se requiere el permiso para mostrar sobre otras apps</string>
+
+    <string name="notif_channel_name">Servicio de protección de apps</string>
+    <string name="notif_channel_desc">Muestra que la protección está activa</string>
+    <string name="notif_title">App Locker está activo</string>
+    <string name="notif_text">Protegiendo tus apps seleccionadas</string>
+</resources>

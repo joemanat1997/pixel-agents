@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="protection_enabled">保護を有効にする</string>
+    <string name="lock_this_app">このアプリをPINでロック</string>
+    <string name="pref_biometric">指紋で解除</string>
+    <string name="pref_shuffle">キーパッドの数字をシャッフル</string>
+    <string name="biometric_unavailable">この端末は指紋が未設定です</string>
+    <string name="biometric_title">指紋で解除</string>
+    <string name="biometric_subtitle">指紋センサーに触れてください</string>
+    <string name="use_pin_instead">PINを使う</string>
+    <string name="status_no_pin">⚠️ PINが未設定です</string>
+    <string name="status_need_usage">⚠️「使用状況へのアクセス」を許可してください</string>
+    <string name="status_need_overlay">⚠️「他のアプリの上に表示」を許可してください</string>
+    <string name="status_off">⚠️「保護を有効にする」をオンにしてください</string>
+    <string name="status_ready">✅ 準備完了 — 下からロックするアプリを選択</string>
+    <string name="status_active">✅ %1$d 個のアプリを保護中</string>
+    <string name="test_lock_button">🔓 今すぐロックをテスト</string>
+    <string name="test_lock_title">ロックのテスト</string>
+    <string name="test_lock_subtitle">PINを入力してこの画面を閉じる</string>
+    <string name="test_need_overlay">App Locker に「他のアプリの上に表示」権限がありません — 設定を開きます</string>
+    <string name="test_need_pin">先にPINを設定してください</string>
+    <string name="choose_apps">ロックするアプリを選択</string>
+    <string name="set_pin">PINを設定</string>
+    <string name="change_pin">PINを変更</string>
+    <string name="grant_usage_access">使用状況へのアクセスを許可</string>
+    <string name="usage_granted">使用状況へのアクセス：許可済み</string>
+    <string name="grant_overlay">他のアプリの上に表示を許可</string>
+    <string name="overlay_granted">他のアプリの上に表示：許可済み</string>
+    <string name="app_icon_desc">アプリアイコン</string>
+    <string name="settings_title">設定</string>
+    <string name="settings_button_desc">設定</string>
+    <string name="language_title">言語</string>
+
+    <string name="title_pin_setup">PINを設定</string>
+    <string name="title_set_pin">PINを設定</string>
+    <string name="title_new_pin">新しいPINを設定</string>
+    <string name="title_change_pin">PINを変更</string>
+    <string name="title_confirm_pin">PINを確認</string>
+    <string name="prompt_current_pin">現在のPINを入力</string>
+    <string name="prompt_new_pin">6桁のPINを設定（端末の解除コードと別でも可）</string>
+    <string name="prompt_confirm_pin">新しいPINをもう一度入力</string>
+    <string name="pin_saved">PINを保存しました</string>
+
+    <string name="enter_pin_to_open">PINを入力して開く</string>
+    <string name="enter_pin_to_enter_app">PINを入力してアプリを開く</string>
+
+    <string name="error_wrong_pin">PINが違います</string>
+    <string name="error_current_pin_wrong">現在のPINが正しくありません</string>
+    <string name="error_pin_too_short">PINは最低%1$d桁必要です</string>
+    <string name="error_pin_mismatch">新しいPINが一致しません</string>
+    <string name="error_set_pin_first">保護を有効にする前にPINを設定してください</string>
+    <string name="error_need_usage">先に使用状況へのアクセスを許可してください</string>
+    <string name="error_need_overlay">先に他のアプリの上に表示を許可してください</string>
+
+    <string name="notif_channel_name">アプリ保護サービス</string>
+    <string name="notif_channel_desc">アプリ保護が実行中であることを表示</string>
+    <string name="notif_title">App Locker 実行中</string>
+    <string name="notif_text">選択したアプリを保護しています</string>
+</resources>

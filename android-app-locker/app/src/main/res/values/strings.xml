@@ -3,61 +3,72 @@
     <string name="app_name">App Locker</string>
 
     <!-- Main screen -->
-    <string name="protection_enabled">เปิดการป้องกัน</string>
-    <string name="lock_this_app">ล็อกการเข้าแอปนี้ด้วย PIN</string>
-    <string name="pref_biometric">ปลดล็อกด้วยลายนิ้วมือ</string>
-    <string name="pref_shuffle">สุ่มตำแหน่งแป้นตัวเลข</string>
-    <string name="biometric_unavailable">เครื่องนี้ไม่รองรับ/ยังไม่ได้ตั้งลายนิ้วมือ</string>
-    <string name="biometric_title">ปลดล็อกด้วยลายนิ้วมือ</string>
-    <string name="biometric_subtitle">แตะเซ็นเซอร์ลายนิ้วมือ</string>
-    <string name="use_pin_instead">ใช้ PIN แทน</string>
-    <string name="status_no_pin">⚠️ ยังไม่ได้ตั้งรหัส PIN</string>
-    <string name="status_need_usage">⚠️ ต้องกด \"อนุญาตสิทธิ์การเข้าถึงการใช้งาน\"</string>
-    <string name="status_need_overlay">⚠️ ต้องกด \"อนุญาตให้แสดงทับแอปอื่น\"</string>
-    <string name="status_off">⚠️ ยังไม่ได้เปิดสวิตช์ \"เปิดการป้องกัน\"</string>
-    <string name="status_ready">✅ พร้อมแล้ว — เลือกแอปที่จะล็อกด้านล่าง</string>
-    <string name="status_active">✅ กำลังป้องกัน %1$d แอป</string>
-    <string name="test_lock_button">🔓 ทดสอบล็อกเดี๋ยวนี้</string>
-    <string name="test_lock_title">ทดสอบการล็อก</string>
-    <string name="test_lock_subtitle">ใส่รหัส PIN เพื่อปิดหน้านี้</string>
-    <string name="test_need_overlay">App Locker ยังไม่ได้สิทธิ์ \"แสดงทับแอปอื่น\" — กำลังพาไปเปิด</string>
-    <string name="test_need_pin">ตั้งรหัส PIN ก่อนนะครับ</string>
-    <string name="choose_apps">เลือกแอปที่ต้องการล็อก</string>
-    <string name="set_pin">ตั้งรหัส PIN</string>
-    <string name="change_pin">เปลี่ยนรหัส PIN</string>
-    <string name="grant_usage_access">อนุญาตสิทธิ์การเข้าถึงการใช้งาน</string>
-    <string name="usage_granted">สิทธิ์การใช้งาน: อนุญาตแล้ว</string>
-    <string name="grant_overlay">อนุญาตให้แสดงทับแอปอื่น</string>
-    <string name="overlay_granted">แสดงทับแอปอื่น: อนุญาตแล้ว</string>
-    <string name="app_icon_desc">ไอคอนแอป</string>
+    <string name="protection_enabled">Enable protection</string>
+    <string name="lock_this_app">Lock this app with a PIN</string>
+    <string name="pref_biometric">Unlock with fingerprint</string>
+    <string name="pref_shuffle">Shuffle keypad numbers</string>
+    <string name="biometric_unavailable">This device has no fingerprint set up</string>
+    <string name="biometric_title">Unlock with fingerprint</string>
+    <string name="biometric_subtitle">Touch the fingerprint sensor</string>
+    <string name="use_pin_instead">Use PIN instead</string>
+    <string name="status_no_pin">⚠️ No PIN set yet</string>
+    <string name="status_need_usage">⚠️ Grant \"Usage access\"</string>
+    <string name="status_need_overlay">⚠️ Grant \"Display over other apps\"</string>
+    <string name="status_off">⚠️ Turn on the \"Enable protection\" switch</string>
+    <string name="status_ready">✅ Ready — choose apps to lock below</string>
+    <string name="status_active">✅ Protecting %1$d app(s)</string>
+    <string name="test_lock_button">🔓 Test lock now</string>
+    <string name="test_lock_title">Test lock</string>
+    <string name="test_lock_subtitle">Enter PIN to close this screen</string>
+    <string name="test_need_overlay">App Locker doesn\'t have \"Display over other apps\" yet — opening settings</string>
+    <string name="test_need_pin">Set a PIN first</string>
+    <string name="choose_apps">Choose apps to lock</string>
+    <string name="set_pin">Set PIN</string>
+    <string name="change_pin">Change PIN</string>
+    <string name="grant_usage_access">Grant usage access</string>
+    <string name="usage_granted">Usage access: granted</string>
+    <string name="grant_overlay">Allow display over other apps</string>
+    <string name="overlay_granted">Display over other apps: granted</string>
+    <string name="app_icon_desc">App icon</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_button_desc">Settings</string>
+    <string name="language_title">Language</string>
+
+    <!-- Language names (shown in their own language in every locale) -->
+    <string name="lang_english">English</string>
+    <string name="lang_thai">ไทย</string>
+    <string name="lang_chinese">中文</string>
+    <string name="lang_japanese">日本語</string>
+    <string name="lang_spanish">Español</string>
+    <string name="lang_norwegian">Norsk</string>
 
     <!-- PIN setup (multi-step keypad) -->
-    <string name="title_pin_setup">ตั้งรหัส PIN</string>
-    <string name="title_set_pin">ตั้งรหัส PIN</string>
-    <string name="title_new_pin">ตั้งรหัส PIN ใหม่</string>
-    <string name="title_change_pin">เปลี่ยนรหัส PIN</string>
-    <string name="title_confirm_pin">ยืนยันรหัส PIN</string>
-    <string name="prompt_current_pin">ใส่รหัส PIN ปัจจุบัน</string>
-    <string name="prompt_new_pin">ตั้งรหัส 6 หลัก (ต่างจากรหัสปลดล็อกเครื่องได้)</string>
-    <string name="prompt_confirm_pin">ใส่รหัส PIN ใหม่อีกครั้ง</string>
-    <string name="pin_saved">บันทึกรหัส PIN แล้ว</string>
+    <string name="title_pin_setup">Set PIN</string>
+    <string name="title_set_pin">Set PIN</string>
+    <string name="title_new_pin">Set a new PIN</string>
+    <string name="title_change_pin">Change PIN</string>
+    <string name="title_confirm_pin">Confirm PIN</string>
+    <string name="prompt_current_pin">Enter current PIN</string>
+    <string name="prompt_new_pin">Set a 6-digit PIN (can differ from device unlock)</string>
+    <string name="prompt_confirm_pin">Enter the new PIN again</string>
+    <string name="pin_saved">PIN saved</string>
 
     <!-- Lock screen -->
-    <string name="enter_pin_to_open">ใส่รหัส PIN เพื่อเปิดแอป</string>
-    <string name="enter_pin_to_enter_app">ใส่รหัส PIN เพื่อเข้าแอป</string>
+    <string name="enter_pin_to_open">Enter PIN to open</string>
+    <string name="enter_pin_to_enter_app">Enter PIN to open the app</string>
 
     <!-- Errors / messages -->
-    <string name="error_wrong_pin">รหัส PIN ไม่ถูกต้อง</string>
-    <string name="error_current_pin_wrong">รหัส PIN ปัจจุบันไม่ถูกต้อง</string>
-    <string name="error_pin_too_short">รหัส PIN ต้องมีอย่างน้อย %1$d หลัก</string>
-    <string name="error_pin_mismatch">รหัส PIN ใหม่ทั้งสองช่องไม่ตรงกัน</string>
-    <string name="error_set_pin_first">กรุณาตั้งรหัส PIN ก่อนเปิดการป้องกัน</string>
-    <string name="error_need_usage">ต้องอนุญาตสิทธิ์การเข้าถึงการใช้งานก่อน</string>
-    <string name="error_need_overlay">ต้องอนุญาตให้แสดงทับแอปอื่นก่อน</string>
+    <string name="error_wrong_pin">Wrong PIN</string>
+    <string name="error_current_pin_wrong">Current PIN is incorrect</string>
+    <string name="error_pin_too_short">PIN must be at least %1$d digits</string>
+    <string name="error_pin_mismatch">The new PINs don\'t match</string>
+    <string name="error_set_pin_first">Set a PIN before enabling protection</string>
+    <string name="error_need_usage">Usage access permission is required first</string>
+    <string name="error_need_overlay">Display-over-other-apps permission is required first</string>
 
     <!-- Notification -->
-    <string name="notif_channel_name">บริการป้องกันแอป</string>
-    <string name="notif_channel_desc">แจ้งเตือนว่าการป้องกันแอปกำลังทำงาน</string>
-    <string name="notif_title">App Locker กำลังทำงาน</string>
-    <string name="notif_text">กำลังป้องกันแอปที่คุณเลือกไว้</string>
+    <string name="notif_channel_name">App protection service</string>
+    <string name="notif_channel_desc">Shows that app protection is running</string>
+    <string name="notif_title">App Locker is running</string>
+    <string name="notif_text">Protecting your selected apps</string>
 </resources>

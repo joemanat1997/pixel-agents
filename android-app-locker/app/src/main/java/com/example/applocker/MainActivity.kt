@@ -88,6 +88,9 @@ class MainActivity : AppCompatActivity() {
         }
         binding.overlayButton.setOnClickListener { requestOverlayPermission() }
         binding.testLockButton.setOnClickListener { testLockNow() }
+        binding.settingsButton.setOnClickListener {
+            navigateInternally(Intent(this, SettingsActivity::class.java))
+        }
     }
 
     /**

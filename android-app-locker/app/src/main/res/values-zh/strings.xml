@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="protection_enabled">开启保护</string>
+    <string name="lock_this_app">用 PIN 锁定本应用</string>
+    <string name="pref_biometric">使用指纹解锁</string>
+    <string name="pref_shuffle">随机排列数字键盘</string>
+    <string name="biometric_unavailable">此设备未设置指纹</string>
+    <string name="biometric_title">使用指纹解锁</string>
+    <string name="biometric_subtitle">请触摸指纹传感器</string>
+    <string name="use_pin_instead">改用 PIN</string>
+    <string name="status_no_pin">⚠️ 尚未设置 PIN</string>
+    <string name="status_need_usage">⚠️ 请授予\"使用情况访问权限\"</string>
+    <string name="status_need_overlay">⚠️ 请授予\"显示在其他应用上层\"</string>
+    <string name="status_off">⚠️ 请打开\"开启保护\"开关</string>
+    <string name="status_ready">✅ 已就绪 — 在下方选择要锁定的应用</string>
+    <string name="status_active">✅ 正在保护 %1$d 个应用</string>
+    <string name="test_lock_button">🔓 立即测试锁定</string>
+    <string name="test_lock_title">测试锁定</string>
+    <string name="test_lock_subtitle">输入 PIN 关闭此界面</string>
+    <string name="test_need_overlay">App Locker 尚无\"显示在其他应用上层\"权限 — 正在打开设置</string>
+    <string name="test_need_pin">请先设置 PIN</string>
+    <string name="choose_apps">选择要锁定的应用</string>
+    <string name="set_pin">设置 PIN</string>
+    <string name="change_pin">修改 PIN</string>
+    <string name="grant_usage_access">授予使用情况访问权限</string>
+    <string name="usage_granted">使用情况访问权限：已授予</string>
+    <string name="grant_overlay">允许显示在其他应用上层</string>
+    <string name="overlay_granted">显示在其他应用上层：已授予</string>
+    <string name="app_icon_desc">应用图标</string>
+    <string name="settings_title">设置</string>
+    <string name="settings_button_desc">设置</string>
+    <string name="language_title">语言</string>
+
+    <string name="title_pin_setup">设置 PIN</string>
+    <string name="title_set_pin">设置 PIN</string>
+    <string name="title_new_pin">设置新 PIN</string>
+    <string name="title_change_pin">修改 PIN</string>
+    <string name="title_confirm_pin">确认 PIN</string>
+    <string name="prompt_current_pin">输入当前 PIN</string>
+    <string name="prompt_new_pin">设置 6 位 PIN（可与设备解锁码不同）</string>
+    <string name="prompt_confirm_pin">再次输入新 PIN</string>
+    <string name="pin_saved">PIN 已保存</string>
+
+    <string name="enter_pin_to_open">输入 PIN 以打开</string>
+    <string name="enter_pin_to_enter_app">输入 PIN 进入应用</string>
+
+    <string name="error_wrong_pin">PIN 错误</string>
+    <string name="error_current_pin_wrong">当前 PIN 不正确</string>
+    <string name="error_pin_too_short">PIN 至少需 %1$d 位</string>
+    <string name="error_pin_mismatch">两次输入的新 PIN 不一致</string>
+    <string name="error_set_pin_first">请先设置 PIN 再开启保护</string>
+    <string name="error_need_usage">需先授予使用情况访问权限</string>
+    <string name="error_need_overlay">需先授予显示在其他应用上层权限</string>
+
+    <string name="notif_channel_name">应用保护服务</string>
+    <string name="notif_channel_desc">显示应用保护正在运行</string>
+    <string name="notif_title">App Locker 正在运行</string>
+    <string name="notif_text">正在保护你所选的应用</string>
+</resources>
