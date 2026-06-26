@@ -49,7 +49,7 @@ class AppLockService : Service() {
                     // Stop scanning and re-lock everything while the screen is off.
                     stopPolling()
                     SessionState.relockAll()
-                    mainHandler.post { lockOverlay.remove() }
+                    LockOverlay.dismissActive()
                 }
                 Intent.ACTION_SCREEN_ON, Intent.ACTION_USER_PRESENT -> startPolling()
             }
@@ -102,6 +102,9 @@ class AppLockService : Service() {
     /** Runs on the poll thread. */
     private fun checkForeground() {
         if (!prefs.serviceEnabled || !prefs.isPinSet) return
+        // The accessibility service (when enabled) handles locking instantly, so
+        // skip the polling path to avoid two detectors fighting over the overlay.
+        if (AppLockAccessibilityService.isEnabled(this)) return
 
         // Nothing to guard — skip the (relatively expensive) usage query entirely.
         val lockedPackages = prefs.lockedPackages

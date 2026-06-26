@@ -73,4 +73,8 @@
     <string name="mode_system">跟随系统</string>
     <string name="mode_light">浅色</string>
     <string name="mode_dark">深色</string>
+    <string name="accessibility_label">App Locker — 即时锁定</string>
+    <string name="accessibility_desc">让 App Locker 在受保护应用打开的瞬间显示 PIN。仅读取前台应用，绝不读取屏幕内容。</string>
+    <string name="instant_lock_label">即时锁定</string>
+    <string name="status_need_accessibility">⚠️ 开启\"即时锁定\"（无障碍）</string>
 </resources>

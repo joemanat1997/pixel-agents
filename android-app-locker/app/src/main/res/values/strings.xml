@@ -88,4 +88,8 @@
     <string name="mode_system">System default</string>
     <string name="mode_light">Light</string>
     <string name="mode_dark">Dark</string>
+    <string name="accessibility_label">App Locker — Instant lock</string>
+    <string name="accessibility_desc">Lets App Locker show the PIN the instant a protected app opens. It only reads which app is in front — never your screen content.</string>
+    <string name="instant_lock_label">Instant lock</string>
+    <string name="status_need_accessibility">⚠️ Turn on \"Instant lock\" (Accessibility)</string>
 </resources>

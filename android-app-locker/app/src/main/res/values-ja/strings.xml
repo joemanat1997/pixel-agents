@@ -73,4 +73,8 @@
     <string name="mode_system">システムに従う</string>
     <string name="mode_light">ライト</string>
     <string name="mode_dark">ダーク</string>
+    <string name="accessibility_label">App Locker — 即時ロック</string>
+    <string name="accessibility_desc">保護対象アプリを開いた瞬間にPINを表示します。前面のアプリ名のみを読み取り、画面の内容は読み取りません。</string>
+    <string name="instant_lock_label">即時ロック</string>
+    <string name="status_need_accessibility">⚠️「即時ロック」（ユーザー補助）をオンにしてください</string>
 </resources>

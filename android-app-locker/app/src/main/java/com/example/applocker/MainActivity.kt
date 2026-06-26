@@ -1,18 +1,14 @@
 package com.example.applocker
 
-import android.app.AppOpsManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Process
 import android.provider.Settings
 import android.transition.TransitionManager
 import android.view.View
@@ -95,8 +91,8 @@ class MainActivity : AppCompatActivity() {
         binding.setPinButton.setOnClickListener {
             navigateInternally(Intent(this, PinSetupActivity::class.java))
         }
-        binding.usageRow.setOnClickListener {
-            navigateInternally(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+        binding.instantLockRow.setOnClickListener {
+            navigateInternally(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
         }
         binding.overlayRow.setOnClickListener { requestOverlayPermission() }
         binding.testLockButton.setOnClickListener { testLockNow() }
@@ -334,11 +330,8 @@ class MainActivity : AppCompatActivity() {
             if (pinSet) R.string.change_pin else R.string.set_pin
         )
 
-        val usageGranted = hasUsageAccess()
-        val overlayGranted = hasOverlayPermission()
-
-        bindPermissionState(binding.usageStateLabel, usageGranted)
-        bindPermissionState(binding.overlayStateLabel, overlayGranted)
+        bindPermissionState(binding.instantLockState, AppLockAccessibilityService.isEnabled(this))
+        bindPermissionState(binding.overlayStateLabel, hasOverlayPermission())
 
         binding.protectionSwitch.setOnCheckedChangeListener(null)
         binding.protectionSwitch.isChecked = prefs.serviceEnabled
@@ -378,7 +371,7 @@ class MainActivity : AppCompatActivity() {
     private fun updateStatusBanner() {
         val (text, ok) = when {
             !prefs.isPinSet -> getString(R.string.status_no_pin) to false
-            !hasUsageAccess() -> getString(R.string.status_need_usage) to false
+            !AppLockAccessibilityService.isEnabled(this) -> getString(R.string.status_need_accessibility) to false
             !hasOverlayPermission() -> getString(R.string.status_need_overlay) to false
             !prefs.serviceEnabled -> getString(R.string.status_off) to false
             prefs.lockedPackages.isEmpty() -> getString(R.string.status_ready) to true
@@ -407,10 +400,10 @@ class MainActivity : AppCompatActivity() {
             navigateInternally(Intent(this, PinSetupActivity::class.java))
             return
         }
-        if (!hasUsageAccess()) {
-            Toast.makeText(this, R.string.error_need_usage, Toast.LENGTH_LONG).show()
+        if (!AppLockAccessibilityService.isEnabled(this)) {
+            Toast.makeText(this, R.string.status_need_accessibility, Toast.LENGTH_LONG).show()
             binding.protectionSwitch.isChecked = false
-            navigateInternally(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
+            navigateInternally(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
             return
         }
         if (!hasOverlayPermission()) {
@@ -450,25 +443,6 @@ class MainActivity : AppCompatActivity() {
     private fun isUserApp(info: ApplicationInfo): Boolean {
         val mask = ApplicationInfo.FLAG_SYSTEM or ApplicationInfo.FLAG_UPDATED_SYSTEM_APP
         return (info.flags and mask) == 0
-    }
-
-    private fun hasUsageAccess(): Boolean {
-        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            appOps.unsafeCheckOpNoThrow(
-                AppOpsManager.OPSTR_GET_USAGE_STATS,
-                Process.myUid(),
-                packageName
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            appOps.checkOpNoThrow(
-                AppOpsManager.OPSTR_GET_USAGE_STATS,
-                Process.myUid(),
-                packageName
-            )
-        }
-        return mode == AppOpsManager.MODE_ALLOWED
     }
 
     private fun hasOverlayPermission(): Boolean = Settings.canDrawOverlays(this)

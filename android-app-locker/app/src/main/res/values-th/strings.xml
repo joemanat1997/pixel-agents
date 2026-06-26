@@ -78,4 +78,8 @@
     <string name="mode_system">ตามระบบ</string>
     <string name="mode_light">สว่าง</string>
     <string name="mode_dark">มืด</string>
+    <string name="accessibility_label">App Locker — ล็อกทันที</string>
+    <string name="accessibility_desc">ให้ App Locker แสดง PIN ทันทีที่เปิดแอปที่ถูกล็อก โดยอ่านแค่ว่าแอปไหนอยู่หน้าจอ ไม่อ่านเนื้อหาบนจอ</string>
+    <string name="instant_lock_label">ล็อกทันที</string>
+    <string name="status_need_accessibility">⚠️ เปิด \"ล็อกทันที\" (Accessibility)</string>
 </resources>

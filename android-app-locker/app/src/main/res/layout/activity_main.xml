@@ -157,15 +157,15 @@
                     <View style="@style/CardDivider" />
 
                     <LinearLayout
-                        android:id="@+id/usageRow"
+                        android:id="@+id/instantLockRow"
                         style="@style/CardRow">
 
-                        <TextView style="@style/RowTitle" android:text="@string/perm_usage" />
+                        <TextView style="@style/RowTitle" android:text="@string/instant_lock_label" />
 
                         <TextView
-                            android:id="@+id/usageStateLabel"
+                            android:id="@+id/instantLockState"
                             style="@style/RowValue"
-                            tools:text="Granted" />
+                            tools:text="Grant" />
                     </LinearLayout>
 
                     <View style="@style/CardDivider" />

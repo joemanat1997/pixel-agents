@@ -73,4 +73,8 @@
     <string name="mode_system">Según el sistema</string>
     <string name="mode_light">Claro</string>
     <string name="mode_dark">Oscuro</string>
+    <string name="accessibility_label">App Locker — Bloqueo instantáneo</string>
+    <string name="accessibility_desc">Permite que App Locker muestre el PIN al instante cuando se abre una app protegida. Solo lee qué app está en primer plano, nunca el contenido de la pantalla.</string>
+    <string name="instant_lock_label">Bloqueo instantáneo</string>
+    <string name="status_need_accessibility">⚠️ Activa \"Bloqueo instantáneo\" (Accesibilidad)</string>
 </resources>

@@ -73,4 +73,8 @@
     <string name="mode_system">Følg systemet</string>
     <string name="mode_light">Lys</string>
     <string name="mode_dark">Mørk</string>
+    <string name="accessibility_label">App Locker — Umiddelbar lås</string>
+    <string name="accessibility_desc">Lar App Locker vise PIN-en straks en beskyttet app åpnes. Leser bare hvilken app som er fremme – aldri skjerminnholdet.</string>
+    <string name="instant_lock_label">Umiddelbar lås</string>
+    <string name="status_need_accessibility">⚠️ Slå på \"Umiddelbar lås\" (Tilgjengelighet)</string>
 </resources>
