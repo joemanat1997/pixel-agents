@@ -58,12 +58,19 @@ class AppAuthActivity : AppCompatActivity() {
             negativeText = getString(R.string.use_pin_instead),
             onSuccess = {
                 prefs.resetFailedAttempts()
-                SessionState.appUnlocked = true
-                setResult(RESULT_OK)
-                finish()
+                unlockAndFinish()
             },
             onCancel = { /* fall back to the PIN keypad */ }
         )
+    }
+
+    @Suppress("DEPRECATION")
+    private fun unlockAndFinish() {
+        SessionState.appUnlocked = true
+        setResult(RESULT_OK)
+        finish()
+        // Soft fade into the app instead of a hard cut.
+        overridePendingTransition(0, android.R.anim.fade_out)
     }
 
     private fun attempt(pin: String) {
@@ -71,9 +78,7 @@ class AppAuthActivity : AppCompatActivity() {
             prefs.isLockedOut() -> binding.keypad.showError(lockoutMessage())
             prefs.verifyPin(pin) -> {
                 prefs.resetFailedAttempts()
-                SessionState.appUnlocked = true
-                setResult(RESULT_OK)
-                finish()
+                unlockAndFinish()
             }
             else -> {
                 prefs.recordFailedAttempt()

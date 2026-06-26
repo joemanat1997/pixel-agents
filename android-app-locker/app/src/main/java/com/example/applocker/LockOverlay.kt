@@ -11,6 +11,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
 import androidx.core.view.isVisible
 
@@ -41,11 +42,11 @@ class LockOverlay(context: Context) {
             subtitle = appContext.getString(R.string.enter_pin_to_open),
             onCorrect = {
                 SessionState.markUnlocked(packageName)
-                remove()
+                dismiss()
             },
             onBack = {
                 goHome()
-                remove()
+                dismiss()
             }
         )
     }
@@ -56,8 +57,8 @@ class LockOverlay(context: Context) {
             key = PREVIEW_KEY,
             title = appContext.getString(R.string.test_lock_title),
             subtitle = appContext.getString(R.string.test_lock_subtitle),
-            onCorrect = { remove() },
-            onBack = { remove() }
+            onCorrect = { dismiss() },
+            onBack = { dismiss() }
         )
     }
 
@@ -142,6 +143,23 @@ class LockOverlay(context: Context) {
         return appContext.getString(R.string.error_locked_out, seconds)
     }
 
+    /** Soft fade + slight zoom-out, then remove — a gentle reveal of the app behind. */
+    fun dismiss() {
+        val v = view
+        if (v == null) {
+            remove()
+            return
+        }
+        v.animate()
+            .alpha(0f)
+            .scaleX(1.06f)
+            .scaleY(1.06f)
+            .setDuration(DISMISS_MS)
+            .setInterpolator(DecelerateInterpolator())
+            .withEndAction { remove() }
+            .start()
+    }
+
     fun remove() {
         view?.let { runCatching { windowManager.removeView(it) } }
         view = null
@@ -186,6 +204,7 @@ class LockOverlay(context: Context) {
 
     companion object {
         private const val PREVIEW_KEY = "__preview__"
+        private const val DISMISS_MS = 240L
 
         @Volatile
         private var active: LockOverlay? = null
@@ -193,7 +212,7 @@ class LockOverlay(context: Context) {
         /** Dismisses the currently-shown lock overlay (called after a fingerprint unlock). */
         fun dismissActive() {
             val overlay = active ?: return
-            Handler(Looper.getMainLooper()).post { overlay.remove() }
+            Handler(Looper.getMainLooper()).post { overlay.dismiss() }
         }
     }
 }
