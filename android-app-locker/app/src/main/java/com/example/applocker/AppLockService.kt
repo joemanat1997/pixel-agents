@@ -89,6 +89,9 @@ class AppLockService : Service() {
 
     private fun startPolling() {
         if (polling) return
+        // When instant lock (accessibility) is on it handles detection event-driven,
+        // so don't spin up the timer at all — keeps the service truly idle.
+        if (AppLockAccessibilityService.isEnabled(this)) return
         polling = true
         pollHandler.removeCallbacks(pollRunnable)
         pollHandler.post(pollRunnable)
