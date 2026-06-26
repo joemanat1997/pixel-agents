@@ -28,15 +28,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <ImageView
-            android:id="@+id/fingerprintButton"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="18dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/biometric_title"
-            android:src="@drawable/ic_fingerprint"
-            android:visibility="gone"
-            app:tint="?attr/colorPrimary" />
+        <LinearLayout
+            android:id="@+id/fingerprintArea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="26dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/fingerprintIcon"
+                android:layout_width="62dp"
+                android:layout_height="62dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/biometric_title"
+                android:padding="4dp"
+                android:src="@drawable/ic_fingerprint"
+                app:tint="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/fingerprintHint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/biometric_subtitle"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp" />
+        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

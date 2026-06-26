@@ -1,10 +1,15 @@
 package com.example.applocker
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.app.Activity
+import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.example.applocker.databinding.ActivityAppAuthBinding
 
@@ -17,6 +22,8 @@ class AppAuthActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAppAuthBinding
     private lateinit var prefs: SecurePrefs
+    private var fingerprintAuth: FingerprintAuthenticator? = null
+    private var pulseAnimator: ObjectAnimator? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,10 +44,14 @@ class AppAuthActivity : AppCompatActivity() {
             onSubmit = { pin -> attempt(pin) }
         }
 
-        val biometricOk = prefs.biometricEnabled && BiometricAuth.isAvailable(this)
-        binding.fingerprintButton.isVisible = biometricOk
-        binding.fingerprintButton.setOnClickListener { promptBiometric() }
-        if (biometricOk) promptBiometric()
+        val authenticator = FingerprintAuthenticator(this)
+        val fingerprintOk = prefs.biometricEnabled && authenticator.isAvailable()
+        binding.fingerprintArea.isVisible = fingerprintOk
+        if (fingerprintOk) {
+            fingerprintAuth = authenticator
+            binding.fingerprintIcon.setOnClickListener { startFingerprintScan() }
+            startFingerprintScan()
+        }
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -50,18 +61,63 @@ class AppAuthActivity : AppCompatActivity() {
         })
     }
 
-    private fun promptBiometric() {
-        BiometricAuth.authenticate(
-            context = this,
-            title = getString(R.string.app_name),
-            subtitle = getString(R.string.biometric_subtitle),
-            negativeText = getString(R.string.use_pin_instead),
+    /** Listens for a fingerprint silently and animates our own themed icon. */
+    private fun startFingerprintScan() {
+        val authenticator = fingerprintAuth ?: return
+        val icon = binding.fingerprintIcon
+        val hint = binding.fingerprintHint
+        val accent = ThemeManager.accentColor(this)
+        val error = ContextCompat.getColor(this, R.color.error)
+        val success = ContextCompat.getColor(this, R.color.success)
+        icon.imageTintList = ColorStateList.valueOf(accent)
+        hint.text = getString(R.string.biometric_subtitle)
+        startPulse(icon)
+        authenticator.start(
             onSuccess = {
+                stopPulse()
                 prefs.resetFailedAttempts()
+                icon.imageTintList = ColorStateList.valueOf(success)
                 unlockAndFinish()
             },
-            onCancel = { /* fall back to the PIN keypad */ }
+            onFailed = {
+                icon.imageTintList = ColorStateList.valueOf(error)
+                icon.animate().translationX(-12f).setDuration(60).withEndAction {
+                    icon.animate().translationX(12f).setDuration(60).withEndAction {
+                        icon.animate().translationX(0f).setDuration(60).start()
+                    }.start()
+                }.start()
+                icon.postDelayed({ icon.imageTintList = ColorStateList.valueOf(accent) }, 650)
+            },
+            onError = { message ->
+                stopPulse()
+                hint.text = message ?: getString(R.string.error_wrong_pin)
+            }
         )
+    }
+
+    private fun startPulse(view: View) {
+        stopPulse()
+        pulseAnimator = ObjectAnimator.ofPropertyValuesHolder(
+            view,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.12f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.12f)
+        ).apply {
+            duration = 900
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+            start()
+        }
+    }
+
+    private fun stopPulse() {
+        pulseAnimator?.cancel()
+        pulseAnimator = null
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        fingerprintAuth?.stop()
+        stopPulse()
     }
 
     @Suppress("DEPRECATION")

@@ -1,7 +1,10 @@
 package com.example.applocker
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.Handler
@@ -13,6 +16,8 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.DecelerateInterpolator
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 
 /**
@@ -31,6 +36,8 @@ class LockOverlay(context: Context) {
     @Volatile
     private var view: View? = null
     private var currentKey: String? = null
+    private var fingerprintAuth: FingerprintAuthenticator? = null
+    private var pulseAnimator: ObjectAnimator? = null
 
     fun isShowing(): Boolean = view != null
 
@@ -100,10 +107,18 @@ class LockOverlay(context: Context) {
             }
         }
 
-        val biometricOk = prefs.biometricEnabled && BiometricAuth.isAvailable(appContext)
-        val fingerprintButton = root.findViewById<ImageView>(R.id.fingerprintButton)
-        fingerprintButton.isVisible = biometricOk
-        fingerprintButton.setOnClickListener { promptBiometric(key, title.toString()) }
+        val authenticator = FingerprintAuthenticator(appContext)
+        val fingerprintOk = prefs.biometricEnabled && authenticator.isAvailable()
+        val fingerprintArea = root.findViewById<View>(R.id.fingerprintArea)
+        val fingerprintIcon = root.findViewById<ImageView>(R.id.fingerprintIcon)
+        val fingerprintHint = root.findViewById<TextView>(R.id.fingerprintHint)
+        fingerprintArea.isVisible = fingerprintOk
+        if (fingerprintOk) {
+            fingerprintAuth = authenticator
+            fingerprintIcon.setOnClickListener {
+                startFingerprintScan(authenticator, themed, fingerprintIcon, fingerprintHint, onCorrect)
+            }
+        }
 
         root.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
@@ -121,21 +136,69 @@ class LockOverlay(context: Context) {
             root.requestFocus()
             view = root
             active = this
-            if (biometricOk) promptBiometric(key, title.toString())
+            if (fingerprintOk) {
+                startFingerprintScan(authenticator, themed, fingerprintIcon, fingerprintHint, onCorrect)
+            }
         } else {
             currentKey = null
             SessionState.lockPromptShowing = false
         }
     }
 
-    /** Launches the transparent activity that hosts the system fingerprint prompt. */
-    private fun promptBiometric(pkg: String, title: String) {
-        val intent = Intent(appContext, BiometricActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra(BiometricActivity.EXTRA_PACKAGE, pkg)
-            putExtra(BiometricActivity.EXTRA_TITLE, title)
+    /** Listens for a fingerprint silently and animates our own themed icon. */
+    private fun startFingerprintScan(
+        authenticator: FingerprintAuthenticator,
+        themed: Context,
+        icon: ImageView,
+        hint: TextView,
+        onCorrect: () -> Unit
+    ) {
+        val accent = ThemeManager.accentColor(themed)
+        val error = ContextCompat.getColor(themed, R.color.error)
+        val success = ContextCompat.getColor(themed, R.color.success)
+        icon.imageTintList = ColorStateList.valueOf(accent)
+        hint.text = appContext.getString(R.string.biometric_subtitle)
+        startPulse(icon)
+        authenticator.start(
+            onSuccess = {
+                stopPulse()
+                prefs.resetFailedAttempts()
+                icon.imageTintList = ColorStateList.valueOf(success)
+                onCorrect()
+            },
+            onFailed = {
+                icon.imageTintList = ColorStateList.valueOf(error)
+                icon.animate().translationX(-12f).setDuration(60).withEndAction {
+                    icon.animate().translationX(12f).setDuration(60).withEndAction {
+                        icon.animate().translationX(0f).setDuration(60).start()
+                    }.start()
+                }.start()
+                icon.postDelayed({ icon.imageTintList = ColorStateList.valueOf(accent) }, 650)
+            },
+            onError = { message ->
+                stopPulse()
+                hint.text = message ?: appContext.getString(R.string.error_wrong_pin)
+            }
+        )
+    }
+
+    private fun startPulse(view: View) {
+        stopPulse()
+        pulseAnimator = ObjectAnimator.ofPropertyValuesHolder(
+            view,
+            PropertyValuesHolder.ofFloat(View.SCALE_X, 1f, 1.12f),
+            PropertyValuesHolder.ofFloat(View.SCALE_Y, 1f, 1.12f)
+        ).apply {
+            duration = 900
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+            start()
         }
-        runCatching { appContext.startActivity(intent) }
+    }
+
+    private fun stopPulse() {
+        pulseAnimator?.cancel()
+        pulseAnimator = null
     }
 
     private fun lockoutMessage(): String {
@@ -161,6 +224,9 @@ class LockOverlay(context: Context) {
     }
 
     fun remove() {
+        fingerprintAuth?.stop()
+        fingerprintAuth = null
+        stopPulse()
         view?.let { runCatching { windowManager.removeView(it) } }
         view = null
         currentKey = null

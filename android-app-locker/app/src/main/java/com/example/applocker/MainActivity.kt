@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked && !BiometricAuth.isAvailable(this)) {
+            if (isChecked && !FingerprintAuthenticator(this).isAvailable()) {
                 Toast.makeText(this, R.string.biometric_unavailable, Toast.LENGTH_LONG).show()
                 binding.biometricSwitch.isChecked = false
                 return@setOnCheckedChangeListener
@@ -345,12 +345,12 @@ class MainActivity : AppCompatActivity() {
             onSelfLockToggled(isChecked)
         }
 
-        val biometricAvailable = BiometricAuth.isAvailable(this)
+        val biometricAvailable = FingerprintAuthenticator(this).isAvailable()
         binding.biometricSwitch.setOnCheckedChangeListener(null)
         binding.biometricSwitch.isEnabled = biometricAvailable
         binding.biometricSwitch.isChecked = biometricAvailable && prefs.biometricEnabled
         binding.biometricSwitch.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked && !BiometricAuth.isAvailable(this)) {
+            if (isChecked && !FingerprintAuthenticator(this).isAvailable()) {
                 Toast.makeText(this, R.string.biometric_unavailable, Toast.LENGTH_LONG).show()
                 binding.biometricSwitch.isChecked = false
                 return@setOnCheckedChangeListener

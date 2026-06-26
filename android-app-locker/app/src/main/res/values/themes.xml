@@ -79,14 +79,6 @@
         <item name="colorSecondary">#9CCC65</item>
     </style>
 
-    <!-- Invisible host for the biometric prompt -->
-    <style name="Theme.AppLocker.Transparent" parent="Theme.AppLocker">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:backgroundDimEnabled">false</item>
-        <item name="android:windowAnimationStyle">@null</item>
-    </style>
-
     <!-- Lock screen: full-screen, gradient window background -->
     <style name="Theme.AppLocker.Lock" parent="Theme.AppLocker">
         <item name="android:windowBackground">@drawable/bg_lock_gradient</item>
