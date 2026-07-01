@@ -54,6 +54,8 @@ dependencies {
     implementation("com.google.android.material:material:1.12.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    // Process-wide foreground/background detection for the app's own self-lock.
+    implementation("androidx.lifecycle:lifecycle-process:2.7.0")
 }
 
 // Pin AndroidX to versions that compile against compileSdk 34. Without this,
@@ -70,7 +72,8 @@ configurations.all {
             "androidx.activity:activity-ktx:1.8.2",
             "androidx.lifecycle:lifecycle-runtime:2.7.0",
             "androidx.lifecycle:lifecycle-runtime-ktx:2.7.0",
-            "androidx.lifecycle:lifecycle-common:2.7.0"
+            "androidx.lifecycle:lifecycle-common:2.7.0",
+            "androidx.lifecycle:lifecycle-process:2.7.0"
         )
     }
     // This project uses Views, not Compose; drop any Compose lifecycle artifacts

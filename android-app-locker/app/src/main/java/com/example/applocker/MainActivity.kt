@@ -395,18 +395,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        // Re-lock the app whenever it leaves the foreground so re-entry always
-        // requires the passcode again. The ONLY moment we keep it unlocked is
-        // while our own passcode gate is on top (that isn't the user leaving).
-        // Previously an internal-navigation flag also suppressed this, but if the
-        // user then left from that sub-screen the app stayed flagged unlocked and
-        // the next person could open it with no PIN — so that exception is gone.
-        if (!isAuthenticating) {
-            SessionState.appUnlocked = false
-        }
-    }
+    // Re-locking on background is handled at the process level (see AppLockerApp)
+    // so it fires exactly when the whole app leaves the foreground — not on
+    // rotation or when stepping into one of our own sub-screens.
 
     /** Launches the passcode gate if app self-lock is on and not yet unlocked. */
     private fun maybeRequireAuth() {
@@ -423,10 +414,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun navigateInternally(intent: Intent) {
-        // Stepping into one of our own screens or a system settings page. The app
-        // re-locks while we're away and the passcode gate re-appears on return —
-        // the secure default. isAuthenticating stays false so onStop clears the
-        // unlocked flag.
+        // Stepping into one of our own screens or a system settings page keeps the
+        // app in the foreground, so the process-level self-lock does NOT re-lock —
+        // the user isn't asked for the PIN again until the whole app is actually
+        // backgrounded.
         startActivity(intent)
     }
 
