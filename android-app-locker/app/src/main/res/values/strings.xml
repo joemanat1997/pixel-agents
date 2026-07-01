@@ -33,6 +33,15 @@
     <string name="settings_title">Settings</string>
     <string name="settings_button_desc">Settings</string>
     <string name="theme_title">Theme</string>
+    <string name="lock_customize_title">Lock screen</string>
+    <string name="lock_bg_label">Background</string>
+    <string name="lock_bg_gradient">Gradient</string>
+    <string name="lock_bg_solid">Solid</string>
+    <string name="lock_bg_photo">Photo</string>
+    <string name="lock_choose_photo">Choose photo…</string>
+    <string name="lock_greeting_label">Greeting</string>
+    <string name="lock_greeting_hint">e.g. Welcome back</string>
+    <string name="lock_show_icon">Show lock icon</string>
     <string name="language_title">Language</string>
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_app_list">App List</string>

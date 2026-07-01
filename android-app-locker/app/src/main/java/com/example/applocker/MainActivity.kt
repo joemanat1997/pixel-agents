@@ -20,10 +20,12 @@ import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
+import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.applocker.databinding.ActivityMainBinding
 import java.util.concurrent.Executors
@@ -42,6 +44,22 @@ class MainActivity : AppCompatActivity() {
 
     private val previewOverlay by lazy { LockOverlay(this) }
     private var appsLoaded = false
+
+    // Picks a lock-screen wallpaper and keeps read access across reboots.
+    private val pickImageLauncher =
+        registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+            if (uri != null) {
+                runCatching {
+                    contentResolver.takePersistableUriPermission(
+                        uri, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
+                }
+                prefs.lockBackgroundImage = uri.toString()
+                prefs.lockBackgroundStyle = LockStyle.IMAGE
+                binding.lockBgGroup.check(R.id.bg_photo)
+                binding.choosePhotoButton.visibility = View.VISIBLE
+            }
+        }
 
     private val authLauncher = registerForActivityResult(StartActivityForResult()) { result ->
         isAuthenticating = false
@@ -100,10 +118,63 @@ class MainActivity : AppCompatActivity() {
 
         setupBottomNav(savedInstanceState?.getInt(KEY_TAB) ?: R.id.nav_dashboard)
         setupThemePicker()
+        setupLockStyle()
         setupLanguagePicker()
         setupIconPicker()
         setupNightMode()
         applyCustomAccentChrome()
+    }
+
+    private fun setupLockStyle() {
+        val checkedBg = when (prefs.lockBackgroundStyle) {
+            LockStyle.SOLID -> R.id.bg_solid
+            LockStyle.IMAGE -> R.id.bg_photo
+            else -> R.id.bg_gradient
+        }
+        binding.lockBgGroup.check(checkedBg)
+        binding.choosePhotoButton.visibility =
+            if (prefs.lockBackgroundStyle == LockStyle.IMAGE) View.VISIBLE else View.GONE
+
+        binding.lockBgGroup.setOnCheckedChangeListener { _, id ->
+            when (id) {
+                R.id.bg_solid -> {
+                    prefs.lockBackgroundStyle = LockStyle.SOLID
+                    binding.choosePhotoButton.visibility = View.GONE
+                }
+                R.id.bg_photo -> {
+                    prefs.lockBackgroundStyle = LockStyle.IMAGE
+                    binding.choosePhotoButton.visibility = View.VISIBLE
+                    // Prompt for a photo the first time this style is chosen.
+                    if (prefs.lockBackgroundImage == null) {
+                        pickImageLauncher.launch(arrayOf("image/*"))
+                    }
+                }
+                else -> {
+                    prefs.lockBackgroundStyle = LockStyle.GRADIENT
+                    binding.choosePhotoButton.visibility = View.GONE
+                }
+            }
+        }
+        binding.choosePhotoButton.setOnClickListener {
+            pickImageLauncher.launch(arrayOf("image/*"))
+        }
+
+        binding.greetingInput.setText(prefs.lockGreeting)
+        binding.greetingInput.doAfterTextChanged {
+            prefs.lockGreeting = it?.toString()?.trim().orEmpty()
+        }
+
+        binding.showIconSwitch.isChecked = prefs.lockShowIcon
+        binding.showIconSwitch.setOnCheckedChangeListener { _, checked ->
+            prefs.lockShowIcon = checked
+        }
+
+        binding.lockStyleHeader.setOnClickListener {
+            val show = binding.lockStyleContent.visibility != View.VISIBLE
+            TransitionManager.beginDelayedTransition(binding.lockStyleContent.parent as ViewGroup)
+            binding.lockStyleContent.visibility = if (show) View.VISIBLE else View.GONE
+            binding.lockStyleChevron.animate().rotation(if (show) 180f else 0f).setDuration(150).start()
+        }
     }
 
     private fun setupNightMode() {
@@ -280,7 +351,7 @@ class MainActivity : AppCompatActivity() {
         val trackTint = ColorStateList(checkedStates, intArrayOf(accent, 0x4D9E9E9E))
         listOf(
             binding.protectionSwitch, binding.selfLockSwitch,
-            binding.biometricSwitch, binding.shuffleSwitch
+            binding.biometricSwitch, binding.shuffleSwitch, binding.showIconSwitch
         ).forEach { it.trackTintList = trackTint }
     }
 

@@ -31,6 +31,15 @@
     <string name="settings_title">ตั้งค่า</string>
     <string name="settings_button_desc">ตั้งค่า</string>
     <string name="theme_title">ธีม</string>
+    <string name="lock_customize_title">หน้าล็อก</string>
+    <string name="lock_bg_label">พื้นหลัง</string>
+    <string name="lock_bg_gradient">ไล่สี</string>
+    <string name="lock_bg_solid">สีเดียว</string>
+    <string name="lock_bg_photo">รูปภาพ</string>
+    <string name="lock_choose_photo">เลือกรูป…</string>
+    <string name="lock_greeting_label">ข้อความทักทาย</string>
+    <string name="lock_greeting_hint">เช่น ยินดีต้อนรับ</string>
+    <string name="lock_show_icon">แสดงไอคอนแม่กุญแจ</string>
     <string name="language_title">ภาษา</string>
     <string name="nav_dashboard">แดชบอร์ด</string>
     <string name="nav_app_list">รายชื่อแอป</string>

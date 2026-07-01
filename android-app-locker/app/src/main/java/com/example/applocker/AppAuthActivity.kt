@@ -37,12 +37,14 @@ class AppAuthActivity : AppCompatActivity() {
         binding = ActivityAppAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.lockIcon.imageTintList =
-            ColorStateList.valueOf(ThemeManager.accentColor(this))
+        val accent = ThemeManager.accentColor(this)
+        binding.root.background = LockStyle.background(this, accent)
+        binding.lockIcon.imageTintList = ColorStateList.valueOf(accent)
+        binding.lockIcon.isVisible = prefs.lockShowIcon
 
         binding.keypad.apply {
             shuffleEnabled = prefs.shuffleKeypad
-            setTitle(getString(R.string.app_name))
+            setTitle(prefs.lockGreeting.ifBlank { getString(R.string.app_name) })
             setSubtitle(getString(R.string.enter_pin_to_enter_app))
             onSubmit = { pin -> attempt(pin) }
         }

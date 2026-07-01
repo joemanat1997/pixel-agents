@@ -320,6 +320,117 @@
 
                     <View style="@style/CardDivider" />
 
+                    <!-- Lock screen personalisation (collapsed by default) -->
+                    <LinearLayout
+                        android:id="@+id/lockStyleHeader"
+                        style="@style/CardRow">
+
+                        <TextView
+                            style="@style/RowTitle"
+                            android:text="@string/lock_customize_title" />
+
+                        <ImageView
+                            android:id="@+id/lockStyleChevron"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:contentDescription="@string/lock_customize_title"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lockStyleContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="14dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/lock_bg_label"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                        <RadioGroup
+                            android:id="@+id/lockBgGroup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/bg_gradient"
+                                style="@style/LanguageRadio"
+                                android:layout_width="wrap_content"
+                                android:layout_marginEnd="14dp"
+                                android:text="@string/lock_bg_gradient" />
+
+                            <RadioButton
+                                android:id="@+id/bg_solid"
+                                style="@style/LanguageRadio"
+                                android:layout_width="wrap_content"
+                                android:layout_marginEnd="14dp"
+                                android:text="@string/lock_bg_solid" />
+
+                            <RadioButton
+                                android:id="@+id/bg_photo"
+                                style="@style/LanguageRadio"
+                                android:layout_width="wrap_content"
+                                android:text="@string/lock_bg_photo" />
+                        </RadioGroup>
+
+                        <Button
+                            android:id="@+id/choosePhotoButton"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/lock_choose_photo"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:text="@string/lock_greeting_label"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/greetingInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:hint="@string/lock_greeting_hint"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:maxLength="40"
+                            android:maxLines="1"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary" />
+
+                        <LinearLayout
+                            style="@style/SettingRow"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                style="@style/SettingLabel"
+                                android:text="@string/lock_show_icon" />
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/showIconSwitch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View style="@style/CardDivider" />
+
                     <LinearLayout
                         android:id="@+id/iconHeader"
                         style="@style/CardRow">

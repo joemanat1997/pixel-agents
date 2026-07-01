@@ -65,6 +65,28 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         get() = prefs.getInt(KEY_NIGHT, androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
         set(value) = prefs.edit().putInt(KEY_NIGHT, value).apply()
 
+    // --- Lock screen personalisation ---
+
+    /** Lock background style: one of LockStyle.GRADIENT / SOLID / IMAGE. */
+    var lockBackgroundStyle: String
+        get() = prefs.getString(KEY_LOCK_BG_STYLE, LockStyle.GRADIENT) ?: LockStyle.GRADIENT
+        set(value) = prefs.edit().putString(KEY_LOCK_BG_STYLE, value).apply()
+
+    /** content:// URI of the user-picked lock wallpaper, or null. */
+    var lockBackgroundImage: String?
+        get() = prefs.getString(KEY_LOCK_BG_IMAGE, null)
+        set(value) = prefs.edit().putString(KEY_LOCK_BG_IMAGE, value).apply()
+
+    /** Custom greeting shown on the lock screen; blank falls back to the app name. */
+    var lockGreeting: String
+        get() = prefs.getString(KEY_LOCK_GREETING, "") ?: ""
+        set(value) = prefs.edit().putString(KEY_LOCK_GREETING, value).apply()
+
+    /** Whether to show the padlock icon on the lock screen. On by default. */
+    var lockShowIcon: Boolean
+        get() = prefs.getBoolean(KEY_LOCK_SHOW_ICON, true)
+        set(value) = prefs.edit().putBoolean(KEY_LOCK_SHOW_ICON, value).apply()
+
     /** Stores a brand-new PIN (used for first setup and for changing the PIN). */
     fun setPin(pin: String) {
         val salt = PinHasher.newSalt()
@@ -124,6 +146,10 @@ class SecurePrefs private constructor(private val prefs: SharedPreferences) {
         private const val KEY_CUSTOM_ACCENT = "custom_accent"
         private const val KEY_ICON = "launcher_icon"
         private const val KEY_NIGHT = "night_mode"
+        private const val KEY_LOCK_BG_STYLE = "lock_bg_style"
+        private const val KEY_LOCK_BG_IMAGE = "lock_bg_image"
+        private const val KEY_LOCK_GREETING = "lock_greeting"
+        private const val KEY_LOCK_SHOW_ICON = "lock_show_icon"
         private const val KEY_FAILED = "failed_attempts"
         private const val KEY_LOCKOUT_UNTIL = "lockout_until"
         private const val MAX_ATTEMPTS = 5
