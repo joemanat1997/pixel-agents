@@ -86,6 +86,8 @@ class LockOverlay(context: Context) {
         val themed = ThemeManager.themedContext(appContext, prefs.themeName, prefs.nightMode)
         val root = LayoutInflater.from(themed).inflate(R.layout.view_lock_overlay, null)
         val keypad = root.findViewById<PinKeypadView>(R.id.keypad)
+        root.findViewById<ImageView>(R.id.lockIcon)
+            .imageTintList = ColorStateList.valueOf(ThemeManager.accentColor(themed))
 
         keypad.shuffleEnabled = prefs.shuffleKeypad
         keypad.setTitle(title)

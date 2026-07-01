@@ -3,6 +3,7 @@ package com.example.applocker
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
@@ -17,9 +18,11 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
+import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
@@ -38,7 +41,6 @@ class MainActivity : AppCompatActivity() {
 
     // App self-lock gating.
     private var isAuthenticating = false
-    private var leavingForInternalNav = false
 
     private val previewOverlay by lazy { LockOverlay(this) }
     private var appsLoaded = false
@@ -47,6 +49,7 @@ class MainActivity : AppCompatActivity() {
         isAuthenticating = false
         if (result.resultCode == RESULT_OK) {
             SessionState.appUnlocked = true
+            binding.root.visibility = View.VISIBLE
         } else {
             // User backed out of the passcode prompt — leave the app.
             finishAffinity()
@@ -102,6 +105,7 @@ class MainActivity : AppCompatActivity() {
         setupLanguagePicker()
         setupIconPicker()
         setupNightMode()
+        applyCustomAccentChrome()
     }
 
     private fun setupNightMode() {
@@ -207,6 +211,17 @@ class MainActivity : AppCompatActivity() {
             row.addView(swatch)
         }
 
+        // Free-color swatch: a rainbow chip that opens the custom color picker.
+        val custom = View(this)
+        custom.layoutParams = GridLayout.LayoutParams().apply {
+            width = size
+            height = size
+            setMargins(margin, margin, margin, margin)
+        }
+        custom.background = makeRainbowSwatch(prefs.themeName == ThemeManager.CUSTOM)
+        custom.setOnClickListener { openColorPicker() }
+        row.addView(custom)
+
         binding.themeHeader.setOnClickListener {
             val show = binding.themeSwatchRow.visibility != View.VISIBLE
             TransitionManager.beginDelayedTransition(binding.themeSwatchRow.parent as ViewGroup)
@@ -226,6 +241,95 @@ class MainActivity : AppCompatActivity() {
             setColor(color)
             if (selected) setStroke(dp(3), Color.WHITE)
         }
+
+    private fun makeRainbowSwatch(selected: Boolean): GradientDrawable =
+        GradientDrawable(
+            GradientDrawable.Orientation.TL_BR,
+            intArrayOf(
+                0xFFFF3B30.toInt(), 0xFFFFCC00.toInt(), 0xFF34C759.toInt(),
+                0xFF00C7BE.toInt(), 0xFF007AFF.toInt(), 0xFFAF52DE.toInt()
+            )
+        ).apply {
+            shape = GradientDrawable.OVAL
+            if (selected) setStroke(dp(3), Color.WHITE)
+        }
+
+    /** Slide-based HSV picker so the user can dial in any accent color they like. */
+    private fun openColorPicker() {
+        val initial = if (prefs.themeName == ThemeManager.CUSTOM) prefs.customAccent
+        else ThemeManager.accentColor(this)
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_color_picker, null)
+        val preview = dialogView.findViewById<View>(R.id.colorPreview)
+        val hueSeek = dialogView.findViewById<SeekBar>(R.id.hueSeek)
+        val satSeek = dialogView.findViewById<SeekBar>(R.id.satSeek)
+        val valSeek = dialogView.findViewById<SeekBar>(R.id.valSeek)
+        val hexLabel = dialogView.findViewById<TextView>(R.id.hexValue)
+
+        val hsv = FloatArray(3)
+        Color.colorToHSV(initial, hsv)
+        hueSeek.progress = hsv[0].toInt()
+        satSeek.progress = (hsv[1] * 100).toInt()
+        valSeek.progress = (hsv[2] * 100).toInt()
+
+        val previewBg = GradientDrawable().apply { cornerRadius = dp(14).toFloat() }
+        preview.background = previewBg
+
+        fun current(): Int = Color.HSVToColor(
+            floatArrayOf(hueSeek.progress.toFloat(), satSeek.progress / 100f, valSeek.progress / 100f)
+        )
+        fun refresh() {
+            val c = current()
+            previewBg.setColor(c)
+            hexLabel.text = String.format("#%06X", 0xFFFFFF and c)
+        }
+        refresh()
+
+        val listener = object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(s: SeekBar?, p: Int, fromUser: Boolean) = refresh()
+            override fun onStartTrackingTouch(s: SeekBar?) {}
+            override fun onStopTrackingTouch(s: SeekBar?) {}
+        }
+        hueSeek.setOnSeekBarChangeListener(listener)
+        satSeek.setOnSeekBarChangeListener(listener)
+        valSeek.setOnSeekBarChangeListener(listener)
+
+        AlertDialog.Builder(this)
+            .setTitle(R.string.color_pick_title)
+            .setView(dialogView)
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                prefs.customAccent = current()
+                prefs.themeName = ThemeManager.CUSTOM
+                recreate()
+            }
+            .setNegativeButton(android.R.string.cancel, null)
+            .show()
+    }
+
+    /**
+     * A free custom color can't live in an XML theme, so tint the accent-colored
+     * chrome (nav bar, switches, indicators) programmatically when it's selected.
+     * Preset themes color themselves through the theme, so this is a no-op for them.
+     */
+    private fun applyCustomAccentChrome() {
+        if (prefs.themeName != ThemeManager.CUSTOM) return
+        val accent = prefs.customAccent
+        binding.themeCurrentDot.imageTintList = ColorStateList.valueOf(accent)
+        binding.testLockButton.setTextColor(accent)
+
+        val checkedStates = arrayOf(intArrayOf(android.R.attr.state_checked), intArrayOf())
+        val navTint = ColorStateList(
+            checkedStates, intArrayOf(accent, getColor(R.color.text_secondary))
+        )
+        binding.bottomNav.itemIconTintList = navTint
+        binding.bottomNav.itemTextColor = navTint
+
+        val trackTint = ColorStateList(checkedStates, intArrayOf(accent, 0x4D9E9E9E))
+        listOf(
+            binding.protectionSwitch, binding.selfLockSwitch,
+            binding.biometricSwitch, binding.shuffleSwitch
+        ).forEach { it.trackTintList = trackTint }
+    }
 
     private fun setupLanguagePicker() {
         val current = AppCompatDelegate.getApplicationLocales().toLanguageTags()
@@ -283,7 +387,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        leavingForInternalNav = false
         refreshState()
         // Loading every installed app's icon is heavy; do it once per launch.
         if (!appsLoaded) {
@@ -294,23 +397,36 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
-        // Re-lock the app when it goes to the background, but not when we are
-        // showing the passcode prompt or stepping into one of our own screens.
-        if (!isAuthenticating && !leavingForInternalNav) {
+        // Re-lock the app whenever it leaves the foreground so re-entry always
+        // requires the passcode again. The ONLY moment we keep it unlocked is
+        // while our own passcode gate is on top (that isn't the user leaving).
+        // Previously an internal-navigation flag also suppressed this, but if the
+        // user then left from that sub-screen the app stayed flagged unlocked and
+        // the next person could open it with no PIN — so that exception is gone.
+        if (!isAuthenticating) {
             SessionState.appUnlocked = false
         }
     }
 
     /** Launches the passcode gate if app self-lock is on and not yet unlocked. */
     private fun maybeRequireAuth() {
-        if (isAuthenticating || SessionState.appUnlocked) return
-        if (!prefs.isPinSet || !prefs.appSelfLock) return
+        if (isAuthenticating) return
+        if (SessionState.appUnlocked || !prefs.isPinSet || !prefs.appSelfLock) {
+            binding.root.visibility = View.VISIBLE
+            return
+        }
+        // Hide the sensitive content (locked-app list, toggles) so it can't be
+        // glimpsed for the frame before the opaque gate covers it.
+        binding.root.visibility = View.INVISIBLE
         isAuthenticating = true
         authLauncher.launch(Intent(this, AppAuthActivity::class.java))
     }
 
     private fun navigateInternally(intent: Intent) {
-        leavingForInternalNav = true
+        // Stepping into one of our own screens or a system settings page. The app
+        // re-locks while we're away and the passcode gate re-appears on return —
+        // the secure default. isAuthenticating stays false so onStop clears the
+        // unlocked flag.
         startActivity(intent)
     }
 

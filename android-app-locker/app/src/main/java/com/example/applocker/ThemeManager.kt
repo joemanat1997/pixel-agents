@@ -12,6 +12,9 @@ object ThemeManager {
 
     const val DEFAULT = "teal"
 
+    /** Special key meaning "use the user's free-picked custom accent color". */
+    const val CUSTOM = "custom"
+
     data class Theme(val key: String, val styleRes: Int, val swatch: Int)
 
     val themes: List<Theme> = listOf(
@@ -31,7 +34,9 @@ object ThemeManager {
 
     @StyleRes
     fun styleFor(key: String): Int =
-        (themes.firstOrNull { it.key == key } ?: themes.first()).styleRes
+        // Custom accent is applied programmatically over a neutral base theme.
+        if (key == CUSTOM) R.style.Theme_AppLocker_Teal
+        else (themes.firstOrNull { it.key == key } ?: themes.first()).styleRes
 
     fun swatchFor(key: String): Int =
         (themes.firstOrNull { it.key == key } ?: themes.first()).swatch
@@ -52,11 +57,18 @@ object ThemeManager {
         return ContextThemeWrapper(configContext, styleFor(key))
     }
 
-    /** Resolves the current accent color from a (themed) context. */
-    fun accentColor(context: Context): Int =
-        MaterialColors.getColor(
+    /**
+     * Resolves the current accent color. When the user picked a free custom
+     * color it returns exactly that; otherwise it reads the selected preset
+     * theme's colorPrimary from the (themed) context.
+     */
+    fun accentColor(context: Context): Int {
+        val prefs = SecurePrefs.get(context)
+        if (prefs.themeName == CUSTOM) return prefs.customAccent
+        return MaterialColors.getColor(
             context,
             com.google.android.material.R.attr.colorPrimary,
             0xFF2FB8AC.toInt()
         )
+    }
 }

@@ -37,6 +37,9 @@ class AppAuthActivity : AppCompatActivity() {
         binding = ActivityAppAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.lockIcon.imageTintList =
+            ColorStateList.valueOf(ThemeManager.accentColor(this))
+
         binding.keypad.apply {
             shuffleEnabled = prefs.shuffleKeypad
             setTitle(getString(R.string.app_name))

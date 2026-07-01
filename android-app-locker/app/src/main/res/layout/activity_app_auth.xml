@@ -9,6 +9,7 @@
     android:padding="24dp">
 
     <ImageView
+        android:id="@+id/lockIcon"
         android:layout_width="46dp"
         android:layout_height="46dp"
         android:layout_marginBottom="20dp"
