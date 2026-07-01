@@ -33,10 +33,6 @@
     <string name="settings_title">Settings</string>
     <string name="settings_button_desc">Settings</string>
     <string name="theme_title">Theme</string>
-    <string name="color_pick_title">Custom color</string>
-    <string name="color_hue">Hue</string>
-    <string name="color_saturation">Saturation</string>
-    <string name="color_brightness">Brightness</string>
     <string name="language_title">Language</string>
     <string name="nav_dashboard">Dashboard</string>
     <string name="nav_app_list">App List</string>

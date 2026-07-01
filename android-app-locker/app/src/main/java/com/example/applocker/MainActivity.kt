@@ -18,11 +18,9 @@ import android.widget.GridLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RadioButton
-import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
@@ -189,9 +187,14 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.selectedItemId = initialTab
     }
 
+    // Preset swatch views kept so their selection rings can be refreshed when the
+    // user picks a free colour from the palette (which deselects every preset).
+    private val presetSwatches = mutableListOf<Pair<View, ThemeManager.Theme>>()
+
     private fun setupThemePicker() {
         val row = binding.themeSwatchRow
         row.removeAllViews()
+        presetSwatches.clear()
         val size = dp(40)
         val margin = dp(6)
         ThemeManager.themes.forEach { theme ->
@@ -209,23 +212,30 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             row.addView(swatch)
+            presetSwatches.add(swatch to theme)
         }
 
-        // Free-color swatch: a rainbow chip that opens the custom color picker.
-        val custom = View(this)
-        custom.layoutParams = GridLayout.LayoutParams().apply {
-            width = size
-            height = size
-            setMargins(margin, margin, margin, margin)
+        // Full-spectrum palette: tap or drag to pick ANY accent colour. Applied
+        // live (no full activity recreate) so dragging feels smooth.
+        val palette = binding.colorPalette
+        palette.setColor(
+            if (prefs.themeName == ThemeManager.CUSTOM) prefs.customAccent
+            else ThemeManager.accentColor(this)
+        )
+        palette.onColorPicked = { color, isFinal ->
+            binding.themeCurrentDot.imageTintList = ColorStateList.valueOf(color)
+            if (isFinal) {
+                prefs.customAccent = color
+                prefs.themeName = ThemeManager.CUSTOM
+                refreshPresetSelection()
+                applyCustomAccentChrome()
+            }
         }
-        custom.background = makeRainbowSwatch(prefs.themeName == ThemeManager.CUSTOM)
-        custom.setOnClickListener { openColorPicker() }
-        row.addView(custom)
 
         binding.themeHeader.setOnClickListener {
-            val show = binding.themeSwatchRow.visibility != View.VISIBLE
-            TransitionManager.beginDelayedTransition(binding.themeSwatchRow.parent as ViewGroup)
-            binding.themeSwatchRow.visibility = if (show) View.VISIBLE else View.GONE
+            val show = binding.themeContent.visibility != View.VISIBLE
+            TransitionManager.beginDelayedTransition(binding.themeContent.parent as ViewGroup)
+            binding.themeContent.visibility = if (show) View.VISIBLE else View.GONE
             binding.themeChevron.animate().rotation(if (show) 180f else 0f).setDuration(150).start()
         }
     }
@@ -242,68 +252,11 @@ class MainActivity : AppCompatActivity() {
             if (selected) setStroke(dp(3), Color.WHITE)
         }
 
-    private fun makeRainbowSwatch(selected: Boolean): GradientDrawable =
-        GradientDrawable(
-            GradientDrawable.Orientation.TL_BR,
-            intArrayOf(
-                0xFFFF3B30.toInt(), 0xFFFFCC00.toInt(), 0xFF34C759.toInt(),
-                0xFF00C7BE.toInt(), 0xFF007AFF.toInt(), 0xFFAF52DE.toInt()
-            )
-        ).apply {
-            shape = GradientDrawable.OVAL
-            if (selected) setStroke(dp(3), Color.WHITE)
+    /** Redraws preset rings so only the currently-selected preset (if any) is ringed. */
+    private fun refreshPresetSelection() {
+        presetSwatches.forEach { (view, theme) ->
+            view.background = makeSwatch(theme.swatch, theme.key == prefs.themeName)
         }
-
-    /** Slide-based HSV picker so the user can dial in any accent color they like. */
-    private fun openColorPicker() {
-        val initial = if (prefs.themeName == ThemeManager.CUSTOM) prefs.customAccent
-        else ThemeManager.accentColor(this)
-
-        val dialogView = layoutInflater.inflate(R.layout.dialog_color_picker, null)
-        val preview = dialogView.findViewById<View>(R.id.colorPreview)
-        val hueSeek = dialogView.findViewById<SeekBar>(R.id.hueSeek)
-        val satSeek = dialogView.findViewById<SeekBar>(R.id.satSeek)
-        val valSeek = dialogView.findViewById<SeekBar>(R.id.valSeek)
-        val hexLabel = dialogView.findViewById<TextView>(R.id.hexValue)
-
-        val hsv = FloatArray(3)
-        Color.colorToHSV(initial, hsv)
-        hueSeek.progress = hsv[0].toInt()
-        satSeek.progress = (hsv[1] * 100).toInt()
-        valSeek.progress = (hsv[2] * 100).toInt()
-
-        val previewBg = GradientDrawable().apply { cornerRadius = dp(14).toFloat() }
-        preview.background = previewBg
-
-        fun current(): Int = Color.HSVToColor(
-            floatArrayOf(hueSeek.progress.toFloat(), satSeek.progress / 100f, valSeek.progress / 100f)
-        )
-        fun refresh() {
-            val c = current()
-            previewBg.setColor(c)
-            hexLabel.text = String.format("#%06X", 0xFFFFFF and c)
-        }
-        refresh()
-
-        val listener = object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(s: SeekBar?, p: Int, fromUser: Boolean) = refresh()
-            override fun onStartTrackingTouch(s: SeekBar?) {}
-            override fun onStopTrackingTouch(s: SeekBar?) {}
-        }
-        hueSeek.setOnSeekBarChangeListener(listener)
-        satSeek.setOnSeekBarChangeListener(listener)
-        valSeek.setOnSeekBarChangeListener(listener)
-
-        AlertDialog.Builder(this)
-            .setTitle(R.string.color_pick_title)
-            .setView(dialogView)
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                prefs.customAccent = current()
-                prefs.themeName = ThemeManager.CUSTOM
-                recreate()
-            }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
     }
 
     /**
