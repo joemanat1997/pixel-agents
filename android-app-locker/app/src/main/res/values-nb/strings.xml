@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="protection_enabled">Slå på beskyttelse</string>
+    <string name="lock_this_app">Lås denne appen med PIN</string>
+    <string name="pref_biometric">Lås opp med fingeravtrykk</string>
+    <string name="pref_shuffle">Stokk om tastaturtallene</string>
+    <string name="biometric_unavailable">Denne enheten har ikke fingeravtrykk satt opp</string>
+    <string name="biometric_title">Lås opp med fingeravtrykk</string>
+    <string name="biometric_subtitle">Berør fingeravtrykkssensoren</string>
+    <string name="use_pin_instead">Bruk PIN i stedet</string>
+    <string name="status_no_pin">⚠️ Ingen PIN angitt ennå</string>
+    <string name="status_need_usage">⚠️ Gi \"Tilgang til bruksdata\"</string>
+    <string name="status_need_overlay">⚠️ Gi \"Vis over andre apper\"</string>
+    <string name="status_off">⚠️ Slå på \"Slå på beskyttelse\"</string>
+    <string name="status_ready">✅ Klar — velg apper å låse nedenfor</string>
+    <string name="status_active">✅ Beskytter %1$d app(er)</string>
+    <string name="test_lock_button">Test låsing nå</string>
+    <string name="test_lock_title">Test låsing</string>
+    <string name="test_lock_subtitle">Skriv inn PIN for å lukke dette skjermbildet</string>
+    <string name="test_need_overlay">App Locker har ikke \"Vis over andre apper\" ennå — åpner innstillinger</string>
+    <string name="test_need_pin">Angi en PIN først</string>
+    <string name="choose_apps">Velg apper å låse</string>
+    <string name="set_pin">Angi PIN</string>
+    <string name="change_pin">Endre PIN</string>
+    <string name="grant_usage_access">Gi tilgang til bruksdata</string>
+    <string name="usage_granted">Tilgang til bruksdata: gitt</string>
+    <string name="grant_overlay">Tillat visning over andre apper</string>
+    <string name="overlay_granted">Vis over andre apper: gitt</string>
+    <string name="app_icon_desc">Appikon</string>
+    <string name="settings_title">Innstillinger</string>
+    <string name="settings_button_desc">Innstillinger</string>
+    <string name="theme_title">Tema</string>
+    <string name="language_title">Språk</string>
+    <string name="nav_dashboard">Oversikt</string>
+    <string name="nav_app_list">Appliste</string>
+    <string name="sec_security">Sikkerhetsinnstillinger</string>
+    <string name="sec_test_perms">Test og tillatelser</string>
+    <string name="check_permissions">Sjekk tillatelser</string>
+
+    <string name="title_pin_setup">Angi PIN</string>
+    <string name="title_set_pin">Angi PIN</string>
+    <string name="title_new_pin">Angi en ny PIN</string>
+    <string name="title_change_pin">Endre PIN</string>
+    <string name="title_confirm_pin">Bekreft PIN</string>
+    <string name="prompt_current_pin">Skriv inn nåværende PIN</string>
+    <string name="prompt_new_pin">Angi en 6-sifret PIN (kan være ulik enhetslåsen)</string>
+    <string name="prompt_confirm_pin">Skriv inn den nye PIN-en igjen</string>
+    <string name="pin_saved">PIN lagret</string>
+
+    <string name="enter_pin_to_open">Skriv inn PIN for å åpne</string>
+    <string name="enter_pin_to_enter_app">Skriv inn PIN for å åpne appen</string>
+
+        <string name="error_locked_out">For mange forsøk. Vent %1$ds</string>
+    <string name="error_wrong_pin">Feil PIN</string>
+    <string name="error_current_pin_wrong">Nåværende PIN er feil</string>
+    <string name="error_pin_too_short">PIN må ha minst %1$d sifre</string>
+    <string name="error_pin_mismatch">De nye PIN-ene er ulike</string>
+    <string name="error_set_pin_first">Angi en PIN før du slår på beskyttelse</string>
+    <string name="error_need_usage">Tilgang til bruksdata kreves først</string>
+    <string name="error_need_overlay">Tillatelse til å vise over andre apper kreves først</string>
+
+    <string name="notif_channel_name">Appbeskyttelsestjeneste</string>
+    <string name="notif_channel_desc">Viser at appbeskyttelse kjører</string>
+    <string name="notif_title">App Locker kjører</string>
+    <string name="notif_text">Beskytter de valgte appene dine</string>
+    <string name="perm_usage">Tilgang til bruksdata</string>
+    <string name="perm_overlay">Vis over andre apper</string>
+    <string name="state_granted">Gitt</string>
+    <string name="state_grant">Gi tilgang</string>
+    <string name="sec_appearance">Utseende</string>
+    <string name="icon_changed">Appikon endret</string>
+    <string name="night_mode_title">Nattmodus</string>
+    <string name="mode_system">Følg systemet</string>
+    <string name="mode_light">Lys</string>
+    <string name="mode_dark">Mørk</string>
+    <string name="accessibility_label">App Locker — Umiddelbar lås</string>
+    <string name="accessibility_desc">Lar App Locker vise PIN-en straks en beskyttet app åpnes. Leser bare hvilken app som er fremme – aldri skjerminnholdet.</string>
+    <string name="instant_lock_label">Umiddelbar lås</string>
+    <string name="status_need_accessibility">⚠️ Slå på \"Umiddelbar lås\" (Tilgjengelighet)</string>
+</resources>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings_title"
+        android:textColor="@color/text_primary"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/language_title"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp" />
+
+    <RadioGroup
+        android:id="@+id/languageGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/lang_en"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:text="@string/lang_english"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/lang_th"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:text="@string/lang_thai"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/lang_zh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:text="@string/lang_chinese"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/lang_ja"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:text="@string/lang_japanese"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/lang_es"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:text="@string/lang_spanish"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+
+        <RadioButton
+            android:id="@+id/lang_nb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="12dp"
+            android:text="@string/lang_norwegian"
+            android:textColor="@color/text_primary"
+            android:textSize="18sp" />
+    </RadioGroup>
+</LinearLayout>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">App Locker</string>
+
+    <!-- Main screen -->
+    <string name="protection_enabled">Enable protection</string>
+    <string name="lock_this_app">Lock this app with a PIN</string>
+    <string name="pref_biometric">Unlock with fingerprint</string>
+    <string name="pref_shuffle">Shuffle keypad numbers</string>
+    <string name="biometric_unavailable">This device has no fingerprint set up</string>
+    <string name="biometric_title">Unlock with fingerprint</string>
+    <string name="biometric_subtitle">Touch the fingerprint sensor</string>
+    <string name="use_pin_instead">Use PIN instead</string>
+    <string name="status_no_pin">⚠️ No PIN set yet</string>
+    <string name="status_need_usage">⚠️ Grant \"Usage access\"</string>
+    <string name="status_need_overlay">⚠️ Grant \"Display over other apps\"</string>
+    <string name="status_off">⚠️ Turn on the \"Enable protection\" switch</string>
+    <string name="status_ready">✅ Ready — choose apps to lock below</string>
+    <string name="status_active">✅ Protecting %1$d app(s)</string>
+    <string name="test_lock_button">Test lock now</string>
+    <string name="test_lock_title">Test lock</string>
+    <string name="test_lock_subtitle">Enter PIN to close this screen</string>
+    <string name="test_need_overlay">App Locker doesn\'t have \"Display over other apps\" yet — opening settings</string>
+    <string name="test_need_pin">Set a PIN first</string>
+    <string name="choose_apps">Choose apps to lock</string>
+    <string name="set_pin">Set PIN</string>
+    <string name="change_pin">Change PIN</string>
+    <string name="grant_usage_access">Grant usage access</string>
+    <string name="usage_granted">Usage access: granted</string>
+    <string name="grant_overlay">Allow display over other apps</string>
+    <string name="overlay_granted">Display over other apps: granted</string>
+    <string name="app_icon_desc">App icon</string>
+    <string name="settings_title">Settings</string>
+    <string name="settings_button_desc">Settings</string>
+    <string name="theme_title">Theme</string>
+    <string name="lock_customize_title">Lock screen</string>
+    <string name="lock_bg_label">Background</string>
+    <string name="lock_bg_gradient">Gradient</string>
+    <string name="lock_bg_solid">Solid</string>
+    <string name="lock_bg_photo">Photo</string>
+    <string name="lock_choose_photo">Choose photo…</string>
+    <string name="lock_greeting_label">Greeting</string>
+    <string name="lock_greeting_hint">e.g. Welcome back</string>
+    <string name="lock_show_icon">Show lock icon</string>
+    <string name="language_title">Language</string>
+    <string name="nav_dashboard">Dashboard</string>
+    <string name="nav_app_list">App List</string>
+    <string name="sec_security">Security settings</string>
+    <string name="sec_test_perms">Test &amp; permissions</string>
+    <string name="check_permissions">Check permissions</string>
+
+    <!-- Language names (shown in their own language in every locale) -->
+    <string name="lang_english">English</string>
+    <string name="lang_thai">ไทย</string>
+    <string name="lang_chinese">中文</string>
+    <string name="lang_japanese">日本語</string>
+    <string name="lang_spanish">Español</string>
+    <string name="lang_norwegian">Norsk</string>
+
+    <!-- PIN setup (multi-step keypad) -->
+    <string name="title_pin_setup">Set PIN</string>
+    <string name="title_set_pin">Set PIN</string>
+    <string name="title_new_pin">Set a new PIN</string>
+    <string name="title_change_pin">Change PIN</string>
+    <string name="title_confirm_pin">Confirm PIN</string>
+    <string name="prompt_current_pin">Enter current PIN</string>
+    <string name="prompt_new_pin">Set a 6-digit PIN (can differ from device unlock)</string>
+    <string name="prompt_confirm_pin">Enter the new PIN again</string>
+    <string name="pin_saved">PIN saved</string>
+
+    <!-- Lock screen -->
+    <string name="enter_pin_to_open">Enter PIN to open</string>
+    <string name="enter_pin_to_enter_app">Enter PIN to open the app</string>
+
+    <!-- Errors / messages -->
+        <string name="error_locked_out">Too many attempts. Wait %1$ds</string>
+    <string name="error_wrong_pin">Wrong PIN</string>
+    <string name="error_current_pin_wrong">Current PIN is incorrect</string>
+    <string name="error_pin_too_short">PIN must be at least %1$d digits</string>
+    <string name="error_pin_mismatch">The new PINs don\'t match</string>
+    <string name="error_set_pin_first">Set a PIN before enabling protection</string>
+    <string name="error_need_usage">Usage access permission is required first</string>
+    <string name="error_need_overlay">Display-over-other-apps permission is required first</string>
+
+    <!-- Notification -->
+    <string name="notif_channel_name">App protection service</string>
+    <string name="notif_channel_desc">Shows that app protection is running</string>
+    <string name="notif_title">App Locker is running</string>
+    <string name="notif_text">Protecting your selected apps</string>
+    <string name="perm_usage">Usage access</string>
+    <string name="perm_overlay">Display over other apps</string>
+    <string name="state_granted">Granted</string>
+    <string name="state_grant">Grant</string>
+    <string name="sec_appearance">Appearance</string>
+    <string name="icon_changed">App icon changed</string>
+    <string name="night_mode_title">Night mode</string>
+    <string name="mode_system">System default</string>
+    <string name="mode_light">Light</string>
+    <string name="mode_dark">Dark</string>
+    <string name="accessibility_label">App Locker — Instant lock</string>
+    <string name="accessibility_desc">Lets App Locker show the PIN the instant a protected app opens. It only reads which app is in front — never your screen content.</string>
+    <string name="instant_lock_label">Instant lock</string>
+    <string name="status_need_accessibility">⚠️ Turn on \"Instant lock\" (Accessibility)</string>
+</resources>

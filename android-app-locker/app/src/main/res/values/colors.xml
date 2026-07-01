@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Light theme (default). Dark values live in values-night/colors.xml -->
+    <color name="background">#F4F5F7</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="lock_background">#ECEEF1</color>
+    <color name="divider">#E4E6EB</color>
+    <color name="text_primary">#16181C</color>
+    <color name="text_secondary">#6A6D75</color>
+    <color name="error">#E5484D</color>
+
+    <color name="primary">#2FB8AC</color>
+    <color name="primary_dark">#248B82</color>
+    <color name="on_primary">#06302C</color>
+
+    <color name="key_fill">#12000000</color>
+    <color name="key_ripple">#22000000</color>
+    <color name="dot_empty">#33000000</color>
+    <color name="dot_filled">#FFFFFF</color>
+
+    <color name="glow_top">#FFFFFF</color>
+    <color name="glow_bottom">#E9ECF0</color>
+
+    <color name="warning">#C77700</color>
+    <color name="success">#1E9E4A</color>
+
+    <!-- Launcher icon backgrounds (mode-independent) -->
+    <color name="ic_launcher_background">#FFFFFF</color>
+    <color name="ic_bg_dark">#15171A</color>
+    <color name="ic_bg_teal">#2FB8AC</color>
+    <color name="ic_bg_black">#000000</color>
+</resources>

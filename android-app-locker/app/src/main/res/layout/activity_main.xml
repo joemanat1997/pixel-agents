@@ -1,0 +1,487 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <!-- ===== Dashboard ===== -->
+        <ScrollView
+            android:id="@+id/dashboardPage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/text_primary"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <TextView style="@style/SectionHeader" android:text="@string/sec_security" />
+
+                <LinearLayout style="@style/SettingRow">
+                    <TextView style="@style/SettingLabel" android:text="@string/protection_enabled" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/protectionSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/SettingRow">
+                    <TextView style="@style/SettingLabel" android:text="@string/lock_this_app" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/selfLockSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/SettingRow">
+                    <TextView style="@style/SettingLabel" android:text="@string/pref_biometric" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/biometricSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/SettingRow">
+                    <TextView style="@style/SettingLabel" android:text="@string/pref_shuffle" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/shuffleSwitch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/setPinButton"
+                    style="@style/Widget.Material3.Button.TonalButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/change_pin" />
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- ===== App List ===== -->
+        <LinearLayout
+            android:id="@+id/appListPage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/SectionHeader"
+                android:layout_marginTop="20dp"
+                android:paddingHorizontal="20dp"
+                android:text="@string/choose_apps" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/appList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:paddingBottom="16dp" />
+        </LinearLayout>
+
+        <!-- ===== Settings ===== -->
+        <ScrollView
+            android:id="@+id/settingsPage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="20dp"
+                android:paddingTop="20dp"
+                android:paddingBottom="24dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/settings_title"
+                    android:textColor="@color/text_primary"
+                    android:textSize="26sp"
+                    android:textStyle="bold" />
+
+                <!-- Security & permissions (primary) -->
+                <TextView style="@style/SectionHeader" android:text="@string/sec_test_perms" />
+
+                <TextView
+                    android:id="@+id/statusBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:background="@drawable/bg_card"
+                    android:gravity="center"
+                    android:padding="12dp"
+                    android:textColor="@color/on_primary"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="✅ Protecting 2 apps" />
+
+                <LinearLayout style="@style/Card">
+
+                    <LinearLayout
+                        android:id="@+id/testLockButton"
+                        style="@style/CardRow">
+
+                        <TextView
+                            style="@style/RowTitle"
+                            android:textColor="?attr/colorPrimary"
+                            android:textStyle="bold"
+                            android:text="@string/test_lock_button" />
+                    </LinearLayout>
+
+                    <View style="@style/CardDivider" />
+
+                    <LinearLayout
+                        android:id="@+id/instantLockRow"
+                        style="@style/CardRow">
+
+                        <TextView style="@style/RowTitle" android:text="@string/instant_lock_label" />
+
+                        <TextView
+                            android:id="@+id/instantLockState"
+                            style="@style/RowValue"
+                            tools:text="Grant" />
+                    </LinearLayout>
+
+                    <View style="@style/CardDivider" />
+
+                    <LinearLayout
+                        android:id="@+id/overlayRow"
+                        style="@style/CardRow">
+
+                        <TextView style="@style/RowTitle" android:text="@string/perm_overlay" />
+
+                        <TextView
+                            android:id="@+id/overlayStateLabel"
+                            style="@style/RowValue"
+                            tools:text="Grant" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Appearance (secondary — collapsed by default) -->
+                <TextView style="@style/SectionHeader" android:text="@string/sec_appearance" />
+
+                <LinearLayout style="@style/Card">
+
+                    <LinearLayout
+                        android:id="@+id/nightHeader"
+                        style="@style/CardRow">
+
+                        <TextView
+                            style="@style/RowTitle"
+                            android:text="@string/night_mode_title" />
+
+                        <TextView
+                            android:id="@+id/currentNightLabel"
+                            style="@style/RowValue"
+                            android:layout_marginEnd="6dp"
+                            tools:text="System default" />
+
+                        <ImageView
+                            android:id="@+id/nightChevron"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:contentDescription="@string/night_mode_title"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:id="@+id/nightGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="4dp"
+                        android:visibility="gone">
+
+                        <RadioButton android:id="@+id/night_system" style="@style/LanguageRadio" android:text="@string/mode_system" />
+                        <RadioButton android:id="@+id/night_light" style="@style/LanguageRadio" android:text="@string/mode_light" />
+                        <RadioButton android:id="@+id/night_dark" style="@style/LanguageRadio" android:text="@string/mode_dark" />
+                    </RadioGroup>
+
+                    <View style="@style/CardDivider" />
+
+                    <LinearLayout
+                        android:id="@+id/languageHeader"
+                        style="@style/CardRow">
+
+                        <TextView
+                            style="@style/RowTitle"
+                            android:text="@string/language_title" />
+
+                        <TextView
+                            android:id="@+id/currentLanguageLabel"
+                            style="@style/RowValue"
+                            android:layout_marginEnd="6dp"
+                            tools:text="English" />
+
+                        <ImageView
+                            android:id="@+id/langChevron"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:contentDescription="@string/language_title"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <RadioGroup
+                        android:id="@+id/languageGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="16dp"
+                        android:paddingBottom="4dp"
+                        android:visibility="gone">
+
+                        <RadioButton android:id="@+id/lang_en" style="@style/LanguageRadio" android:text="@string/lang_english" />
+                        <RadioButton android:id="@+id/lang_th" style="@style/LanguageRadio" android:text="@string/lang_thai" />
+                        <RadioButton android:id="@+id/lang_zh" style="@style/LanguageRadio" android:text="@string/lang_chinese" />
+                        <RadioButton android:id="@+id/lang_ja" style="@style/LanguageRadio" android:text="@string/lang_japanese" />
+                        <RadioButton android:id="@+id/lang_es" style="@style/LanguageRadio" android:text="@string/lang_spanish" />
+                        <RadioButton android:id="@+id/lang_nb" style="@style/LanguageRadio" android:text="@string/lang_norwegian" />
+                    </RadioGroup>
+
+                    <View style="@style/CardDivider" />
+
+                    <LinearLayout
+                        android:id="@+id/themeHeader"
+                        style="@style/CardRow">
+
+                        <TextView
+                            style="@style/RowTitle"
+                            android:text="@string/theme_title" />
+
+                        <ImageView
+                            android:id="@+id/themeCurrentDot"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginEnd="10dp"
+                            android:contentDescription="@string/theme_title"
+                            android:src="@drawable/dot_filled"
+                            app:tint="?attr/colorPrimary" />
+
+                        <ImageView
+                            android:id="@+id/themeChevron"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:contentDescription="@string/theme_title"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/themeContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:paddingBottom="12dp"
+                        android:visibility="gone">
+
+                        <GridLayout
+                            android:id="@+id/themeSwatchRow"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:columnCount="6" />
+
+                        <com.example.applocker.ColorPaletteView
+                            android:id="@+id/colorPalette"
+                            android:layout_width="match_parent"
+                            android:layout_height="150dp"
+                            android:layout_marginTop="6dp" />
+                    </LinearLayout>
+
+                    <View style="@style/CardDivider" />
+
+                    <!-- Lock screen personalisation (collapsed by default) -->
+                    <LinearLayout
+                        android:id="@+id/lockStyleHeader"
+                        style="@style/CardRow">
+
+                        <TextView
+                            style="@style/RowTitle"
+                            android:text="@string/lock_customize_title" />
+
+                        <ImageView
+                            android:id="@+id/lockStyleChevron"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:contentDescription="@string/lock_customize_title"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lockStyleContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="14dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:text="@string/lock_bg_label"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                        <RadioGroup
+                            android:id="@+id/lockBgGroup"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/bg_gradient"
+                                style="@style/LanguageRadio"
+                                android:layout_width="wrap_content"
+                                android:layout_marginEnd="14dp"
+                                android:text="@string/lock_bg_gradient" />
+
+                            <RadioButton
+                                android:id="@+id/bg_solid"
+                                style="@style/LanguageRadio"
+                                android:layout_width="wrap_content"
+                                android:layout_marginEnd="14dp"
+                                android:text="@string/lock_bg_solid" />
+
+                            <RadioButton
+                                android:id="@+id/bg_photo"
+                                style="@style/LanguageRadio"
+                                android:layout_width="wrap_content"
+                                android:text="@string/lock_bg_photo" />
+                        </RadioGroup>
+
+                        <Button
+                            android:id="@+id/choosePhotoButton"
+                            style="@style/Widget.Material3.Button.TonalButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:text="@string/lock_choose_photo"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="14dp"
+                            android:text="@string/lock_greeting_label"
+                            android:textColor="@color/text_secondary"
+                            android:textSize="13sp" />
+
+                        <EditText
+                            android:id="@+id/greetingInput"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:hint="@string/lock_greeting_hint"
+                            android:importantForAutofill="no"
+                            android:inputType="text"
+                            android:maxLength="40"
+                            android:maxLines="1"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_secondary" />
+
+                        <LinearLayout
+                            style="@style/SettingRow"
+                            android:layout_marginTop="10dp">
+
+                            <TextView
+                                style="@style/SettingLabel"
+                                android:text="@string/lock_show_icon" />
+
+                            <com.google.android.material.materialswitch.MaterialSwitch
+                                android:id="@+id/showIconSwitch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View style="@style/CardDivider" />
+
+                    <LinearLayout
+                        android:id="@+id/iconHeader"
+                        style="@style/CardRow">
+
+                        <TextView
+                            style="@style/RowTitle"
+                            android:text="@string/app_icon_desc" />
+
+                        <ImageView
+                            android:id="@+id/currentIconPreview"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:layout_marginEnd="10dp"
+                            android:contentDescription="@string/app_icon_desc"
+                            android:src="@mipmap/ic_launcher" />
+
+                        <ImageView
+                            android:id="@+id/iconChevron"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"
+                            android:contentDescription="@string/app_icon_desc"
+                            android:src="@drawable/ic_chevron"
+                            app:tint="@color/text_secondary" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/iconRow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="14dp"
+                        android:visibility="gone">
+
+                        <ImageView android:id="@+id/icon_default" style="@style/IconOption" android:contentDescription="@string/app_icon_desc" android:src="@mipmap/ic_launcher" />
+                        <ImageView android:id="@+id/icon_dark" style="@style/IconOption" android:contentDescription="@string/app_icon_desc" android:src="@mipmap/ic_launcher_dark" />
+                        <ImageView android:id="@+id/icon_teal" style="@style/IconOption" android:contentDescription="@string/app_icon_desc" android:src="@mipmap/ic_launcher_teal" />
+                        <ImageView android:id="@+id/icon_black" style="@style/IconOption" android:contentDescription="@string/app_icon_desc" android:src="@mipmap/ic_launcher_black" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/surface"
+        android:elevation="0dp"
+        app:itemIconTint="@color/bottom_nav_tint"
+        app:itemTextColor="@color/bottom_nav_tint"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu" />
+</LinearLayout>
